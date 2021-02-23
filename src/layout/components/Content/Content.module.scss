@@ -1,0 +1,23 @@
+.content {
+  width: 100%;
+  min-height: calc(100vh - 158px);
+  box-shadow: 4px 0px 20px color(black-0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &_suspense {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.loader {
+  fill: color(dark-blue-400);
+  height: 20px;
+}
+
+.splash {
+  z-index: z-index(notification) + 100 !important;
+}

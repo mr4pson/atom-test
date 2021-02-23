@@ -1,15 +1,20 @@
-import HomePage from "../components/pages/HomePage"
+import HomePage from "components/pages/HomePage";
+import LoginPage from "components/pages/LoginPage";
+import { Page, paths } from "./constants";
+import { TypeRoute } from "./type";
 
-type typeRoute = {
-    path: string;
-    component: JSX.Element;
-}
-
-export function getRoutes(): typeRoute[] {
+export function getRoutes(): TypeRoute[] {
     return [
         {
-            path: '/',
-            component: <HomePage/>
+            type: Page.HOME,
+            path: paths[Page.HOME],
+            component: <HomePage/>,
+            exact: true,
+        },
+        {
+            type: Page.LOGIN,
+            path: paths[Page.LOGIN],
+            component: <LoginPage />
         }
     ]
 }

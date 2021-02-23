@@ -1,0 +1,52 @@
+.login-page {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__title {
+    font-size: 56px;
+    line-height: 70.9%;
+    margin-top: 127px;
+    margin-bottom: 39px;
+  }
+
+  &__input, &__button {
+    width: 500px;
+    height: 60px;
+    margin-top: 20px;
+    border-radius: 30px;
+    border-color: #0085F8;
+    outline: none;
+  }
+
+  &__input {
+    padding-left: 25px;
+    font-size: 16px;
+    &::placeholder {
+      color: #4DAAFA;
+    }
+  }
+
+  &__button {
+    background-color: #0085F8;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    color: #FFFFFF;
+  }
+
+  &__forgot-password {
+    font-weight: bold;
+    color: #0085F8;
+    text-decoration: underline;
+    margin-top: 35px;
+  }
+
+  &__sign-up {
+    font-size: 14px;
+    color: #999999;
+    text-decoration: underline;
+    margin-top: 10px;
+    margin-bottom: 100px;
+  }
+}

@@ -8,7 +8,7 @@ $blue-100: #4daafa;
         display: flex;
         align-items: center;
     }
-    .nav-bar {
+    .nav-bar-header, .nav-bar-footer {
         width: 852px;
         height: 50px;
         background: #FFFFFF;
@@ -21,6 +21,7 @@ $blue-100: #4daafa;
         justify-content: space-between;
         box-sizing: border-box;
         margin: 0 auto 0;
+        user-select: none;
         li {
             display: inline-block;
             font-family: AGOpus, sans-serif;
@@ -33,6 +34,20 @@ $blue-100: #4daafa;
                     color: $blue-300
                 }
             }
+        }
+    }
+    .nav-bar-header {
+        &__icon {
+            width: 18px;
+            height: 19px;
+        }
+    }
+    .nav-bar-footer {
+        width: 868px;
+        padding: 0 32px;
+        &__icon {
+            width: 16px;
+            height: 10px;
         }
     }
     &__logo {
@@ -49,6 +64,8 @@ $blue-100: #4daafa;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
+        border: none;
+        outline: none;
         cursor: pointer;
         transition: background-color .3s;
         &:hover {

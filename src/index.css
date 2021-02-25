@@ -18,6 +18,18 @@ code {
   src: local('Eutelia'), url(./fonts/Eutelia.otf) format('otf');
 }
 
+@font-face {
+	font-family: "Nexa Script Light";
+	src: url("./fonts/nexa-script-light/nexa-script-light.eot"); /* IE9 Compat Modes */
+	src: url("./fonts/nexa-script-light/nexa-script-light.eot?#iefix") format("embedded-opentype"), /* IE6-IE8 */
+		url("./fonts/nexa-script-light/nexa-script-light.otf") format("opentype"), /* Open Type Font */
+		url("./fonts/nexa-script-light/nexa-script-light.svg") format("svg"), /* Legacy iOS */
+		url("./fonts/nexa-script-light/nexa-script-light.ttf") format("truetype"), /* Safari, Android, iOS */
+		url("./fonts/nexa-script-light/nexa-script-light.woff") format("woff"), /* Modern Browsers */
+		url("./fonts/nexa-script-light/nexa-script-light.woff2") format("woff2"); /* Modern Browsers */
+	font-weight: normal;
+	font-style: normal;
+}
 
 .container {
   max-width: 1170px;

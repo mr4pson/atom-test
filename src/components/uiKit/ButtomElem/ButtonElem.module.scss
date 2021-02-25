@@ -1,0 +1,15 @@
+.atom-btn {
+    height: 42px!important;
+    padding: 6px 38px!important;
+    border-radius: 30px!important;
+    background: #0085F8!important;
+    color: #FFFFFF!important;
+    font-size: 16px!important;
+    font-weight: bold!important;
+    margin-right: 30px!important;
+    &--default {
+        background: #fff!important;
+        color: #0085F8!important;
+        border: 1.5px solid #0085F8!important;
+    }
+}

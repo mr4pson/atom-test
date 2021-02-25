@@ -10,6 +10,7 @@ import { TypeRoute } from 'routes/type';
 import { Page, paths } from 'routes/constants';
 import LoginPage from 'components/pages/LoginPage';
 import HomePage from 'components/pages/HomePage';
+import 'antd/dist/antd.css';
 
 function App() {
   return (

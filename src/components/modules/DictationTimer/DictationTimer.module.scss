@@ -1,4 +1,5 @@
 .dictation-timer {
+    font-family: 'AGOpus';
     position: relative;
     &__avatar {
         background-image: url(../../../assets/images/girl-with-phone.png);
@@ -19,45 +20,70 @@
     &__body {
         display: flex;
         justify-content: space-around;
-        margin-top: 85px;
+        padding: 80px 45px 0;
     }
     &__days {
-
+        margin-top: -20px;
     }
     &__period {
-
+        width: 55px;
     }
     &__time {
         display: flex;
         justify-content: space-between;
+        padding-top: 13px;
     }
-    &__delimiter {
-
+    &__title {
+        font-weight: bold;
+        font-size: 16px;
+        color: #888888;
+        text-align: center;
+        margin-top: 10px;
     }
 }
 .days {
     &__value {
         font-size: 92.1725px;
+        line-height: 80px;
         color: #FF2F2F;
+        font-weight: bold;
     }
     &__title {
-
+        color: #A0A0A0;
+        font-size: 14px;
+        text-align: center;
     }
 }
 .period {
     &__value {
-
+        font-weight: bold;
+        font-size: 46px;
+        line-height: 46px;
+        text-align: center;
+        color: #0085F8;
     }
     &__title {
-        
+        color: #A0A0A0;
+        font-size: 14px;
+        text-align: center;
     }
 }
 
 .dots {
-    &__top {
-
-    }
-    &__bottom {
-
+    position: relative;
+    width: 40px;
+    .dot {
+        width: 5px;
+        height: 5px;
+        background: #C4C4C4;
+        border-radius: 50%;
+        position: absolute;
+        left: 18px;
+        &__top {
+            top: 13px;
+        }
+        &__bottom {
+            top: 30px;
+        }
     }
 }

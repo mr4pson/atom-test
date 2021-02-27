@@ -8,11 +8,6 @@ body {
   background-color: #fafafa;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
 @font-face {
   font-family: 'Eutelia';
   src: local('Eutelia'), url(./fonts/Eutelia.otf) format('otf');
@@ -30,6 +25,23 @@ code {
 	font-weight: normal;
 	font-style: normal;
 }
+
+@font-face {
+	font-family: "AGOpus";
+	src: url("./fonts/agopus.ttf") format("truetype"), /* Safari, Android, iOS */
+  url("./fonts/agopus.woff") format("woff"); /* Modern Browsers */
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "AGOpus";
+	src: url("./fonts/agopus-bold.ttf") format("truetype"), /* Safari, Android, iOS */
+  url("./fonts/agopus-bold.woff") format("woff"); /* Modern Browsers */
+	font-weight: bold;
+	font-style: normal;
+}
+
 
 .container {
   max-width: 1170px;

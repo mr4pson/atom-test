@@ -13,13 +13,11 @@ function DictationTimer(): JSX.Element {
         const timer = () => {
             const time = getTimeObjectFromSeconds(seconds);
             setTime(getPadTime(time));
-
-            if (seconds === 0) {
-                clearInterval(countdownTimer);
-                console.log('Completed');
-            }
         }
-        const countdownTimer = setTimeout(timer, 1000);
+        if (seconds === 0) {
+            return;
+        }
+        setTimeout(timer, 1000);
     });
 
     return (

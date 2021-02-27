@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import { memo, useEffect, useState } from "react";
 import styles from './DictationTimer.module.scss';
-import { getPadTime, getRemainingSeconds, getTimeObjectFromSeconds, pad } from './helper';
+import { getPadTime, getRemainingSeconds, getTimeObjectFromSeconds } from './helper';
+import { i18n } from './i18n';
 import { TypeTime } from "./types";
 
 function DictationTimer(): JSX.Element {
@@ -27,12 +28,12 @@ function DictationTimer(): JSX.Element {
                 <div className={styles['dictation-timer__body']}>
                     <div className={classNames(styles['dictation-timer__days'], styles['days'])}>
                         <div className={styles['days__value']}>{remainingTime.days}</div>
-                        <div className={styles['days__title']}>Дней</div>
+                        <div className={styles['days__title']}>{i18n.days}</div>
                     </div>
                     <div className={styles['dictation-timer__time']}>
                         <div className={classNames(styles['dictation-timer__period'], styles['period'])}>
                             <div className={styles['period__value']}>{remainingTime.hours}</div>
-                            <div className={styles['period__title']}>Часов</div>
+                            <div className={styles['period__title']}>{i18n.hours}</div>
                         </div>
                         <div className={classNames(styles['dictation-timer__delimiter'], styles['dots'])}>
                             <div className={classNames(styles['dot'], styles['dot__top'])}></div>
@@ -40,7 +41,7 @@ function DictationTimer(): JSX.Element {
                         </div>
                         <div className={classNames(styles['dictation-timer__period'], styles['period'])}>
                             <div className={styles['period__value']}>{remainingTime.minutes}</div>
-                            <div className={styles['period__title']}>минут</div>
+                            <div className={styles['period__title']}>{i18n.minutes}</div>
                         </div>
                         <div className={classNames(styles['dictation-timer__delimiter'], styles['dots'])}>
                             <div className={classNames(styles['dot'], styles['dot__top'])}></div>
@@ -48,11 +49,11 @@ function DictationTimer(): JSX.Element {
                         </div>
                         <div className={classNames(styles['dictation-timer__period'], styles['period'])}>
                             <div className={styles['period__value']}>{remainingTime.seconds}</div>
-                            <div className={styles['period__title']}>секунд</div>
+                            <div className={styles['period__title']}>{i18n.seconds}</div>
                         </div>
                     </div>
                 </div>
-                <div className={styles['dictation-timer__title']}>До начала диктанта</div>
+                <div className={styles['dictation-timer__title']}>{i18n.beforeStart}</div>
             </div>
         </div>
     );

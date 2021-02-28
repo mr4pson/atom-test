@@ -12,6 +12,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router": "^5.1.11",
     "antd": "^4.12.3",
+    "antd-mask-input": "^0.1.14",
     "node-sass": "^5.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

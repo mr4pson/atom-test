@@ -1,10 +1,15 @@
 import { memo } from "react";
 import { Button } from 'antd';
-import { buttonElemProps, buttonElemType } from "./types";
+import { buttonElemType } from "./types";
 import styles from './ButtonElem.module.scss';
 import classNames from 'classnames';
 
-function ButtonElem(props: buttonElemProps): JSX.Element {
+type Props = {
+    type: buttonElemType;
+    children: string;
+}
+
+function ButtonElem(props: Props): JSX.Element {
     const getButtonClassNames = () => {
         const classes = [styles['atom-btn']];
         if (props.type === buttonElemType.Default) {

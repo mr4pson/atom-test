@@ -36,3 +36,18 @@ code {
   margin: auto;
   color: #4B4B4B;
 }
+
+
+/*Ant design common components styles*/
+.ant-select-selector:focus {
+  border: none;
+}
+
+.ant-select-selection-item {
+  padding-left: 25px !important;
+  color: #0085F8;
+}
+
+.ant-notification-notice {
+  border-radius: 20px !important;
+}

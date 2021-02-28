@@ -3,8 +3,3 @@ export enum buttonElemType {
     Default = 'default',
     Dashed = 'dashed'
 }
-
-export type buttonElemProps = {
-    type: buttonElemType;
-    children: string;
-}

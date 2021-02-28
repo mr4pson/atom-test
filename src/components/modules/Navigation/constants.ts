@@ -7,6 +7,7 @@ export const navigationTranslations = {
     organisators: 'Организаторы',
     infoPartners: 'Информационные партнеры',
     privacyPolicy: 'Политика конфиденциальности',
+    privateOffice: 'Личный кабинет',
 }
 
 export const navigationPaths = {

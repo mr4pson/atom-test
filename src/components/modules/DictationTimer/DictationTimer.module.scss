@@ -12,12 +12,12 @@
     &__footer {
         // box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
         // border-radius: 35px;
-        height: 216px;
+        height: 221px;
         width: 100%;
         position: absolute;
-        bottom: -15px;
+        bottom: -20px;
         left: -50px;
-        background-image: url(../../../assets/images/timer-rectangle.png);
+        background-image: url(../../../assets/images/timer-rectangle.svg);
         background-size: cover;
     }
     &__body {

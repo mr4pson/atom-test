@@ -34,8 +34,10 @@
   align-items: center;
   justify-content: center;
   line-height: 150%;
-  margin-top: 105px;
+  margin-top: 125px;
   color: #4B4B4B;
+  font-family: AGOpus, sans-serif;
+  font-size: 16px;
   &__title {
     font-size: 56px;
     font-weight: normal;
@@ -49,8 +51,6 @@
     height: 70px;
     text-align: center;
     margin-bottom: 25px;
-    font-family: AGOpus, sans-serif;
-    font-size: 16px;
     line-height: 150%;
   }
 
@@ -58,7 +58,7 @@
     display: flex;
     align-items: center;
     text-align: center;
-    margin-top: 35px;
+    margin-top: 65px;
     padding: 0 37px;
     width: 1170px;
     height: 100px;
@@ -72,6 +72,7 @@
   display: flex;
   
   &__example-image {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -86,5 +87,184 @@
   &__info {
     width: 530px;
     padding-top: 30px;
+  }
+}
+.expample-image {
+  &__wing {
+    position: absolute;
+    left: -38px;
+    bottom: -57px;
+    background-image: url(../../../assets/images/diploma-wing.svg);
+    width: 485px;
+    height: 295px;
+  }
+  &__body {
+    position: absolute;
+    top: 170px;
+    left: 50px;
+  }
+  &__title {
+    font-family: Nexa Script Light;
+    font-size: 30px;
+    line-height: 36px;
+    color: #0085F8;
+    opacity: 0.6;
+  }
+  &__description {
+    font-family: AGOpus;
+    font-size: 16px;
+    line-height: 150%;
+    color: #747474;
+    font-weight: normal;
+    opacity: 0.6;
+  }
+}
+
+.dictant__paragraphs-list {
+  padding-left: 18px;
+  li {
+    margin-top: 15px;
+    &::marker {
+      font-size: 20px;
+      color: #0085F8;
+    }
+  }
+}
+
+.organizators {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 150%;
+  margin-top: 125px;
+  color: #4B4B4B;
+  font-family: AGOpus, sans-serif;
+  font-size: 16px;
+  &__title {
+    font-size: 56px;
+    font-weight: normal;
+    margin-bottom: 30px;
+    font-family: Nexa Script Light;
+    font-weight: bold;
+  }
+  &__body {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 45px;
+    font-family: AGOpus, sans-serif;
+  }
+  &__left-bar {
+    width: 470px;
+  }
+  &__right-bar {
+    width: 670px;
+    height: 500px;
+    background-image: url(../../../assets/images/organizators-image.png);
+    margin-right: -11px;
+  }
+}
+
+.organizator {
+  &__type {
+    font-size: 33px;
+    color: #0085F8;
+    padding-top: 45px;
+  }
+  &__name {
+    margin-top: 10px;
+    font-size: 36px;
+    font-weight: bold;
+    line-height: 39px;
+  }
+  &__desc {
+    margin-top: 15px;
+    font-size: 18px;
+    line-height: 150%;
+  }
+  button {
+    margin-top: 55px;
+  }
+}
+
+.supporters {
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 150%;
+  margin-top: 125px;
+  color: #4B4B4B;
+  font-family: AGOpus, sans-serif;
+  font-size: 16px;
+  &__title {
+    font-size: 56px;
+    font-weight: normal;
+    margin-bottom: 30px;
+    font-family: Nexa Script Light;
+    font-weight: bold;
+  }
+  &__body {
+    margin-top: 40px;
+  }
+}
+
+.supporter {
+  padding: 25px 20px;
+  position: relative;
+  margin-bottom: 55px;
+  &__bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    svg {
+      margin-left: -10px;
+      // transform: scale(1.03);
+    }
+  }
+  &__avatar {
+    position: relative;
+    max-width: 330px;
+    height: 410px;
+    margin: auto;
+  }
+  &__name {
+    position: relative;
+    font-weight: bold;
+    font-size: 23px;
+    line-height: 70.9%;
+    text-align: center;
+    margin-top: 25px;
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+  &__position {
+    position: relative;
+    font-size: 16px;
+    line-height: 113.5%;
+    margin-top: 11px;
+    text-align: center;
+  }
+}
+
+.ant-row {
+  justify-content: space-between;
+}
+
+.gutter-row {
+  &:nth-child(1) {
+    padding: 0 15px 0 0;
+  }
+  &:nth-child(2) {
+    padding: 0 15px 0 7.5px;
+    .supporter {
+      padding-left: 22px;
+      padding-right: 16px;
+    }
+  }
+  &:nth-child(3) {
+    padding: 0 0 0 15px;
   }
 }

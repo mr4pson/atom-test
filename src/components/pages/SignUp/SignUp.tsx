@@ -2,17 +2,17 @@ import { memo, useRef } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from '../LoginPage/LoginPage.module.scss';
-import { Form, Input, Button, Select, notification } from 'antd';
+import { Form, Input, Button, Select, notification, FormInstance } from 'antd';
 import { useHistory } from 'react-router';
 import { Page, paths } from 'routes/constants';
 import { Link } from "react-router-dom";
 import { cityItems, formItemRulse, inititalFormValue, phoneNumberMask } from './constants';
-import { TypeSelectOption } from './types';
+import { TypeSelectOption } from 'components/common/types';
 import MaskedInput from 'antd-mask-input'
 // import { loginPage } from 'i18n'
 
 function SignUp(): JSX.Element {
-    const formRef = useRef<any>(null);
+    const formRef = useRef<FormInstance>(null);
     const history = useHistory();
     const [form] = Form.useForm();
 
@@ -48,10 +48,10 @@ function SignUp(): JSX.Element {
 
     function onSubmit (values: any): void {
         // console.log('Success:', values);
-        console.log(formRef.current.getFieldValue());
+        console.log(formRef.current?.getFieldsValue());
         openNotification();
         form.resetFields();
-    };
+};
 
     function handleChange(value) {
         console.log(`selected ${value}`);

@@ -1,4 +1,5 @@
-import { TypeFormState, TypeItemRule, TypeSelectOption } from "./types";
+import { TypeFormState, TypeItemRule } from "./types";
+import { TypeSelectOption } from 'components/common/types';
 
 export const cityItems: TypeSelectOption[] = [
   {

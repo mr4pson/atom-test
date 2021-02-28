@@ -2,19 +2,19 @@ import { memo, useRef } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from './LoginPage.module.scss';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, FormInstance } from 'antd';
 import { useHistory } from 'react-router';
 import { Page, paths } from 'routes/constants';
 import { Link } from "react-router-dom";
 // import { loginPage } from 'i18n'
 
 function LoginPage(): JSX.Element {
-    const formRef = useRef<any>(null);
+    const formRef = useRef<FormInstance>(null);
     const history = useHistory();
 
-    function onSubmit (values: any): void {
+    function onSubmit (): void {
         // console.log('Success:', values);
-        console.log(formRef.current.getFieldValue());
+        console.log(formRef.current?.getFieldsValue());
         history.push(paths[Page.HOME])
     };
 

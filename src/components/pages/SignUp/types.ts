@@ -1,8 +1,3 @@
-export type TypeSelectOption = {
-  value: string;
-  text: string;
-};
-
 export type TypeItemRule = {
   required: boolean;
   message: string;

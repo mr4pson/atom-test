@@ -1,0 +1,209 @@
+.private-office {
+  font-family: AGOpus;
+  &__photo {
+    display: flex;
+    align-items: center;
+  }
+
+  &__user-info {
+    display: flex;
+    margin-top: 75px;
+  }
+}
+
+.user-photo {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 270px;
+  height: 312px;
+  background: #FFFFFF;
+  border-radius: 47px;
+  padding: 13.5px 13.5px 9px;
+  
+  &__img {
+    width: 243px;
+    height: 259px;
+    border-radius: 47px;
+    background: #EBF6FE;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__action-name {
+    color: #0085F8;
+    text-decoration: underline;
+    opacity: 0.7;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 5px;
+    font-size: 16px;
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__file-input {
+    display: none !important;
+  }
+}
+
+.user-info {
+  margin-left: 30px;
+  margin-top: 35px;
+  &__full-name {
+    font-size: 36px;
+    font-weight: bold;
+  }
+
+  &__divider {
+    width: 870px;
+    height: 1px;
+    background-color: #DBF0FF;
+    margin-bottom: 15px;
+  }
+
+  &__row {
+    display: flex;
+    font-size: 18px;
+    line-height: 20px;
+  }
+
+  &__column-name {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+
+  &__column-value {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__input {
+    width: 300px !important;
+    border-radius: 15px !important;
+    color: rgba(0, 133, 248, 0.7);
+    // height: 35px;
+  }
+
+  &__edit-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 12px;
+    cursor: pointer;
+  }
+}
+
+.input-wrapper {
+  width: 500px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.row-item  {
+  margin-bottom: 10px !important;
+  &__full-name {
+    margin-bottom: 0px;
+  }
+}
+
+.diploma-info {
+  margin-top: 80px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__title {
+    font-family: Nexa Script Light;
+    font-size: 56px;
+    text-align: center;
+    font-weight: 400;
+    background: linear-gradient(11deg, #0018f0 33%, #00e0ff 87%, #8AA9D6);
+    color: #0B2349;
+    background-clip: text;
+    line-height: 79%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 57px;
+  }
+
+  &__frame {
+    position: relative;
+    width: 830px;
+    height: 565px;
+    background-color: #FFFFFF;
+    padding: 30px;
+  }
+
+  &__image {
+    background-color: #F0F7FB;
+    width: 770px;
+    height: 505px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__name {
+    font-family: Nexa Script Light;
+    font-size: 18px;
+    line-height: 22px;
+    color: #000000;
+  }
+
+  &__download {
+    font-family: AGOpus;
+    font-size: 18px;
+    background: none;
+    border: none;
+    outline: none;
+    color: #0085F8;
+    opacity: 0.7;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 95px;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  &__share-in {
+    width: 366px;
+    height: 154px;
+  }
+}
+
+.share-in {
+  position: absolute;
+  left: -68px;
+  top: 495px;
+
+  &__title {
+    position: absolute;
+    left: 53px;
+    top: 45px;
+    font-family: AGOpus;
+    font-size: 18px;
+    color: #4B4B4B;
+    font-weight: bold;
+  }
+
+  &__icons {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    left: 53px;
+    top: 78px;
+    width: 160px;
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+}

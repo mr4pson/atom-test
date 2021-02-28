@@ -62,3 +62,7 @@ body {
 .ant-notification-notice {
   border-radius: 20px !important;
 }
+
+.ant-select-selector {
+	border-radius: 30px !important;
+}

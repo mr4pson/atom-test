@@ -2,14 +2,14 @@ import { memo, useRef } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from '../LoginPage/LoginPage.module.scss';
-import { Form, Input, Button, notification } from 'antd';
+import { Form, Input, Button, notification, FormInstance } from 'antd';
 import { Page, paths } from 'routes/constants';
 import { Link } from "react-router-dom";
 import { useHistory } from 'react-router';
 // import { loginPage } from 'i18n'
 
 function ForgotPassword(): JSX.Element {
-    const formRef = useRef<any>(null);
+    const formRef = useRef<FormInstance>(null);
     let history = useHistory();
     const [form] = Form.useForm();
 
@@ -43,7 +43,7 @@ function ForgotPassword(): JSX.Element {
 
     function onSubmit (values: any): void {
       // console.log('Success:', values);
-      console.log(formRef.current.getFieldValue());
+      console.log(formRef.current?.getFieldsValue());
       openNotification();
       form.resetFields();
     };

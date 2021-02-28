@@ -4,6 +4,8 @@ import React, { memo, forwardRef } from "react";
 type Props = {
   /** Additional class. */
   className?: string;
+  /** OnClick method. */
+  onClick?: () => void;
   /** Icon path. */
   path: string;
   /** Icon ref. */
@@ -24,6 +26,7 @@ const Icon = forwardRef<SVGSVGElement, Props>(function Icon(props, ref) {
       role="img"
       tabIndex={props.tabIndex}
       viewBox={props.viewBox}
+      onClick={props.onClick}
     >
       {props.title && <title>{props.title}</title>}
       <g dangerouslySetInnerHTML={{ __html: props.path }} />

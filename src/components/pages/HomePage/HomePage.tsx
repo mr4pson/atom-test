@@ -9,12 +9,20 @@ import DictationTimer from 'components/modules/DictationTimer';
 import ReactHtmlParser from 'react-html-parser';
 import { Row, Col } from 'antd';
 import classNames from 'classnames';
-import { supporters } from './constants';
+import { questions, supporters } from './constants';
 import { TypeSupporter } from './types';
 import { cutArrayByThree } from './helpers';
+import CollapseElem from 'components/uiKit/CollapseElem/CollapseElem';
 import { ReactComponent as SupporterLeft } from './../../../assets/images/supporter-left.svg';
 import { ReactComponent as SupporterCenter } from './../../../assets/images/supporter-center.svg';
 import { ReactComponent as SupporterRight } from './../../../assets/images/supporter-right.svg';
+import { ReactComponent as HowToParticipate1 } from './../../../assets/images/home-page/how-to-participate1.svg';
+import { ReactComponent as HowToParticipate2 } from './../../../assets/images/home-page/how-to-participate2.svg';
+import { ReactComponent as HowToParticipate3 } from './../../../assets/images/home-page/how-to-participate3.svg';
+import { ReactComponent as HowToParticipate4 } from './../../../assets/images/home-page/how-to-participate4.svg';
+import { ReactComponent as Ellipse1 } from './../../../assets/images/home-page/ellipse1.svg';
+import { ReactComponent as Ellipse2 } from './../../../assets/images/home-page/ellipse2.svg';
+import { ReactComponent as Ellipse3 } from './../../../assets/images/home-page/ellipse3.svg';
 
 function HomePage(): JSX.Element {
     const getSupporterClasses = (index): string => {
@@ -111,7 +119,7 @@ function HomePage(): JSX.Element {
                     </div>
                     <div className={styles['supporters__body']}>
                         {supporterRows.map((supporterRow: TypeSupporter[], index) => (
-                            <Row>
+                            <Row key={index}>
                                 {supporterRow.map((supporter: TypeSupporter, index) => (
                                     <Col span={8} className={styles['gutter-row']}>
                                         <div key={index} className={getSupporterClasses(index)}>
@@ -126,6 +134,76 @@ function HomePage(): JSX.Element {
                                 ))}
                             </Row>
                         ))}
+                    </div>
+                </div>
+                <div className={styles['how-to-participate']}>
+                    <div className={styles['how-to-participate__title']}>
+                        {ReactHtmlParser(homePage.howToParticipate.title)}
+                    </div>
+                    <div className={styles['how-to-participate__body']}>
+                        <div className={styles['participant-step']}>
+                            <div className={styles['participant-step__bg']}>
+                                <HowToParticipate1 />
+                            </div>
+                            <div className={styles['participant-step__body']}>
+                                <div className={styles['participant-step__number']}>1</div>
+                                <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.first)}</div>
+                            </div>
+                            <div className={styles['participant-step__ellipse']}>
+                                <Ellipse1 />
+                            </div>
+                        </div>
+                        <div className={styles['participant-step']}>
+                            <div className={styles['participant-step__bg']}>
+                                <HowToParticipate2 />
+                            </div>
+                            <div className={styles['participant-step__body']}>
+                                <div className={styles['participant-step__number']}>2</div>
+                                <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.second)}</div>
+                            </div>
+                            <div className={styles['participant-step__ellipse']}>
+                                <Ellipse2 />
+                            </div>
+                        </div>
+                        <div className={styles['participant-step']}>
+                            <div className={styles['participant-step__bg']}>
+                                <HowToParticipate3 />
+                            </div>
+                            <div className={styles['participant-step__body']}>
+                                <div className={styles['participant-step__number']}>3</div>
+                                <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.third)}</div>
+                            </div>
+                            <div className={styles['participant-step__ellipse']}>
+                                <Ellipse3 />
+                            </div>
+                        </div>
+                        <div className={styles['participant-step']}>
+                            <div className={styles['participant-step__bg']}>
+                                <HowToParticipate4 />
+                            </div>
+                            <div className={styles['participant-step__body']}>
+                                <div className={styles['participant-step__number']}>4</div>
+                                <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.fourth)}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles['q-and-a']}>
+                    <div className={styles['q-and-a__title']}>
+                        {ReactHtmlParser(homePage.frequentlyAskedQuestions.title)}
+                    </div>
+                    <div className={styles['q-and-a__body']}>
+                        {questions.map((question) => (
+                            <CollapseElem title={question.title}>{question.answer}</CollapseElem>
+                        ))}
+                    </div>
+                </div>
+                <div className={styles['contact-us']}>
+                    <div className={styles['contact-us__title']}>
+                        {ReactHtmlParser(homePage.contactUs.title)}
+                    </div>
+                    <div className={styles['contact-us__body']}>
+                        
                     </div>
                 </div>
                 <Navigation navigationType={NavigationType.FOOTER} />

@@ -1,0 +1,52 @@
+.collapse-elem {
+    width: 100%;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 10px -5px rgba(0, 0, 0, 0.07);
+    border-radius: 35px;
+    overflow: hidden;
+    margin-bottom: 32px;
+    &__body {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 16px 40px 0 40px;
+        padding-bottom: 16px;
+    }
+    &__content {
+        max-height: 0;
+        margin: 0 40px;
+        font-size: 16px;
+        line-height: 150%;
+        color: #747474;
+        transition: all .3s;
+        visibility: hidden;
+    }
+    &__title {
+        font-size: 23px;
+        line-height: 70.9%;
+        color: #4B4B4B;
+    }
+    &__btn {
+        outline: none;
+        background: none;
+        border: none;
+        margin-left: 10px;
+        height: 44px;
+        padding: 0;
+        transition: all .3s;
+        cursor: pointer;
+    }
+    &--collapsed {
+        .collapse-elem__body {
+            border-bottom: 1px solid #DBF0FF;
+        }
+        .collapse-elem__btn {
+            transform: rotate(45deg);
+        }
+        .collapse-elem__content {
+            max-height: 84px;
+            margin: 30px 40px;
+            visibility: visible;
+        }
+    }
+}

@@ -3,3 +3,8 @@ export type TypeSupporter = {
     position: string;
     avatar: string;
 }
+
+export type TypeQuestion = {
+    title: string;
+    answer: string;
+}

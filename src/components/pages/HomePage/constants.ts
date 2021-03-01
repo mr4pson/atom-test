@@ -1,4 +1,4 @@
-import { TypeSupporter } from "./types";
+import { TypeQuestion, TypeSupporter } from "./types";
 
 export const supporters: TypeSupporter[] = [
     {
@@ -97,3 +97,26 @@ export const supporters: TypeSupporter[] = [
         avatar: 'supporter19.png'
     },
 ];
+
+export const questions: TypeQuestion[] = [
+    {
+        title: 'Что такое Атомный диктант и зачем он проводится?',
+        answer: '1'
+    },
+    {
+        title: 'Как стать участником Атомного диктанта?',
+        answer: '1'
+    },
+    {
+        title: 'Можно ли написать Атомный диктант в другой день?',
+        answer: '1'
+    },
+    {
+        title: 'Если обнаружена ошибка, неправильно посчитаны баллы и другое, что следует предпринять?',
+        answer: '1'
+    },
+    {
+        title: 'Если участник не ответил на половину вопросов, будет ли ему предоставлен диплом участника?',
+        answer: 'Диплом участника предоставляется только тем, кто смог ответить на половину вопросов'
+    }
+]

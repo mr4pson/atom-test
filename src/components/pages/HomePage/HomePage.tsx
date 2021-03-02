@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useRef } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import ButtonElem from 'components/uiKit/ButtomElem';
@@ -13,6 +13,7 @@ import { questions, supporters } from './constants';
 import { TypeSupporter } from './types';
 import { cutArrayByThree } from './helpers';
 import CollapseElem from 'components/uiKit/CollapseElem/CollapseElem';
+import { Form, Input, Button, FormInstance } from 'antd';
 import { ReactComponent as SupporterLeft } from './../../../assets/images/supporter-left.svg';
 import { ReactComponent as SupporterCenter } from './../../../assets/images/supporter-center.svg';
 import { ReactComponent as SupporterRight } from './../../../assets/images/supporter-right.svg';
@@ -23,6 +24,9 @@ import { ReactComponent as HowToParticipate4 } from './../../../assets/images/ho
 import { ReactComponent as Ellipse1 } from './../../../assets/images/home-page/ellipse1.svg';
 import { ReactComponent as Ellipse2 } from './../../../assets/images/home-page/ellipse2.svg';
 import { ReactComponent as Ellipse3 } from './../../../assets/images/home-page/ellipse3.svg';
+import { ReactComponent as ContactUsFooter } from './../../../assets/images/home-page/contact-us-footer.svg';
+
+const { TextArea } = Input;
 
 function HomePage(): JSX.Element {
     const getSupporterClasses = (index): string => {
@@ -34,6 +38,7 @@ function HomePage(): JSX.Element {
     };
 
     const supporterRows = cutArrayByThree(supporters);
+    const formRef = useRef<FormInstance>(null);
 
     const renderSwitch = (index: number): JSX.Element => {
         switch(index % 3) {
@@ -46,6 +51,10 @@ function HomePage(): JSX.Element {
             default:
                 return <SupporterLeft/>;
         }
+    }
+
+    const onSubmit = (e) => {
+        console.log(e);
     }
 
     return (
@@ -203,7 +212,61 @@ function HomePage(): JSX.Element {
                         {ReactHtmlParser(homePage.contactUs.title)}
                     </div>
                     <div className={styles['contact-us__body']}>
-                        
+                        <div className="contact-us__left-bar">
+                            <div className={styles['contact-us__image']}>
+                                <div className={styles['contact-us__footer']}>
+                                    <ContactUsFooter/>
+                                    <div className={classNames(styles['contact-us__share-in'], styles['share-in'])}>
+                                        <div className={styles['share-in__title']}>{ReactHtmlParser(homePage.contactUs.body.shareTo)}</div>
+                                        <div className={styles['share-in__links']}>
+                                            <div className={styles['share-in__link']}></div>
+                                            <div className={styles['share-in__link']}></div>
+                                            <div className={styles['share-in__link']}></div>
+                                            <div className={styles['share-in__link']}></div>
+                                            <div className={styles['share-in__link']}></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={classNames(styles['contact-us__right-bar'], styles['contact-us-form'])}>
+                            <Form
+                                name="basic"
+                                initialValues={{}}
+                                onFinish={onSubmit}
+                                ref={formRef}
+                            >
+                                <div className={styles['contact-us-form__top']}>
+                                    <Form.Item
+                                        name="name"
+                                        rules={[{ required: true, message: 'Please input your login!' }]}
+                                    >
+                                        <Input className={styles['contact-us-form__input']} placeholder='Ваше имя' />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="email"
+                                        rules={[{ required: true, message: 'Please input your login!' }]}
+                                    >
+                                        <Input className={styles['contact-us-form__input']} placeholder='Email*' />
+                                    </Form.Item>
+                                </div>
+                                <Form.Item
+                                    name="message"
+                                    rules={[{ required: true, message: 'Please input your login!' }]}
+                                >
+                                    <TextArea
+                                        className={styles['contact-us-form__input']}
+                                        required={true}
+                                        placeholder="Сообщение"
+                                        autoSize={{ minRows: 3, maxRows: 5 }}
+                                    />
+                                </Form.Item>
+                                <div className={styles['contact-us-form__controlls']}>
+                                    <ButtonElem htmlType={'submit'} type={buttonElemType.Primary}>{ReactHtmlParser(homePage.contactUs.body.button.sendBtn)}</ButtonElem>
+                                    <div className={styles['contact-us-form__info']}>{ReactHtmlParser(homePage.contactUs.body.sendActionInfo)}</div>
+                                </div>
+                            </Form>
+                        </div>
                     </div>
                 </div>
                 <Navigation navigationType={NavigationType.FOOTER} />

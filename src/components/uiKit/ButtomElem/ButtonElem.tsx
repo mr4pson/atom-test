@@ -6,6 +6,7 @@ import classNames from 'classnames';
 
 type Props = {
     type: buttonElemType;
+    htmlType?: "button" | "submit" | "reset" | undefined;
     children: string;
 }
 
@@ -18,7 +19,7 @@ function ButtonElem(props: Props): JSX.Element {
         return classNames(...classes);
     }
     return (
-        <Button className={getButtonClassNames()} type={props.type}>{props.children}</Button>
+        <Button htmlType={props.htmlType || 'button'} className={getButtonClassNames()} type={props.type}>{props.children}</Button>
     );
 }
 

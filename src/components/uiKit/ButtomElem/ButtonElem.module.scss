@@ -12,4 +12,13 @@
         color: #0085F8;
         border: 2px solid #0085F8;
     }
+    &:disabled {
+        background: #BFE1FF;
+        border: none;
+        color: #fff;
+        &:hover {
+            background: #BFE1FF;
+            color: #fff;
+        }
+    }
 }

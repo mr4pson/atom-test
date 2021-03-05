@@ -5,6 +5,7 @@ import LoginPage from "components/pages/LoginPage";
 import { Page, paths } from "./constants";
 import { TypeRoute } from "./type";
 import PrivateOffice from "components/pages/PrivateOffice";
+import UserTest from "components/pages/UserTest";
 
 export function getRoutes(): TypeRoute[] {
     return [
@@ -33,6 +34,11 @@ export function getRoutes(): TypeRoute[] {
             type: Page.PRIVATE_OFFICE,
             path: paths[Page.PRIVATE_OFFICE],
             component: <PrivateOffice />
+        },
+        {
+            type: Page.USER_TEST,
+            path: paths[Page.USER_TEST_ROUTE],
+            component: <UserTest />
         }
     ]
 }

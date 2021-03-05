@@ -1,14 +1,8 @@
 import { memo } from "react";
 import { Button } from 'antd';
-import { buttonElemType } from "./types";
+import { buttonElemType, htmlType, Props } from "./types";
 import styles from './ButtonElem.module.scss';
 import classNames from 'classnames';
-
-type Props = {
-    type: buttonElemType;
-    htmlType?: "button" | "submit" | "reset" | undefined;
-    children: string;
-}
 
 function ButtonElem(props: Props): JSX.Element {
     const getButtonClassNames = () => {
@@ -16,10 +10,18 @@ function ButtonElem(props: Props): JSX.Element {
         if (props.type === buttonElemType.Default) {
             classes.push(styles['atom-btn--default']);
         }
+        if (props.className) {
+            classes.push(props.className);
+        }
         return classNames(...classes);
     }
     return (
-        <Button htmlType={props.htmlType || 'button'} className={getButtonClassNames()} type={props.type}>{props.children}</Button>
+        <Button 
+            disabled={props.disabled}
+            htmlType={props.htmlType || htmlType.SUBMIT}
+            className={getButtonClassNames()}
+            type={props.type}
+        >{props.children}</Button>
     );
 }
 

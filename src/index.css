@@ -66,3 +66,9 @@ body {
 .ant-select-selector {
 	border-radius: 30px !important;
 }
+
+.user-test-option-multiple .ant-radio {
+	position: absolute;
+	top: 145px;
+    left: 10px;
+}

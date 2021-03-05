@@ -4,7 +4,7 @@ import { NavigationType } from 'components/modules/Navigation/constants';
 import ButtonElem from 'components/uiKit/ButtomElem';
 import styles from './HomePage.module.scss';
 import { homePage } from 'i18n'
-import { buttonElemType } from 'components/uiKit/ButtomElem/types';
+import { buttonElemType, htmlType } from 'components/uiKit/ButtomElem/types';
 import DictationTimer from 'components/modules/DictationTimer';
 import ReactHtmlParser from 'react-html-parser';
 import { Row, Col } from 'antd';
@@ -262,7 +262,7 @@ function HomePage(): JSX.Element {
                                     />
                                 </Form.Item>
                                 <div className={styles['contact-us-form__controlls']}>
-                                    <ButtonElem htmlType={'submit'} type={buttonElemType.Primary}>{ReactHtmlParser(homePage.contactUs.body.button.sendBtn)}</ButtonElem>
+                                    <ButtonElem htmlType={htmlType.SUBMIT} type={buttonElemType.Primary}>{ReactHtmlParser(homePage.contactUs.body.button.sendBtn)}</ButtonElem>
                                     <div className={styles['contact-us-form__info']}>{ReactHtmlParser(homePage.contactUs.body.sendActionInfo)}</div>
                                 </div>
                             </Form>

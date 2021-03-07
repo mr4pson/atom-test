@@ -51,7 +51,7 @@ export const questions: TypeUserTestQuestion[] = [
     {
         id: 3,
         title: 'Где изображен самый эпичный взрыв?',
-        type: QuestionType.SENGLE_PICTURE,
+        type: QuestionType.MULTIPLE_PICTURE,
         options: [
             {
                 title: 'https://s3-alpha-sig.figma.com/img/1c0e/0fc9/c3818fcfcad10836c3ca14b43304c361?Expires=1615766400&Signature=O4dhNfaURfZCYTHE3uKRqqWb~T0Zt8WmPIn03MYcYiYvnuV-Obl-C3tU5aAq0k0mD6bvTAiJfsTLcSB2auPptR3W~tN54tojDwAIPS6SvVpjg0FcHwwR0FWEtaJQrDKEY6nCc7dSUNe1z~J5JAo8jwFr2C0hKyT~gShEoWL0m7LhzMRRCLwlA9DHs98qCjolmUnmL2hD4nY6e8tl6wd09n4EgKLjoFdqJMOKSou7qP-3KWiHXoNNHu8WpgtMdVmmKRssKBy4WZQoWrag6w3xCOAJE2ZQY8ri2r8RiMBJIcwjen9xi6cA6Vv96FlStEFlhgG-hDIYn4U7Bfu4j2Ad6g__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',

@@ -1,7 +1,7 @@
 import { Checkbox, Col, Radio, Row } from 'antd';
+import classNames from 'classnames';
 import { QuestionType } from "components/pages/UserTest/types";
 import { memo } from "react";
-import classNames from 'classnames';
 import styles from './UserTestOption.module.scss';
 
 type Props = {
@@ -43,6 +43,15 @@ function UserTestOption(props: Props): JSX.Element {
                         style={{backgroundImage: 'url('+props.children+')'}}
                     ></div>
                 </Radio>
+            }
+            
+            {props.type === QuestionType.MULTIPLE_PICTURE && 
+                <Checkbox className="user-test-option-multiple" value={props.value}>
+                    <div
+                        className={styles['user-test-option__image']} 
+                        style={{backgroundImage: 'url('+props.children+')'}}
+                    ></div>
+                </Checkbox>
             }
         </div>
     );

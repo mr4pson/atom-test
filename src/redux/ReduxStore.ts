@@ -3,7 +3,7 @@ import thunkMiddleware from "redux-thunk";
 import userTestReducer from "./reducers/UserTest.reducer";
 
 const reducers = combineReducers({
-    quizePage: userTestReducer
+    userTest: userTestReducer
 });
 
 const store = createStore(reducers, applyMiddleware(thunkMiddleware));

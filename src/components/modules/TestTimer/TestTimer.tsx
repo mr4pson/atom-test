@@ -1,15 +1,24 @@
 import { userTest } from "i18n/userTest";
 import { memo, useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router";
+import { setStateIsTimerFinishedToState } from 'redux/reducers/UserTest.reducer';
+import { Page, paths } from "routes/constants";
 import { ReactComponent as TimerBg } from './../../../assets/images/user-test/timer-bg.svg';
 import { getPadTime } from "./helper";
 import { initialMinutes } from "./mocks";
 import styles from './TestTimer.module.scss';
 import { TypeTime } from "./types";
 
-function TestTimer(): JSX.Element {
+type TestTimerProps = {
+    setStateIsTimerFinishedToState: (arg: boolean) => void
+}
+
+function TestTimer(props: TestTimerProps): JSX.Element {
     const remainingMiliseconds = 60 * initialMinutes * 1000;
     const [countdown, setCountdown] = useState<number>(remainingMiliseconds);
     const [time, setTime] = useState<TypeTime>(getPadTime(countdown));
+    const history = useHistory();
     useEffect(() => {
         const timer = setInterval(() => {
             if (countdown > 0) {
@@ -17,8 +26,10 @@ function TestTimer(): JSX.Element {
                 setTime(getPadTime(countdown));
             }
             if (countdown === 0) {
+                props.setStateIsTimerFinishedToState(true);
                 clearInterval(timer);
                 setTime(getPadTime(countdown));
+                history.push(paths[Page.USER_TEST_COMPLETE]);
             }
         }, 1000)
         return () => {
@@ -39,4 +50,11 @@ function TestTimer(): JSX.Element {
     );
 }
 
-export default memo(TestTimer);
+const mapStateToProps = (state: any) => {
+    return {
+        answers: state.userTest?.answers,
+    }
+}
+
+export default connect(mapStateToProps,
+    { setStateIsTimerFinishedToState })(memo(TestTimer));

@@ -1,18 +1,30 @@
 import { Checkbox, Form, Radio } from 'antd';
+import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { QuestionType, TypeUserTestQuestion } from "components/pages/UserTest/types";
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType, htmlType } from "components/uiKit/ButtomElem/types";
 import UserTestOption from 'components/uiKit/UserTestOption';
 import { userTest } from "i18n/userTest";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import styles from './UserTestQuestion.module.scss';
 
 type TypeUserTestQuestionProps = {
     question: TypeUserTestQuestion;
     nextButtonDisabled: boolean;
+    onCheckboxGroupChange: (value: CheckboxValueType[]) => void;
 }
 
 function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
+    const onCheckboxGroupChange = (value: CheckboxValueType[]) => {
+        props.onCheckboxGroupChange(value);
+    }
+    const [rerender, setRerender] = useState<boolean>(false);
+    useEffect(() => {
+        setRerender(true);
+    });
+    const onNextClick = () => {
+        setRerender(false);
+    }
     return (
         <>
             <div className={styles['user-test-question__title']}>{props.question.title}</div>
@@ -47,11 +59,13 @@ function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
                         </Radio.Group>
                     </Form.Item>
                 }
-                {[QuestionType.MULTIPLE, QuestionType.MULTIPLE_PICTURE].includes(props.question.type) && 
-                    <Form.Item
-                        name="answer"
-                    >
-                        <Checkbox.Group style={{ width: '100%' }}>
+                {[QuestionType.MULTIPLE, QuestionType.MULTIPLE_PICTURE].includes(props.question.type) &&
+                    <>
+                        <Form.Item
+                            name="answer"
+                        ></Form.Item>
+
+                        {rerender && <Checkbox.Group style={{ width: '100%' }} onChange={onCheckboxGroupChange}>
                             <div className={QuestionType.MULTIPLE_PICTURE === props.question.type ? styles['user-test-question__options-container'] : ''}>
                                 {props.question.options.map((option, index) => (
                                     <UserTestOption
@@ -61,11 +75,12 @@ function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
                                     >{option.title}</UserTestOption>)
                                 )}
                             </div>
-                        </Checkbox.Group>
-                    </Form.Item>
-                }
+                        </Checkbox.Group>}
+                    </>
+            }
             </div>
             <ButtonElem
+                onClick={onNextClick}
                 className={styles['user-test-question__next-btn']}
                 disabled={props.nextButtonDisabled}
                 type={buttonElemType.Primary}

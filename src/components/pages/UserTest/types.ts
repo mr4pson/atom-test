@@ -20,4 +20,5 @@ export type TypeUserTestOption = {
 export type UserTestProps = {
     answers: Object;
     setStateAnswersToState: (arg) => void;
+    setStateIsTimerFinishedToState: (arg) => void;
 }

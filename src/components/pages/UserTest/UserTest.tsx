@@ -1,4 +1,5 @@
 import { Form, FormInstance } from 'antd';
+import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import classNames from 'classnames';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from "components/modules/Navigation/constants";
@@ -10,7 +11,8 @@ import { userTest } from 'i18n/userTest';
 import { memo, useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router";
-import { setStateAnswersToState } from 'redux/reducers/UserTest.reducer';
+import { setStateAnswersToState, setStateIsTimerFinishedToState } from 'redux/reducers/UserTest.reducer';
+import { Page, paths } from 'routes/constants';
 import { ReactComponent as QuestionsInfoBg } from './../../../assets/images/user-test/questions-info-bg.svg';
 import { getNextQuestionLink } from './helper';
 import { questions } from './mocks';
@@ -27,9 +29,15 @@ function UserTest(props: UserTestProps): JSX.Element {
     const [nextButtonDisabled, setNextButtonDisabled] = useState<boolean>(true);
 
     useEffect(() => {
-        formRef.current?.resetFields();
-        setNextButtonDisabled(false);
-    })
+        return () => {
+            formRef.current?.resetFields();
+            setNextButtonDisabled(true);
+        }
+    }, [props.answers])
+
+    useEffect(() => {
+        props.setStateIsTimerFinishedToState(false);
+    }, [])
 
     const onFinish = () => {
         const formValue = formRef.current?.getFieldsValue();
@@ -38,19 +46,26 @@ function UserTest(props: UserTestProps): JSX.Element {
         console.log(answers);
 
         if (+questionNumber === questionsNumber) {
-            // history.push(paths[Page.COMPLETE]);
+            history.push(paths[Page.USER_TEST_COMPLETE]);
             return;
         }
 
-        console.log(getNextQuestionLink(questionNumber));
         history.push(getNextQuestionLink(questionNumber));
+        formRef.current?.resetFields();
     };
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
 
     const onValuesChange = (e) => {
-        // setNextButtonDisabled(Array.isArray(e.answer) ? !!!e.answer.length : !!!e.answer);
+        setNextButtonDisabled(Array.isArray(e.answer) ? !!!e.answer.length : !!!e.answer);
+    }
+
+    const onCheckboxGroupChange = (value: CheckboxValueType[]) => {
+        setNextButtonDisabled(Array.isArray(value) ? !!!value.length : !!!value);
+        formRef.current?.setFieldsValue({
+            answer: value,
+        });
     }
     return (
         <div className={styles['user-test']}>
@@ -65,7 +80,11 @@ function UserTest(props: UserTestProps): JSX.Element {
                             onFinish={onFinish}
                             onFinishFailed={onFinishFailed}
                         >
-                            <UserTestQuestion question={question} nextButtonDisabled={nextButtonDisabled}/>
+                            <UserTestQuestion
+                                question={question}
+                                nextButtonDisabled={nextButtonDisabled}
+                                onCheckboxGroupChange={onCheckboxGroupChange}
+                            />
                         </Form>
                     </div>
                     <div className={styles['user-test__right-col']}>
@@ -93,9 +112,9 @@ function UserTest(props: UserTestProps): JSX.Element {
 
 const mapStateToProps = (state: any) => {
     return {
-        answers: state.quizePage?.answers,
+        answers: state.userTest?.answers,
     }
 }
 
 export default connect(mapStateToProps,
-    { setStateAnswersToState })(memo(UserTest))
+    { setStateAnswersToState, setStateIsTimerFinishedToState })(memo(UserTest))

@@ -1,0 +1,13 @@
+.user-test-complete {
+    &__body {
+        min-height: 80vh;
+    }
+    &__title {
+        padding-top: 20px;
+        text-align: center;
+    }
+    &__info {
+        font-size: 18px;
+        text-align: center;
+    }
+}

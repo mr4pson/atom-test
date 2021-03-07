@@ -1,8 +1,8 @@
-import { memo } from "react";
 import { Button } from 'antd';
-import { buttonElemType, htmlType, Props } from "./types";
-import styles from './ButtonElem.module.scss';
 import classNames from 'classnames';
+import { memo } from "react";
+import styles from './ButtonElem.module.scss';
+import { buttonElemType, htmlType, Props } from "./types";
 
 function ButtonElem(props: Props): JSX.Element {
     const getButtonClassNames = () => {
@@ -21,6 +21,8 @@ function ButtonElem(props: Props): JSX.Element {
             htmlType={props.htmlType || htmlType.SUBMIT}
             className={getButtonClassNames()}
             type={props.type}
+            loading={props.loading}
+            onClick={props.onClick}
         >{props.children}</Button>
     );
 }

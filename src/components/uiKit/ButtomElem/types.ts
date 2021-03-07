@@ -16,4 +16,6 @@ export type Props = {
     htmlType?: "button" | "submit" | "reset" | undefined;
     children: string;
     className?: string;
+    loading?: boolean;
+    onClick?: React.MouseEventHandler<HTMLElement> | undefined;
 }

@@ -1,11 +1,13 @@
-import { SET_STATE_ANSWERS } from "./actions";
+import { SET_STATE_ANSWERS, SET_STATE_IS_TIMER_FINISHED } from "./actions";
 
-export type QuizeState = {
+export type UserTestState = {
     answers: Object;
+    isTimerFinished: boolean;
 }
 
-const initialState: QuizeState = {
-    answers: {}
+const initialState: UserTestState = {
+    answers: {},
+    isTimerFinished: false
 };
 
 const userTestReducer = (state = initialState, action: any) => {
@@ -14,6 +16,11 @@ const userTestReducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 answers: action.payload,
+            };
+        case SET_STATE_IS_TIMER_FINISHED:
+            return {
+                ...state,
+                isTimerFinished: action.payload,
             };
         default:
             return state;
@@ -24,8 +31,17 @@ const setStateAnswers = (answers: Object) => (
     { type: SET_STATE_ANSWERS, payload: answers }
 )
 
+const setStateIsTestFinished = (isTimerFinished: boolean) => (
+    { type: SET_STATE_IS_TIMER_FINISHED, payload: isTimerFinished }
+)
+
 export const setStateAnswersToState = (answers: Object) => (dispatch: any) => {
-    dispatch(setStateAnswers(answers))
+    dispatch(setStateAnswers(answers));
+}
+
+export const setStateIsTimerFinishedToState = (isTimerFinished: boolean) => (dispatch: any) => {
+    console.log(isTimerFinished);
+    dispatch(setStateIsTestFinished(isTimerFinished));
 }
 
 export default userTestReducer;

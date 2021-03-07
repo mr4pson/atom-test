@@ -6,6 +6,7 @@ export enum Page {
   FORGOT_PASSWORD = 'FORGOT_PASSWORD',
   USER_TEST = 'USER_TEST',
   USER_TEST_ROUTE = 'USER_TEST_ROUTE',
+  USER_TEST_COMPLETE = 'USER_TEST_COMPLETE',
   ADMIN = 'ADMIN',
 }
 
@@ -16,6 +17,7 @@ export const paths = {
   [Page.SIGN_UP]: '/sign-up',
   [Page.FORGOT_PASSWORD]: '/forgot-password',
   [Page.USER_TEST]: '/user-test',
+  [Page.USER_TEST_COMPLETE]: '/user-test/complete',
   [Page.USER_TEST_ROUTE]: '/user-test/:questionNumber',
   [Page.ADMIN]: '/admin',
 }

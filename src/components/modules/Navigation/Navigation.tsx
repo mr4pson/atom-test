@@ -76,7 +76,7 @@ function Navigation(props: Props): JSX.Element {
     return(
         <div className={styles['header']}>
             <div className={styles['container']}>
-                <div className={styles['header__logo']}/>
+                <Link to={paths[Page.HOME]}><div className={styles['header__logo']}/></Link>
                 <ul className={getNavigationClassName()}>
                     {links.map((link: TypeLink) => (
                         <li key={link.path}>

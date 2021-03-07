@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { headerLinks, footerLinks, NavigationType, navigationTranslations } from "./constants";
 import styles from './Navigation.module.scss';
@@ -31,26 +31,27 @@ function Navigation(props: Props): JSX.Element {
 
     function renderUserInfoIcon(): JSX.Element {
         if (props.navigationType === NavigationType.HEADER) {
-            if (location.pathname === paths[Page.PRIVATE_OFFICE]) {
+            if (location.pathname === paths[Page.PRIVATE_OFFICE] 
+                || location.pathname === paths[Page.ADMIN]) {
                 return  <Icon
                     className={styles['nav-bar-header__logout-icon']}
                     path={logoutIcon.path}
                     viewBox={logoutIcon.viewBox}
-                    title="Kameleoon"
+                    title="AtomTest"
                 />
             }
             return  <Icon
                 className={styles['nav-bar-header__user-info-icon']}
                 path={userInfoIcon.path}
                 viewBox={userInfoIcon.viewBox}
-                title="Kameleoon"
+                title="AtomTest"
             />
         }
         return <Icon
             className={styles['nav-bar-footer__icon']}
             path={arrowUpIcon.path}
             viewBox={arrowUpIcon.viewBox}
-            title="Kameleoon"
+            title="AtomTest"
         />
     }
 
@@ -62,6 +63,18 @@ function Navigation(props: Props): JSX.Element {
                 && location.pathname !== paths[Page.PRIVATE_OFFICE])) {
             return  <Link to={paths[Page.PRIVATE_OFFICE]} className={styles['user-info__private-office']}>
                 {navigationTranslations.privateOffice}
+            </Link>
+        }
+        return null;
+    }
+    function renderAdminPageLink(): JSX.Element | null {
+        if (props.navigationType === NavigationType.HEADER 
+            && (location.pathname !== paths[Page.LOGIN] 
+                && location.pathname !== paths[Page.SIGN_UP] 
+                && location.pathname !== paths[Page.FORGOT_PASSWORD]
+                && location.pathname !== paths[Page.ADMIN])) {
+            return  <Link to={paths[Page.ADMIN]} className={styles['user-info__admin-page']}>
+                {navigationTranslations.adminPage}
             </Link>
         }
         return null;
@@ -89,6 +102,7 @@ function Navigation(props: Props): JSX.Element {
                         {renderUserInfoIcon()}
                     </button>
                     {renderPrivateOfficeLink()}
+                    {renderAdminPageLink()}
                 </div>
             </div>
         </div>

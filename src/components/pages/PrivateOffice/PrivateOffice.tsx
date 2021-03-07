@@ -124,7 +124,7 @@ function PrivateOffice(): JSX.Element {
                                             className={styles['user-info__edit-icon']}
                                             path={editIcon.path}
                                             viewBox={editIcon.viewBox}
-                                            title="Kameleoon"
+                                            title="AtomTest"
                                             onClick={() => setBoolFullName(true)}
                                         />
                                     </div>
@@ -160,7 +160,7 @@ function PrivateOffice(): JSX.Element {
                                                 className={styles['user-info__edit-icon']}
                                                 path={editIcon.path}
                                                 viewBox={editIcon.viewBox}
-                                                title="Kameleoon"
+                                                title="AtomTest"
                                                 onClick={() => setBoolCity(true)}
                                             />
                                         </Col>
@@ -202,7 +202,7 @@ function PrivateOffice(): JSX.Element {
                                                 className={styles['user-info__edit-icon']}
                                                 path={editIcon.path}
                                                 viewBox={editIcon.viewBox}
-                                                title="Kameleoon"
+                                                title="AtomTest"
                                                 onClick={() => setBoolSex(true)}
                                             />
                                         </Col>
@@ -248,7 +248,7 @@ function PrivateOffice(): JSX.Element {
                                                 className={styles['user-info__edit-icon']}
                                                 path={editIcon.path}
                                                 viewBox={editIcon.viewBox}
-                                                title="Kameleoon"
+                                                title="AtomTest"
                                                 onClick={() => setBoolPhoneNumber(true)}
                                             />
                                         </Col>
@@ -291,7 +291,7 @@ function PrivateOffice(): JSX.Element {
                                                 className={styles['user-info__edit-icon']}
                                                 path={editIcon.path}
                                                 viewBox={editIcon.viewBox}
-                                                title="Kameleoon"
+                                                title="AtomTest"
                                                 onClick={() => setBoolEmail(true)}
                                             />
                                         </Col>

@@ -22,7 +22,7 @@ function SignUp(): JSX.Element {
         console.log(
           'Notification was closed. Either the close button was clicked or duration time elapsed.',
         );
-    };  
+    };
 
     const openNotification = () => {
         const key = `open${Date.now()}`;
@@ -51,7 +51,7 @@ function SignUp(): JSX.Element {
         console.log(formRef.current?.getFieldsValue());
         openNotification();
         form.resetFields();
-};
+    };
 
     function handleChange(value) {
         console.log(`selected ${value}`);

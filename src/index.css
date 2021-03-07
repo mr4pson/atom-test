@@ -101,6 +101,7 @@ body {
 	border-radius: 30px;
 	width: 700px;
 	color: #4B4B4B !important;
+  padding: 10px;
 }
 
 .delete-modal .ant-modal-header {
@@ -108,7 +109,7 @@ body {
 }
 
 .delete-modal .ant-modal-title {
-	font-size: 24px !important;
+	font-size: 28px !important;
 	font-weight: bold;
 	color: #4B4B4B !important;
 }

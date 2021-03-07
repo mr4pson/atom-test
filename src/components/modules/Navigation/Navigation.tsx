@@ -72,7 +72,8 @@ function Navigation(props: Props): JSX.Element {
             && (location.pathname !== paths[Page.LOGIN] 
                 && location.pathname !== paths[Page.SIGN_UP] 
                 && location.pathname !== paths[Page.FORGOT_PASSWORD]
-                && location.pathname !== paths[Page.ADMIN])) {
+                && location.pathname !== paths[Page.ADMIN]
+                && location.pathname !== `${paths[Page.ADMIN]}/news`)) {
             return  <Link to={paths[Page.ADMIN]} className={styles['user-info__admin-page']}>
                 {navigationTranslations.adminPage}
             </Link>

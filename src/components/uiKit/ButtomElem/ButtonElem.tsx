@@ -21,6 +21,8 @@ function ButtonElem(props: Props): JSX.Element {
             htmlType={props.htmlType || htmlType.SUBMIT}
             className={getButtonClassNames()}
             type={props.type}
+            loading={props.loading}
+            onClick={props.onClick}
         >{props.children}</Button>
     );
 }

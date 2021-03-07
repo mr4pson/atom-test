@@ -1,0 +1,42 @@
+.user-test-question {
+    &__title {
+        margin-top: 15px;
+        font-size: 28px;
+        line-height: 130%;
+        font-weight: bold;
+        color: #4B4B4B;
+        width: 600px;
+    }
+    &__desc {
+        margin-top: 5px;
+        font-size: 18px;
+        line-height: 21px;
+        color: #4B4B4B;
+    }
+    &__image-container {
+        margin-top: 35px;
+        width: 600px;
+        height: 314px;
+        padding: 10px;
+        box-sizing: border-box;
+        background: #fff;
+        box-shadow: 0px 5.4px 13.5px rgba(0, 0, 0, 0.05);
+        border-radius: 35px;
+    }
+    &__image {
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        border-radius: 35px;
+    }
+    &__options {
+        margin-top: 40px;
+    }
+    &__next-btn {
+        margin-top: 60px;
+        padding: 6px 31px;
+    }
+    &__options-container {
+        display: flex;
+    }
+}

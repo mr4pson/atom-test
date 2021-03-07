@@ -1,0 +1,45 @@
+.user-test {
+    font-family: AGOpus;
+    &__body {
+        display: flex;
+        padding-top: 85px;
+    }
+    &__right-col {
+        display: flex;
+        flex-direction: row-reverse;
+        width: 100%;
+        position: relative;
+    }
+    &__stop-test {
+        display: flex;
+        flex-direction: row-reverse;
+        padding-bottom: 40px;
+    }
+}
+
+.stop-test {
+    &__btn {
+        padding: 6px 31px;
+        margin-right: 0;
+    }
+}
+
+.questions-info {
+    font-family: AGOpus;
+    position: absolute;
+    right: 165px;
+    top: 79px;
+    &__bg {
+        position: relative;
+    }
+    &__body {
+        position: absolute;
+        top: 35px;
+        width: 100%;
+        left: 0;
+        font-size: 26px;
+        font-weight: bold;
+        line-height: 174.4%;
+        text-align: center;
+    }
+}

@@ -1,0 +1,1 @@
+export const SET_STATE_ANSWERS = "SET_STATE_ANSWERS";

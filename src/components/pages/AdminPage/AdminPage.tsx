@@ -17,6 +17,7 @@ function AdminPage(): JSX.Element {
     const [note, setNote] = useState<string>(noteList[0].value);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [chosenNews, setChosenNews] = useState('');
 
     const inititalFormState = {
       note: 'all',
@@ -42,13 +43,13 @@ function AdminPage(): JSX.Element {
       {
         title: 'Редактирование',
         key: 'action',
-        render: (text, record) => (
+        render: (text) => (
           <Space size="middle">
             <Icon
               className={styles['admin-table__icon']}
               path={deleteIcon.path}
               viewBox={deleteIcon.viewBox}
-              onClick={showModal}
+              onClick={() => showModal(text)}
               title="AtomTest"
             />
             <Icon
@@ -82,7 +83,8 @@ function AdminPage(): JSX.Element {
       console.log(searchValue);
     }
 
-    const showModal = () => {
+    const showModal = (text: any) => {
+      setChosenNews(text.name);
       setIsModalVisible(true);
     };
   
@@ -184,7 +186,7 @@ function AdminPage(): JSX.Element {
           </div>
         </Form>
         <Modal
-          title="Удалить новость"
+          title={`Удаление "${chosenNews}"`}
           className={classNames('delete-modal', styles['delete-modal'])}
           visible={isModalVisible}
           onOk={handleOk}
@@ -204,7 +206,7 @@ function AdminPage(): JSX.Element {
             </Button>,
           ]}
         >
-          <span>Вы действительно хотите удалить новость?</span>
+          <span>Вы действительно хотите удалить "{chosenNews}"?</span>
         </Modal>
       </div>
     );

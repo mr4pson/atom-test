@@ -24,15 +24,6 @@ function CreateNews(): JSX.Element {
     uploadFile: null,
   }
 
-  // function setArticleName(): void {
-  //   const value = formRef.current?.getFieldValue('article');
-  //   console.log(value);
-  // }
-
-  function handleAddFile(): void {
-
-  }
-
   function handleSave(): void {
     console.log(formRef.current?.getFieldsValue());
   }
@@ -78,20 +69,6 @@ function CreateNews(): JSX.Element {
               type="search"
             />
           </Form.Item>
-          {/* <ButtonElem
-            type={buttonElemType.Primary}
-            htmlType="button"
-            className={styles['main-data-header__button']}
-            onClick={handleAddFile}
-            icon={<Icon
-              className={styles['main-data-header__button-icon']}
-              path={imageAltIcon.path}
-              viewBox={imageAltIcon.viewBox}
-              title="AtomTest"
-            />}
-          >
-            Добавить медиафайл
-          </ButtonElem> */}
           <Form.Item className={styles['form-item']} name="uploadFile">
             <label className={styles['main-data-header__upload-file']}>
               <Icon

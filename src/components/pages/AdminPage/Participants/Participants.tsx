@@ -7,40 +7,45 @@ import Icon from 'components/uiKit/Icon';
 import { deleteIcon, editIcon, searchIcon } from 'icons';
 import { memo, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
-import { Page, paths } from 'components/pages/AdminPage/routes/constants';
-import { data, noteList } from './constants';
-import styles from './NewsPage.module.scss';
+import { paths } from 'components/pages/AdminPage/routes/constants';
+import { data, participantList } from './constants';
+import styles from './Participants.module.scss';
 
-function NewsPage(): JSX.Element {
+function Participants(): JSX.Element {
     const history = useHistory();
 
     const formRef = useRef<FormInstance>(null);
     const { Option } = Select;
-    const [note, setNote] = useState<string>(noteList[0].value);
+    const [participants, setParticipants] = useState<string>(participantList[0].value);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [chosenNews, setChosenNews] = useState<string>('');
+    const [chosenParticipant, setChosenParticipant] = useState<string>('');
 
     const inititalFormState = {
-      note: 'all',
-      searchNews: '',
+      participants: 'new',
+      searchParticipants: '',
     }
 
     const columns = [
       {
-        title: 'Название',
+        title: 'Имя',
         dataIndex: 'name',
         key: 'name',
       },
       {
-        title: 'Дата добавления',
-        dataIndex: 'createdDate',
-        key: 'createdDate',
+        title: 'Дата регистрации',
+        dataIndex: 'registrationDate',
+        key: 'registrationDate',
       },
       {
-        title: 'Рубрика',
-        dataIndex: 'heading',
-        key: 'heading',
+        title: 'Город',
+        dataIndex: 'city',
+        key: 'city',
+      },
+      {
+        title: 'Номер',
+        dataIndex: 'number',
+        key: 'number',
       },
       {
         title: 'Редактирование',
@@ -66,7 +71,7 @@ function NewsPage(): JSX.Element {
     ];
 
     function handleSelectChange(value: string): void {
-      setNote(value);
+      setParticipants(value);
       onSubmit();
     }
 
@@ -76,13 +81,12 @@ function NewsPage(): JSX.Element {
     }
 
     function handleSearchChange(): void {
-      const searchValue = formRef.current?.getFieldValue('searchNews');
+      const searchValue = formRef.current?.getFieldValue('searchParticipants');
       console.log(searchValue);
     }
-    // console.log(note);
 
     const showModal = (text: any) => {
-      setChosenNews(text.name);
+      setChosenParticipant(text.name);
       setIsModalVisible(true);
     };
   
@@ -98,8 +102,9 @@ function NewsPage(): JSX.Element {
       setIsModalVisible(false);
     };
 
-    const handleCreateNews = () => {
-      history.push(paths[Page.NEWS_CREATE])
+    const handleCreateParticipant = () => {
+      // Add when mock up will finished
+      history.push(paths[''])
     }
 
     function onSubmit (): void {
@@ -108,7 +113,7 @@ function NewsPage(): JSX.Element {
     };
 
     return (
-      <div className={styles['news-page']}>
+      <div className={styles['participants-page']}>
         <Form
           name="basic"
           onFinish={onSubmit}
@@ -117,17 +122,17 @@ function NewsPage(): JSX.Element {
         >
           <div className={styles["tool-bar"]}>
             <div className={styles["tool-bar__input-select-wrapper"]}>
-              <Form.Item className={styles["news-page__form-item"]} name="note">
+              <Form.Item className={styles["participants-page__form-item"]} name="participants">
                 <Select
-                  placeholder="Выбирите запись"
+                  placeholder="Выберите участника"
                   className={classNames(
                     "tool-bar__select",
                     styles["tool-bar__select"]
                   )}
                   onChange={handleSelectChange}
-                  value={note}
+                  value={participants}
                 >
-                  {noteList.map((item) => (
+                  {participantList.map((item) => (
                     <Option key={item?.id} value={item?.value}>
                       {item?.title}
                     </Option>
@@ -135,12 +140,12 @@ function NewsPage(): JSX.Element {
                 </Select>
               </Form.Item>
               <Form.Item
-                className={styles["news-page__form-item"]}
-                name="searchNews"
+                className={styles["participants-page__form-item"]}
+                name="searchParticipants"
               >
                 <Input
                   className={styles["tool-bar__input"]}
-                  placeholder="Поиск новости"
+                  placeholder="Поиск участника"
                   type="search"
                   onChange={handleSearchChange}
                   onBlur={onSubmit}
@@ -160,9 +165,9 @@ function NewsPage(): JSX.Element {
               type={buttonElemType.Primary}
               htmlType="button"
               className={styles["tool-bar__button"]}
-              onClick={handleCreateNews}
+              onClick={handleCreateParticipant}
             >
-              Добавить новость
+              Добавить участника
             </ButtonElem>
           </div>
           <Table
@@ -174,17 +179,17 @@ function NewsPage(): JSX.Element {
             />
         </Form>
         <AdminModal
-          title={`Удаление "${chosenNews}"`}
+          title={`Удаление участника "${chosenParticipant}"`}
           isModalVisible={isModalVisible}
           loading={loading}
           showModal={showModal}
           handleOk={handleOk}
           handleCancel={handleCancel}
         >
-          <span>Вы действительно хотите удалить "{chosenNews}"?</span>
+          <span>Вы действительно хотите удалить участника "{chosenParticipant}"?</span>
         </AdminModal>
       </div>
     );
 }
 
-export default memo(NewsPage);
+export default memo(Participants);

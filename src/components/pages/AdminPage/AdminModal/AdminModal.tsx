@@ -6,9 +6,9 @@ import classNames from 'classnames';
 import ButtonElem from 'components/uiKit/ButtomElem';
 
 type Props = {
+  title: string;
   isModalVisible: boolean;
   loading: boolean;
-  chosenNews: string;
   children: ReactNode;
   showModal: (text: any) => void;
   handleOk: () => void;
@@ -18,7 +18,7 @@ type Props = {
 function AdminModal(props: Props): JSX.Element {
     return (
       <Modal
-        title={`Удаление "${props.chosenNews}"`}
+        title={props.title}
         className={classNames("delete-modal", styles["delete-modal"])}
         visible={props.isModalVisible}
         onOk={props.handleOk}
@@ -42,7 +42,7 @@ function AdminModal(props: Props): JSX.Element {
           </ButtonElem>,
         ]}
       >
-        <span>Вы действительно хотите удалить "{props.chosenNews}"?</span>
+        {props.children}
       </Modal>
     );
 }

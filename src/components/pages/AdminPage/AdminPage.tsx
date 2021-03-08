@@ -85,7 +85,7 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: "participantsList",
+      key: "participants",
       title: "Список участников",
       icon: (
         <Icon
@@ -96,7 +96,7 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push("");
+        history.push(paths[Page.PARTICIPANTS]);
       },
     },
     {

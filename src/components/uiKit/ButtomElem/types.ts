@@ -9,13 +9,3 @@ export enum htmlType {
     SUBMIT = 'submit',
     RESET = 'reset'
 }
-
-export type Props = {
-    type?: buttonElemType;
-    disabled?: boolean;
-    htmlType?: "button" | "submit" | "reset" | undefined;
-    children: string;
-    className?: string;
-    loading?: boolean;
-    onClick?: React.MouseEventHandler<HTMLElement> | undefined;
-}

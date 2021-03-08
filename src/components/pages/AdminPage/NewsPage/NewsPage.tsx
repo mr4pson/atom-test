@@ -1,14 +1,19 @@
-import { Button, Form, FormInstance, Input, Select, Space, Table } from 'antd';
+import { Form, FormInstance, Input, Select, Space, Table } from 'antd';
 import classNames from 'classnames';
 import AdminModal from 'components/pages/AdminPage/AdminModal';
+import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import Icon from 'components/uiKit/Icon';
 import { deleteIcon, editIcon, searchIcon } from 'icons';
 import { memo, useRef, useState } from 'react';
+import { useHistory } from 'react-router';
+import { Page, paths } from 'components/pages/AdminPage/routes/constants';
 import { data, noteList } from './constants';
 import styles from './NewsPage.module.scss';
 
-function NewsPage(props): JSX.Element {
+function NewsPage(): JSX.Element {
+    const history = useHistory();
+
     const formRef = useRef<FormInstance>(null);
     const { Option } = Select;
     const [note, setNote] = useState<string>(noteList[0].value);
@@ -46,7 +51,7 @@ function NewsPage(props): JSX.Element {
               className={styles['admin-table__icon']}
               path={deleteIcon.path}
               viewBox={deleteIcon.viewBox}
-              onClick={() => props.showModal(text)}
+              onClick={() => showModal(text)}
               title="AtomTest"
             />
             <Icon
@@ -59,11 +64,6 @@ function NewsPage(props): JSX.Element {
         ),
       },
     ];
-
-    function onSubmit (): void {
-      // console.log('Success:', values);
-      console.log(formRef.current?.getFieldsValue());
-    };
 
     function handleSelectChange(value: string): void {
       setNote(value);
@@ -96,6 +96,15 @@ function NewsPage(props): JSX.Element {
   
     const handleCancel = () => {
       setIsModalVisible(false);
+    };
+
+    const handleCreateNews = () => {
+      history.push(paths[Page.NEWS_CREATE])
+    }
+
+    function onSubmit (): void {
+      // console.log('Success:', values);
+      console.log(formRef.current?.getFieldsValue());
     };
 
     return (
@@ -147,13 +156,14 @@ function NewsPage(props): JSX.Element {
                 />
               </Form.Item>
             </div>
-            <Button
+            <ButtonElem
               type={buttonElemType.Primary}
               htmlType="button"
               className={styles["tool-bar__button"]}
+              onClick={handleCreateNews}
             >
               Добавить новость
-            </Button>
+            </ButtonElem>
           </div>
           <Table
               rowClassName={styles["admin-table__row"]}
@@ -163,33 +173,6 @@ function NewsPage(props): JSX.Element {
               pagination={false}
             />
         </Form>
-        {/* <Modal
-          title={`Удаление "${chosenNews}"`}
-          className={classNames("delete-modal", styles["delete-modal"])}
-          visible={isModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          footer={[
-            <ButtonElem
-              className={styles["return-btn"]}
-              key="back"
-              onClick={handleCancel}
-            >
-              Вернуться
-            </ButtonElem>,
-            <ButtonElem
-              className={styles["submit-btn"]}
-              key="submit"
-              type={buttonElemType.Primary}
-              loading={loading}
-              onClick={handleOk}
-            >
-              Подтвердить
-            </ButtonElem>,
-          ]}
-        >
-          <span>Вы действительно хотите удалить "{chosenNews}"?</span>
-        </Modal> */}
         <AdminModal
           isModalVisible={isModalVisible}
           loading={loading}

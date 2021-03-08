@@ -1,0 +1,146 @@
+.create-news-page {
+  display: flex;
+  justify-content: space-between;
+
+  &__title {
+    color: #4B4B4B;
+    font-size: 20px;
+    margin-bottom: 7px;
+  }
+}
+
+.main-data {
+  width: 570px;
+  min-height: 486px;
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 15px 30px 30px;
+  font-family: AGOpus, sans-serif;
+  margin-right: 30px;
+}
+
+.main-data-header {
+  margin-bottom: 32px;
+  &__input {
+    border-radius: 30px;
+    color: #0085F8;
+    height: 38px;
+    margin-bottom: 20px;
+    &::placeholder {
+      color: #8D9FBB !important;
+    }
+  }
+
+  &__button {
+    &-icon {
+      width: 16px;
+      margin-right: 6.5px;
+    }
+  }
+
+  &__upload-file {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 201px !important;
+    height: 38px !important;
+    border-radius: 30px;
+    border: 1px solid #0085F8;
+    background-color: #0085F8;
+    font-size: 15px;
+    font-weight: bold;
+    color: #FFFFFF;
+    opacity: 1;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 5px;
+    font-size: 16px;
+    transition: opacity .5s;
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+  
+  &__file-input {
+    display: none !important;
+  }
+}
+
+.main-data-description {
+  &__text-area {
+    width: 510px;
+    height: 240px;
+    // border: 1px solid #8D9FBB;
+    border-radius: 20px;
+  }
+}
+
+.publication {
+  width: 270px;
+  height: 178px;
+  border-radius: 30px;
+  background-color: #FFFFFF;
+  padding: 20px 25px 25px;
+  font-family: AGOpus, sans-serif;
+}
+
+.publication-status {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 25px;
+
+  &__icon {
+    width: 14px;
+    height: 18px;
+    margin-right: 6px;
+  }
+
+  &__title {
+    color: #8D9FBB;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  &__select {
+    width: 120px !important;
+    height: 28px;
+    font-size: 16px !important;
+  }
+}
+
+.publication-footer{
+  display: flex;
+
+  &__button {
+    &-save {
+      width: 70px;
+      font-size: 14px;
+      padding: 0;
+      border: none;
+      box-shadow: none !important;
+      color: #0085F8;
+      font-weight: normal;
+      height: 34px  ;
+
+      span {
+        text-decoration: underline;
+      }
+      &::after {
+        display: none;
+      }
+    }
+
+    &-publish {
+      width: 126px !important;
+      height: 34px;
+      font-size: 14px;
+      padding: 0;
+      margin-right: 0;
+    }
+  }
+}
+
+.form-item {
+  margin-bottom: 0;
+}

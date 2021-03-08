@@ -118,3 +118,17 @@ body {
 	height: 200px;
 	font-size: 16px;
 }
+
+.publication-status__select .ant-select-selector {
+	border: none !important;
+	box-shadow: none !important;
+	color: #4B4B4B !important;
+}
+
+.publication-status__select .ant-select-selection-item,
+.publication-status__select .ant-select-selection-placeholder, 
+.publication-status__select .ant-select-arrow {
+	color: #4B4B4B;
+	padding-left: 5px !important;
+	padding-right: 0px !important;
+}

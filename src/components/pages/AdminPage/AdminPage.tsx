@@ -5,139 +5,161 @@ import styles from "./AdminPage.module.scss";
 import { Menu } from "antd";
 import classNames from "classnames";
 import {
-  BrowserRouter as Router,
-  Switch,
-} from "react-router-dom";
-import { getRoutes } from "./routes/routes";
-import { TypeRoute } from "./routes/type";
-import { AppRoute } from "./routes/AppRoute";
-import { chartOutlineIcon, clockIcon, listPlusIcon, menuIcon, newFileIcon, partnersIcon, questionMarkIcon, userIcon, userPlusIcon } from 'icons';
-import Icon from 'components/uiKit/Icon';
+  chartOutlineIcon,
+  clockIcon,
+  listPlusIcon,
+  menuIcon,
+  newFileIcon,
+  partnersIcon,
+  questionMarkIcon,
+  userIcon,
+  userPlusIcon,
+} from "icons";
+import Icon from "components/uiKit/Icon";
 import { useHistory } from "react-router";
 import { Page, paths } from "./routes/constants";
+import AppRoutes from "./routes/AppRoutes";
 
 function AdminPage(): JSX.Element {
   const history = useHistory();
 
   const menuItems = [
     {
-      key: 'addChangeNew',
-      title: 'Добавить/изменить новость',
-      icon: <Icon
-        className={styles['menu__icon']}
-        path={newFileIcon.path}
-        viewBox={newFileIcon.viewBox}
-        title="AtomTest"
-      />,
+      key: "addChangeNew",
+      title: "Добавить/изменить новость",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={newFileIcon.path}
+          viewBox={newFileIcon.viewBox}
+          title="AtomTest"
+        />
+      ),
       onClick: () => {
         history.push(paths[Page.NEWS]);
       },
     },
     {
-      key: 'addChangeMenu',
-      title: 'Добавить/изменить меню',
-      icon: <Icon
-        className={styles['menu__icon']}
-        path={menuIcon.path}
-        viewBox={menuIcon.viewBox}
-        title="AtomTest"
-      />,
+      key: "addChangeMenu",
+      title: "Добавить/изменить меню",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={menuIcon.path}
+          viewBox={menuIcon.viewBox}
+          title="AtomTest"
+        />
+      ),
       onClick: () => {
         history.push(paths[Page.MENU]);
       },
     },
     {
-      key: 'testQuestions',
-      title: 'Вопросы теста',
-      icon: <Icon
-        className={styles['menu__icon']}
-        path={questionMarkIcon.path}
-        viewBox={questionMarkIcon.viewBox}
-        title="AtomTest"
-      />,
+      key: "testQuestions",
+      title: "Вопросы теста",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={questionMarkIcon.path}
+          viewBox={questionMarkIcon.viewBox}
+          title="AtomTest"
+        />
+      ),
       onClick: () => {
-        history.push('');
+        history.push("");
       },
     },
     {
-      key: 'partners',
-      title: 'Партнёры',
-      icon: <Icon
-        className={styles['menu__icon']}
-        path={partnersIcon.path}
-        viewBox={partnersIcon.viewBox}
-        title="AtomTest"
-      />,
+      key: "partners",
+      title: "Партнёры",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={partnersIcon.path}
+          viewBox={partnersIcon.viewBox}
+          title="AtomTest"
+        />
+      ),
       onClick: () => {
-        history.push('');
+        history.push("");
       },
     },
     {
-      key: 'participantsList',
-      title: 'Список участников',
-      icon: <Icon
-        className={styles['menu__icon']}
-        path={userIcon.path}
-        viewBox={userIcon.viewBox}
-        title="AtomTest"
-      />,
+      key: "participantsList",
+      title: "Список участников",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={userIcon.path}
+          viewBox={userIcon.viewBox}
+          title="AtomTest"
+        />
+      ),
       onClick: () => {
-        history.push('');
+        history.push("");
       },
     },
     {
-      key: 'addProjectParticipant',
-      title: 'Добавить лиц проекта',
-      icon: <Icon
-        className={styles['menu__icon']}
-        path={userPlusIcon.path}
-        viewBox={userPlusIcon.viewBox}
-        title="AtomTest"
-      />,
+      key: "addProjectParticipant",
+      title: "Добавить лиц проекта",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={userPlusIcon.path}
+          viewBox={userPlusIcon.viewBox}
+          title="AtomTest"
+        />
+      ),
       onClick: () => {
-        history.push('');
+        history.push("");
       },
     },
     {
-      key: 'setCounterParametrs',
-      title: 'Задать параметры счетчика',
-      icon: <Icon
-        className={styles['menu__icon']}
-        path={clockIcon.path}
-        viewBox={clockIcon.viewBox}
-        title="AtomTest"
-      />,
+      key: "setCounterParametrs",
+      title: "Задать параметры счетчика",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={clockIcon.path}
+          viewBox={clockIcon.viewBox}
+          title="AtomTest"
+        />
+      ),
       onClick: () => {
-        history.push('');
+        history.push("");
       },
     },
     {
-      key: 'addChangeFAQ',
-      title: 'Добавить/изменить FAQ',
-      icon: <Icon
-        className={styles['menu__icon']}
-        path={listPlusIcon.path}
-        viewBox={listPlusIcon.viewBox}
-        title="AtomTest"
-      />,
+      key: "addChangeFAQ",
+      title: "Добавить/изменить FAQ",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={listPlusIcon.path}
+          viewBox={listPlusIcon.viewBox}
+          title="AtomTest"
+        />
+      ),
       onClick: () => {
-        history.push('');
+        history.push("");
       },
     },
     {
-      key: 'statistics',
-      title: 'Статистика',
-      icon: <Icon
-        className={styles['menu__icon']}
-        path={chartOutlineIcon.path}
-        viewBox={chartOutlineIcon.viewBox}
-        title="AtomTest"
-      />,
+      key: "statistics",
+      title: "Статистика",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={chartOutlineIcon.path}
+          viewBox={chartOutlineIcon.viewBox}
+          title="AtomTest"
+        />
+      ),
       onClick: () => {
         history.push(paths[Page.STATISTICS]);
       },
     },
-  ]
+  ];
 
   return (
     <div className="container">
@@ -162,16 +184,7 @@ function AdminPage(): JSX.Element {
             );
           })}
         </Menu>
-        <Router>
-          <Switch>
-            {getRoutes().map((route: TypeRoute) => (
-              <AppRoute exact={route.exact} key={route.path} path={route.path}>
-                {route.component}
-              </AppRoute>
-            ))}
-          </Switch>
-        </Router>
-        {/* <NewsPage /> */}
+        <AppRoutes />
       </div>
     </div>
   );

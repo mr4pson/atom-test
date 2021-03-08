@@ -1,6 +1,5 @@
 .news-page {
   width: 74.34%;
-  margin-left: 30px;
 
   &__form-item {
     margin-bottom: 0 !important;
@@ -81,12 +80,15 @@
   }
 
   &__button {
-    width: 168px;
-    height: 34px;
+    width: 168px !important;
+    height: 34px !important;
     border-radius: 30px;
     font-family: AGOpus, sans-serif;
     font-weight: bold;
     background-color: #0085F8;
+    margin-right: 0;
+    font-size: 15px;
+    padding: 0;
   }
 
   &__search-icon {

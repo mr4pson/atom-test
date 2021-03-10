@@ -118,23 +118,23 @@ function CreateNews(): JSX.Element {
           </Form.Item>
         </div>
         <div className={styles['publication-footer']}>
-            <ButtonElem
-              type={buttonElemType.Default}
-              htmlType="button"
-              className={styles['publication-footer__button-save']}
-              onClick={handleSave}
-            >
-              Сохранить
-            </ButtonElem>
-            <ButtonElem
-              type={buttonElemType.Primary}
-              htmlType={htmlType.SUBMIT}
-              className={styles['publication-footer__button-publish']}
-              onClick={onSubmit}
-            >
-              Опубликовать
-            </ButtonElem>
-          </div>
+          <ButtonElem
+            type={buttonElemType.Default}
+            htmlType="button"
+            className={styles['publication-footer__button-save']}
+            onClick={handleSave}
+          >
+            Сохранить
+          </ButtonElem>
+          <ButtonElem
+            type={buttonElemType.Primary}
+            htmlType={htmlType.SUBMIT}
+            className={styles['publication-footer__button-publish']}
+            onClick={onSubmit}
+          >
+            Опубликовать
+          </ButtonElem>
+        </div>
       </div>
     </Form>
   );

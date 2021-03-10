@@ -5,6 +5,9 @@ export enum Page {
   STATISTICS = 'STATISTICS',
   NEWS_CREATE = 'NEWS_CREATE',
   PARTICIPANTS = 'PARTICIPANTS',
+  FAQ = 'FAQ',
+  FAQ_CREATE = 'FAQ_CREATE',
+  FAQ_ROUTE = 'FAQ_ROUTE'
 }
 
 export const paths = {
@@ -14,5 +17,8 @@ export const paths = {
   [Page.MENU]: '/admin/menu',
   [Page.STATISTICS]: '/admin/statistics',
   [Page.NEWS_CREATE]: '/admin/news/create',
-  [Page.PARTICIPANTS]: '/admin/participants'
+  [Page.PARTICIPANTS]: '/admin/participants',
+  [Page.FAQ]: '/admin/faq',
+  [Page.FAQ_CREATE]: '/admin/faq/create',
+  [Page.FAQ_ROUTE]: '/admin/faq/:id'
 }

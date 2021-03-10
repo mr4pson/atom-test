@@ -131,7 +131,7 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push("");
+        history.push(paths[Page.FAQ]);
       },
     },
     {

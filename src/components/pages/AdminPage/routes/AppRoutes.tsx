@@ -8,7 +8,7 @@ function AppRoutes(): JSX.Element {
   // const { account } = useUser();
 
   return (
-    <Switch>
+    <>
       {getRoutes().map((route) => (
         <AppRoute
           key={route.type}
@@ -19,7 +19,7 @@ function AppRoutes(): JSX.Element {
           {route.component}
         </AppRoute>
       ))}
-    </Switch>
+    </>
   );
 }
 

@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import { getRoutes } from "./routes/routes";
 import { TypeRoute } from "./routes/type";
-import { AppRoute } from "./routes/AppRoute";
+import AppRoutes from "./routes/AppRoutes";
 import { chartOutlineIcon, clockIcon, listPlusIcon, menuIcon, newFileIcon, partnersIcon, questionMarkIcon, userIcon, userPlusIcon } from 'icons';
 import Icon from 'components/uiKit/Icon';
 import { useHistory } from "react-router";
@@ -162,16 +162,7 @@ function AdminPage(): JSX.Element {
             );
           })}
         </Menu>
-        <Router>
-          <Switch>
-            {getRoutes().map((route: TypeRoute) => (
-              <AppRoute exact={route.exact} key={route.path} path={route.path}>
-                {route.component}
-              </AppRoute>
-            ))}
-          </Switch>
-        </Router>
-        {/* <NewsPage /> */}
+        <AppRoutes />
       </div>
     </div>
   );

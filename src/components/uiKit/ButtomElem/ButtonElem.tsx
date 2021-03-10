@@ -2,7 +2,18 @@ import { Button } from 'antd';
 import classNames from 'classnames';
 import { memo } from "react";
 import styles from './ButtonElem.module.scss';
-import { buttonElemType, htmlType, Props } from "./types";
+import { buttonElemType, htmlType } from "./types";
+
+type Props = {
+    type?: buttonElemType;
+    disabled?: boolean;
+    htmlType?: "button" | "submit" | "reset" | undefined;
+    children: string;
+    className?: string;
+    loading?: boolean;
+    icon?: any;
+    onClick?: React.MouseEventHandler<HTMLElement> | undefined;
+}
 
 function ButtonElem(props: Props): JSX.Element {
     const getButtonClassNames = () => {
@@ -16,7 +27,8 @@ function ButtonElem(props: Props): JSX.Element {
         return classNames(...classes);
     }
     return (
-        <Button 
+        <Button
+            icon={props.icon}
             disabled={props.disabled}
             htmlType={props.htmlType || htmlType.SUBMIT}
             className={getButtonClassNames()}

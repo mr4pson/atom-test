@@ -3,6 +3,8 @@ export enum Page {
   MAIN = 'MAIN',
   MENU = 'MENU',
   STATISTICS = 'STATISTICS',
+  NEWS_CREATE = 'NEWS_CREATE',
+  PARTICIPANTS = 'PARTICIPANTS',
 }
 
 export const paths = {
@@ -11,4 +13,6 @@ export const paths = {
   [Page.MAIN]: '/admin/',
   [Page.MENU]: '/admin/menu',
   [Page.STATISTICS]: '/admin/statistics',
+  [Page.NEWS_CREATE]: '/admin/news/create',
+  [Page.PARTICIPANTS]: '/admin/participants'
 }

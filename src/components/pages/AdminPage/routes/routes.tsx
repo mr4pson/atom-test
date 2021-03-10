@@ -4,6 +4,7 @@ import CreateNews from "components/pages/AdminPage/CreateNews";
 import { Page, paths } from "./constants";
 import { TypeRoute } from "./type";
 import Participants from "components/pages/AdminPage/Participants";
+import FaqPage from "components/pages/AdminPage/FaqPage";
 
 export function getRoutes(): TypeRoute[] {
   return [
@@ -39,6 +40,11 @@ export function getRoutes(): TypeRoute[] {
       type: Page.MAIN,
       path: paths[Page.MAIN],
       component: <div />,
+    },
+    {
+      type: Page.FAQ,
+      path: paths[Page.FAQ],
+      component: <FaqPage />,
     },
   ];
 }

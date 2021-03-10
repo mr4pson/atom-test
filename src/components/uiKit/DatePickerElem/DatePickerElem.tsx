@@ -23,7 +23,6 @@ function DatePickerElem(props: Props): JSX.Element {
     useEffect(() => {
         window.addEventListener('click', function (e: any) {
             if (!document.getElementsByClassName(uniqueId)[0]?.contains(e.target)) {
-                console.log(3124124);
                 setIsActive(false);
             }
         });

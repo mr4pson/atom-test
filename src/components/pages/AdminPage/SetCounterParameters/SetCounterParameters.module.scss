@@ -1,0 +1,43 @@
+.counter-page {
+  width: 870px;
+  height: 327px;
+  background-color: #FFFFFF;
+  border-radius: 30px;
+  padding: 20px 30px;
+  font-family: AGOpus, sans-serif;
+
+  &__title {
+    color: #4B4B4B;
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  &__form-item {
+    margin-bottom: 0px;
+  }
+
+  &__button {
+
+  }
+}
+
+.banner-counter, .test-counter {
+  &__input {
+    border-radius: 30px;
+  }
+
+  &__tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 35px;
+  }
+
+  &__tool {
+    width: 140px;
+  }
+}
+
+.test-counter__tool {
+  width: 187px;
+}

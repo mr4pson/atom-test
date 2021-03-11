@@ -15,3 +15,4 @@ export { listPlusIcon } from './listPlusIcon';
 export { chartOutlineIcon } from './chartOutlineIcon';
 export { imageAltIcon } from './imageAltIcon';
 export { fileBlankIcon } from './fileBlankIcon';
+export { arrowDownIcon } from './arrowDownIcon';

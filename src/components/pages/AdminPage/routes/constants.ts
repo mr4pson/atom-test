@@ -5,6 +5,7 @@ export enum Page {
   STATISTICS = 'STATISTICS',
   NEWS_CREATE = 'NEWS_CREATE',
   PARTICIPANTS = 'PARTICIPANTS',
+  COUNTER = 'COUNTER',
 }
 
 export const paths = {
@@ -14,5 +15,6 @@ export const paths = {
   [Page.MENU]: '/admin/menu',
   [Page.STATISTICS]: '/admin/statistics',
   [Page.NEWS_CREATE]: '/admin/news/create',
-  [Page.PARTICIPANTS]: '/admin/participants'
+  [Page.PARTICIPANTS]: '/admin/participants',
+  [Page.COUNTER]: '/admin/counter',
 }

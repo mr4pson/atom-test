@@ -115,7 +115,7 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: "setCounterParametrs",
+      key: "setCounterParameters",
       title: "Задать параметры счетчика",
       icon: (
         <Icon
@@ -126,7 +126,7 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push("");
+        history.push(paths[Page.COUNTER]);
       },
     },
     {

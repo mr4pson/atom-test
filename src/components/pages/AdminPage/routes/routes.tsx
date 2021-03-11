@@ -3,6 +3,7 @@ import CreateNews from "components/pages/AdminPage/CreateNews";
 import { Page, paths } from "./constants";
 import { TypeRoute } from "./type";
 import Participants from "components/pages/AdminPage/Participants";
+import SetCounterParameters from "components/pages/AdminPage/SetCounterParameters";
 
 export function getRoutes(): TypeRoute[] {
   return [
@@ -33,6 +34,11 @@ export function getRoutes(): TypeRoute[] {
       type: Page.STATISTICS,
       path: paths[Page.STATISTICS],
       component: <div>Statistics!!!</div>,
+    },
+    {
+      type: Page.COUNTER,
+      path: paths[Page.COUNTER],
+      component: <SetCounterParameters />,
     },
     {
       type: Page.MAIN,

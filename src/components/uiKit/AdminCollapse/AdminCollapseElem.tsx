@@ -8,7 +8,7 @@ import { Input } from 'antd';
 const { TextArea } = Input;
 
 function AdminCollapseElem(props: Props): JSX.Element {
-    const [collapsed, setCollapsed] = useState<boolean>(false);
+    const [collapsed, setCollapsed] = useState<boolean>(props.config.isEditing);
     const [rerender, setRerender] = useState<boolean>(false);
     const formRef = useRef<FormInstance>(null);
     const componentRef = useRef(null);

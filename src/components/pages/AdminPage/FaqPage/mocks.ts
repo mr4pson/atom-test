@@ -1,4 +1,3 @@
-import { getActions } from "./constants";
 import { TypeFaqQuestion } from "./types";
 
 export const questions: TypeFaqQuestion[] = [

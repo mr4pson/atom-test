@@ -1,0 +1,112 @@
+import { Form, Input } from 'antd';
+import AdminCollapseElem from "components/uiKit/AdminCollapse";
+import { TypeAction, TypeCollapseConfig } from 'components/uiKit/AdminCollapse/types';
+import ButtonElem from 'components/uiKit/ButtomElem';
+import { buttonElemType } from "components/uiKit/ButtomElem/types";
+import { memo, useState } from "react";
+import { ReactComponent as ImageIcon } from '../../../../assets/images/admin/image.svg';
+import { ReactComponent as DoneIcon } from '../../../../assets/images/admin/done.svg';
+import { ReactComponent as EditIcon } from '../../../../assets/images/admin/edit.svg';
+import { ReactComponent as TrashIcon } from '../../../../assets/images/admin/trash.svg';
+// import { getActions } from './constants';
+import styles from "./TestQuestionsPage.module.scss";
+import { questions } from './mocks';
+import { TypeFaqQuestion } from './types';
+
+const { TextArea } = Input;
+
+function TestQuestionsPage(): JSX.Element {
+    const getActions = (isEditing: boolean = false): TypeAction[] => {
+        return [
+            {
+                id: 'image',
+                icon: <ImageIcon />,
+                callback: (action: TypeAction, config: TypeCollapseConfig) => {
+                    console.log(config.data);
+                },
+            },
+            {
+                id: 'edit',
+                icon: !isEditing ? <EditIcon /> : <DoneIcon />,
+                callback: (action: TypeAction, config: TypeCollapseConfig, formValues: Object) => {
+                    config.isEditing = !config.isEditing;
+    
+                    if (config.isEditing) {
+                        action.icon = <DoneIcon />;
+                    } else {
+                        action.icon = <EditIcon />;
+                        Object.assign(config, formValues);
+                        // TODO request to backend
+                        if (config.id) {
+                            console.log('update');
+                        } else {
+                            console.log('create');
+                            // TODO remove and replace with requested ID
+                            config.id = Math.round(Math.random() * 100);
+                        }
+                        console.log(config);
+                    }
+                },
+            },
+            {
+                id: 'Delete',
+                icon: <TrashIcon />,
+                callback: (action: TypeAction, config: TypeCollapseConfig) => {
+                    if (!config.id) {
+                        return;
+                    } 
+                    if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
+                        // TODO request to backend
+                        setFaqQuestions(faqQuestions.filter(faqQuestion => faqQuestion.id !== config.id));
+                    }
+                },
+            }
+        ]
+    }
+
+    const [faqQuestions, setFaqQuestions] = useState<TypeFaqQuestion[]>(questions.map((question) => ({
+        ...question,
+        actions: getActions(false)
+    })));
+
+    const handleCreate = () => {
+        // TODO add http create request
+        setFaqQuestions(faqQuestions.concat([{
+            title: '',
+            body: <div></div>,
+            isEditing: true,
+            collapseOn: 'edit',
+            actions: getActions(true)
+        }]));
+    }
+    return (
+        <div className={styles['test-questions-page']}>
+            <div className={styles['test-questions-page__create-wrap']}>
+                <ButtonElem
+                    type={buttonElemType.Primary}
+                    htmlType="button"
+                    className={styles['test-questions-page__create-btn']}
+                    onClick={handleCreate}
+                >
+                    Добавить
+                </ButtonElem>
+            </div>
+            <div className={styles['test-questions-page__questions']}>
+                {faqQuestions.map((question, index) => (<AdminCollapseElem
+                        key={index}
+                        config={question}
+                    >
+                        {/* <Form.Item name="description">
+                            <TextArea
+                                placeholder="Введите ответ"
+                                rows={1}
+                            />
+                        </Form.Item> */}
+                    </AdminCollapseElem>)
+                )}
+            </div>
+        </div>
+    );
+}
+
+export default memo(TestQuestionsPage);

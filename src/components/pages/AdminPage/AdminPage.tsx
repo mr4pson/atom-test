@@ -56,7 +56,7 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push("");
+        history.push(paths[Page.TEST_QUESTUIONS]);
       },
     },
     {

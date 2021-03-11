@@ -1,0 +1,17 @@
+.test-questions-page {
+    width: 100%;
+    &__create-wrap {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+    &__create-btn {
+        margin-right: 0;
+        font-size: 15px;
+        height: 34px;
+        line-height: 15px;
+        padding: 7px 24px;
+    }
+    &__questions {
+        margin-top: 25px;
+    }
+}

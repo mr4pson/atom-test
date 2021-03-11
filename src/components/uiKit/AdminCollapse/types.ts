@@ -5,6 +5,7 @@ export type TypeAction = {
 }
 
 export type TypeCollapseConfig = {
+    id?: number;
     title: string;
     actions: TypeAction[];
     isEditing: boolean;

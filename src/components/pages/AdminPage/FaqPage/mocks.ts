@@ -1,4 +1,4 @@
-import { actions } from "./constants";
+import { getActions } from "./constants";
 import { TypeFaqQuestion } from "./types";
 
 export const questions: TypeFaqQuestion[] = [
@@ -8,7 +8,7 @@ export const questions: TypeFaqQuestion[] = [
         body: 'Content',
         isEditing: false,
         collapseOn: 'edit',
-        actions: actions
+        actions: []
     },
     {
         id: 2,
@@ -16,7 +16,7 @@ export const questions: TypeFaqQuestion[] = [
         body: '',
         isEditing: false,
         collapseOn: 'edit',
-        actions: actions
+        actions: []
     },
     {
         id: 3,
@@ -24,6 +24,6 @@ export const questions: TypeFaqQuestion[] = [
         body: '',
         isEditing: false,
         collapseOn: 'edit',
-        actions: actions
+        actions: []
     }
 ]

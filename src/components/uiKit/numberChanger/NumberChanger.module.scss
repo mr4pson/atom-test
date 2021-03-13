@@ -1,0 +1,14 @@
+.setter {
+  display: flex;
+  flex-direction: column;
+  height: 16.5px;
+  justify-content: space-between;
+
+  &__icon {
+    width: 10px;
+    cursor: pointer;
+    &:hover {
+      stroke: #4B4B4B;
+    }
+  }
+}

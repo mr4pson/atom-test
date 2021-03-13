@@ -1,6 +1,6 @@
 import { TypeIcon } from './types';
 
 export const arrowUpIcon: TypeIcon = {
-  path: '<path d="M15.0121 7.68107L7.99994 0.66893L0.987793 7.68107L2.63771 9.33099L7.99994 3.96876L13.3622 9.33099L15.0121 7.68107Z" fill="white"/>',
-  viewBox: '0 0 16 10'
+  path: '<path d="M9.50781 4.72357L5.00001 0.215759L0.492201 4.72356L1.55286 5.78422L5.00001 2.33708L8.44715 5.78423L9.50781 4.72357Z" fill="#8D9FBB"/>',
+  viewBox: '0 0 10 6'
 };

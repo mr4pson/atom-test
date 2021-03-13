@@ -44,7 +44,7 @@ function SignUp(): JSX.Element {
           key,
           onClose: close,
         });
-      };
+    };
 
     function onSubmit (values: any): void {
         // console.log('Success:', values);

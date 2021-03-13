@@ -17,7 +17,11 @@
   }
 
   &__button {
-
+    width: 126px;
+    padding: 0;
+    font-size: 14px;
+    height: 34px;
+    background: #0085F8;
   }
 }
 
@@ -36,6 +40,10 @@
   &__tool {
     width: 140px;
   }
+}
+
+.test-counter {
+  width: 759px;
 }
 
 .test-counter__tool {

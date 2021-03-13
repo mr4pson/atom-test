@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import { Input } from "antd";
 import styles from './NumberChanger.module.scss';
 import Icon from 'components/uiKit/Icon';
@@ -8,7 +8,7 @@ import { useNumberChanger } from "./useNumberChanger";
 
 type Props = {
   className: string;
-  formRef: any;
+  form: any;
   fieldName: string;
   initialState: number | undefined;
   placeholder: string;
@@ -18,7 +18,7 @@ function NumberChanger(props: Props): JSX.Element {
 
   const NUMBER_CHANGER_MAX_LENGTH = 8;
 
-  const { state, setState } = useNumberChanger(props.formRef, props.fieldName, props.initialState);
+  const { state, setState } = useNumberChanger(props.form, props.fieldName, props.initialState);
 
   const renderSetterCounter = (): JSX.Element => {
     return (
@@ -51,8 +51,10 @@ function NumberChanger(props: Props): JSX.Element {
   }
   
   function handleValueChange(event): void {
-    if (regLimitNumber.test(event.target.value)) {
+    if (regLimitNumber.test(event.target.value) && typeof +event.target.value === "number") {
       setState(event.target.value);
+    } else {
+      setState(0);
     }
   }
 

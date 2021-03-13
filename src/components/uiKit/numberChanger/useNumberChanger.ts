@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-export const useNumberChanger = (formRef: any, fieldName: string, initialState: number | undefined) => {
+export const useNumberChanger = (form: any, fieldName: string, initialState: number | undefined) => {
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    formRef.current?.setFieldsValue({
+    form.setFieldsValue({
       [fieldName]: state,
     });
   }, [state])

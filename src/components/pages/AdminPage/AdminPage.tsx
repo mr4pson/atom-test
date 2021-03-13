@@ -1,24 +1,14 @@
-import { memo } from "react";
-import Navigation from "components/modules/Navigation";
-import { NavigationType } from "components/modules/Navigation/constants";
-import styles from "./AdminPage.module.scss";
 import { Menu } from "antd";
 import classNames from "classnames";
-import {
-  chartOutlineIcon,
-  clockIcon,
-  listPlusIcon,
-  menuIcon,
-  newFileIcon,
-  partnersIcon,
-  questionMarkIcon,
-  userIcon,
-  userPlusIcon,
-} from "icons";
-import Icon from "components/uiKit/Icon";
+import Navigation from "components/modules/Navigation";
+import { NavigationType } from "components/modules/Navigation/constants";
+import Icon from 'components/uiKit/Icon';
+import { chartOutlineIcon, clockIcon, listPlusIcon, menuIcon, newFileIcon, partnersIcon, questionMarkIcon, userIcon, userPlusIcon } from 'icons';
+import { memo } from "react";
 import { useHistory } from "react-router";
-import { Page, paths } from "./routes/constants";
+import styles from "./AdminPage.module.scss";
 import AppRoutes from "./routes/AppRoutes";
+import { Page, paths } from "./routes/constants";
 
 function AdminPage(): JSX.Element {
   const history = useHistory();
@@ -66,7 +56,7 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push("");
+        history.push(paths[Page.TEST_QUESTUIONS]);
       },
     },
     {
@@ -141,7 +131,7 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push("");
+        history.push(paths[Page.FAQ]);
       },
     },
     {

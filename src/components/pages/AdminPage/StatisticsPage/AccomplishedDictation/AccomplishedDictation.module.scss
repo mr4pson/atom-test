@@ -1,0 +1,33 @@
+.accomplished-dictation {
+    &__features {
+        display: flex;
+    }
+    &__left {
+        width: 100%;
+    }
+    &__right {
+        min-width: 530px;
+        margin-top: -60px;
+    }
+    &__period {
+        margin: 5px 0;
+    }
+}
+
+
+
+.user-feature {
+    margin-bottom: 22px;
+    &__number {
+        font-weight: bold;
+        font-size: 40px;
+        line-height: 30px;
+        color: #0085F8;
+    }
+    &__label {
+        font-size: 14px;
+        line-height: 14px;
+        color: #4B4B4B;
+        padding-left: 5px;
+    }
+}

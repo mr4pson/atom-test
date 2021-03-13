@@ -1,9 +1,12 @@
 import NewsPage from "components/pages/AdminPage/NewsPage";
+import StatisticsPage from "components/pages/AdminPage/StatisticsPage";
 import CreateNews from "components/pages/AdminPage/CreateNews";
 import { Page, paths } from "./constants";
 import { TypeRoute } from "./type";
 import Participants from "components/pages/AdminPage/Participants";
 import SetCounterParameters from "components/pages/AdminPage/SetCounterParameters";
+import FaqPage from "components/pages/AdminPage/FaqPage";
+import TestQuestionsPage from "components/pages/AdminPage/TestQuestionsPage";
 
 export function getRoutes(): TypeRoute[] {
   return [
@@ -33,7 +36,7 @@ export function getRoutes(): TypeRoute[] {
     {
       type: Page.STATISTICS,
       path: paths[Page.STATISTICS],
-      component: <div>Statistics!!!</div>,
+      component: <StatisticsPage />
     },
     {
       type: Page.COUNTER,
@@ -44,6 +47,16 @@ export function getRoutes(): TypeRoute[] {
       type: Page.MAIN,
       path: paths[Page.MAIN],
       component: <div />,
+    },
+    {
+      type: Page.FAQ,
+      path: paths[Page.FAQ],
+      component: <FaqPage />,
+    },
+    {
+      type: Page.TEST_QUESTUIONS,
+      path: paths[Page.TEST_QUESTUIONS],
+      component: <TestQuestionsPage />,
     },
   ];
 }

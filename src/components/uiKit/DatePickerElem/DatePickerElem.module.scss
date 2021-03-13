@@ -1,0 +1,21 @@
+.date-picker {
+    &__select {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 197px;
+        height: 34px;
+        background: #FFFFFF;
+        border: 1px solid #E7E7E7;
+        box-sizing: border-box;
+        border-radius: 30px;
+        padding:  0 15px;
+        cursor: pointer;
+    }
+    &__title {
+        font-size: 15px;
+        line-height: 174.4%;
+        color: #8D9FBB;
+        user-select: none;
+    }
+}

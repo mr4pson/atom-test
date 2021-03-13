@@ -5,6 +5,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #fafafa;
   color: #4B4B4B;
+  user-select: none;
 }
 
 @font-face {
@@ -119,6 +120,55 @@ body {
 	font-size: 16px;
 }
 
+
+.statistics-tabs {
+	padding: 15px 35px 0;
+}
+.statistics-tabs .ant-tabs-nav-list {
+	width: 100%;
+}
+.statistics-tabs .ant-tabs-tab {
+	width: 50%;
+	padding-bottom: 7px;
+}
+.statistics-tabs .ant-tabs-tab .ant-tabs-tab-btn {
+	font-weight: bold !important;
+	color: #4B4B4B !important;
+	font-size: 18px;
+}
+.statistics-tabs .ant-tabs-tab:nth-child(2) {
+	margin-right: 0;
+}
+
+.ant-tabs-top > .ant-tabs-nav::before {
+	border-bottom: 1px solid #DBF0FF;
+}
+
+
+
+.ant-picker-dropdown-range .ant-picker-panel:nth-child(2) .ant-picker-body {
+    display: none!important;
+}
+
+.ant-picker-dropdown-range .ant-picker-panel:nth-child(2) {
+    width: 0!important;
+}
+
+.ant-picker-dropdown-range .ant-picker-panel:nth-child(2) .ant-picker-header-next-btn {
+	position: absolute;
+    right: 30px!important;
+}
+
+.ant-picker-dropdown-range .ant-picker-panel:nth-child(2) .ant-picker-header-super-next-btn {
+	position: absolute;
+    right: 10px!important;
+}
+
+.atom-date-picker {
+	visibility: hidden;
+	height: 0;
+}
+
 .publication-status__select .ant-select-selector {
 	border: none !important;
 	box-shadow: none !important;
@@ -131,4 +181,19 @@ body {
 	color: #4B4B4B;
 	padding-left: 5px !important;
 	padding-right: 0px !important;
+}
+
+.admin-collapse-elem-form .ant-form-item {
+	margin-bottom: 0;
+}
+
+.admin-collapse-elem-form .ant-input {
+	font-size: 16px;
+	border-color: #fff;
+	padding-left: 0;
+}
+
+.admin-collapse-elem-form .ant-input:focus {
+	border-color: #fff;
+	box-shadow: none;
 }

@@ -5,12 +5,13 @@ import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import Icon from 'components/uiKit/Icon';
 import { deleteIcon, editIcon, searchIcon } from 'icons';
-import { memo, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import { Page, paths } from 'components/pages/AdminPage/routes/constants';
-import { data, noteList } from './constants';
+import { noteList } from './constants';
 import styles from './NewsPage.module.scss';
-import { TypeData } from './types';
+import { TypeNewsPageData } from './types';
+import axios from 'axios';
 
 function NewsPage(): JSX.Element {
     const history = useHistory();
@@ -21,6 +22,7 @@ function NewsPage(): JSX.Element {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading, setLoading] = useState(false);
     const [chosenNews, setChosenNews] = useState<string>('');
+    const [data, setData] = useState<TypeNewsPageData[]>([]);
 
     const inititalFormState = {
       note: 'all',
@@ -59,7 +61,7 @@ function NewsPage(): JSX.Element {
               className={styles['admin-table__icon']}
               path={editIcon.path}
               viewBox={editIcon.viewBox}
-              onClick={() => handleGoToEditPage(itemData)}
+              onClick={() => redirectToEditPage(itemData)}
               title="AtomTest"
             />
           </Space>
@@ -83,10 +85,10 @@ function NewsPage(): JSX.Element {
     }
     // console.log(note);
 
-    const showModal = (itemData: TypeData) => {
+    const showModal = (itemData: TypeNewsPageData) => {
       setChosenNews(itemData.name);
       setIsModalVisible(true);
-      console.log(itemData.key);
+      console.log(itemData.id);
     };
   
     const handleOk = () => {
@@ -105,14 +107,31 @@ function NewsPage(): JSX.Element {
       history.push(paths[Page.NEWS_CREATE])
     }
 
-    const handleGoToEditPage = (itemData: TypeData) => {
-      history.push(`${paths[Page.NEWS_CREATE]}/${itemData.key}`)
+    const redirectToEditPage = (itemData: TypeNewsPageData) => {
+      history.push(`${paths[Page.NEWS_CREATE]}/${itemData.id}`)
     }
 
     function onSubmit (): void {
       // console.log('Success:', values);
       console.log(formRef.current?.getFieldsValue());
     };
+
+    async function getNewsPageData() {
+      const response = await axios.get<TypeNewsPageData[]>('/mocks/getNewsPageData.json');
+      const responseWithKey = response.data.map((item, index) => (
+        {
+          ...item,
+          key: index,
+        }
+      ))
+      setData(responseWithKey);
+    }
+  
+    useEffect(() => {
+      getNewsPageData();
+    }, [])
+
+    console.log(data);
 
     return (
       <div className={styles['news-page']}>

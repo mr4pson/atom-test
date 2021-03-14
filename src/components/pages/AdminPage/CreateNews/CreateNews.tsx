@@ -1,7 +1,7 @@
 import { Form, FormInstance, Input, Select } from 'antd';
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType, htmlType } from 'components/uiKit/ButtomElem/types';
-import { memo, useRef, useState } from 'react';
+import { memo, useRef, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import styles from './CreateNews.module.scss';
 import Icon from "components/uiKit/Icon";
@@ -9,20 +9,17 @@ import classNames from 'classnames';
 import { fileBlankIcon, imageAltIcon } from 'icons';
 import { statuses } from './constants';
 import TextRedactor from 'components/uiKit/TextRedactor';
+import axios from 'axios';
+import { TypeCreateNewsPageData } from './types';
 
 function CreateNews(): JSX.Element {
+  const [data, setData] = useState<TypeCreateNewsPageData | null>(null);
+
   const history = useHistory();
 
   const { Option } = Select;
 
   const formRef = useRef<FormInstance>(null);
-
-  const inititalFormState = {
-    article: '',
-    status: 'drafts',
-    description: '',
-    uploadFile: null,
-  }
 
   function handleSave(): void {
     console.log(formRef.current?.getFieldsValue());
@@ -47,13 +44,23 @@ function CreateNews(): JSX.Element {
     });
   }
 
+  async function getCreateNewsPageData() {
+    const response = await axios.get<TypeCreateNewsPageData>('/mocks/getCreateNewsPageData.json');
+    setData(response.data);
+  }
+
+  useEffect(() => {
+    getCreateNewsPageData();
+  }, [])
+
   return (
-    <Form
+    <>
+    {data && <Form
       className={styles['create-news-page']}
       name="basic"
       onFinish={onSubmit}
       ref={formRef}
-      initialValues={inititalFormState}
+      initialValues={data}
     >
       <div className={styles['main-data']}>
         <div className={styles['main-data-header']}>
@@ -67,6 +74,7 @@ function CreateNews(): JSX.Element {
               className={styles['main-data-header__input']}
               placeholder="Введите название статьи"
               type="search"
+              value={data?.article}
             />
           </Form.Item>
           <Form.Item className={styles['form-item']} name="uploadFile">
@@ -92,7 +100,7 @@ function CreateNews(): JSX.Element {
         >
           <div className={styles['create-news-page__title']}>Описание новости</div>
           <Form.Item className={styles['form-item']} name="description">
-            <TextRedactor formRef={formRef}/>
+            <TextRedactor initialValue={data.description} formRef={formRef}/>
           </Form.Item>
         </div>
       </div>
@@ -143,6 +151,8 @@ function CreateNews(): JSX.Element {
         </div>
       </div>
     </Form>
+    }
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
-export type TypeData = {
-  key: string;
+export type TypeNewsPageData = {
+  id: string;
   name: string;
   createdDate: string;
   heading: string;

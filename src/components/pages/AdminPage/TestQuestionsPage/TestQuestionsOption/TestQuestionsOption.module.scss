@@ -1,0 +1,33 @@
+.test-questions-option {
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__action-btn {
+        outline: none;
+        background: none;
+        border: none;
+        margin-left: 10px;
+        padding: 0;
+        transition: all .3s;
+        cursor: pointer;
+        margin-left: 20px;
+        svg {
+            path {
+                transition: .3s all;
+            }
+            &:hover {
+                path {
+                    fill: #0085F8;
+                }
+            }
+        }
+    }
+}

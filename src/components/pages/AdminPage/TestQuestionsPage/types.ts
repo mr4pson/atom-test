@@ -1,10 +1,16 @@
-import { TypeAction } from "components/uiKit/AdminCollapse/types";
+import { TypeAction } from "./TestQuestionsOption/types";
 
-export type TypeFaqQuestion = {
+export enum QuestionOptionType {
+    CHECKBOX = 'CHECKBOX',
+    RADIO = 'RADIO'
+}
+
+export type TypeTestQuestion = {
     id?: number;
     title: string;
     data?: any;
-    body: JSX.Element;
+    body?: JSX.Element;
+    type: QuestionOptionType;
     isEditing: boolean;
     collapseOn?: string;
     actions: TypeAction[];

@@ -197,3 +197,22 @@ body {
 	border-color: #fff;
 	box-shadow: none;
 }
+
+.test-questions-option .ant-checkbox-disabled + span {
+	font-size: 16px;
+    color: #4B4B4B;
+	cursor: initial;
+}
+
+.test-questions-option .ant-checkbox-inner {
+	background-color: #fff;
+	cursor: initial;
+}
+
+.test-questions-option .ant-checkbox-input {
+	cursor: initial;
+}
+
+.test-questions-option .ant-checkbox-disabled {
+	cursor: initial;
+}

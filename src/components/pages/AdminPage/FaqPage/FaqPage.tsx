@@ -1,20 +1,36 @@
 import { Form, Input } from 'antd';
+import axios from 'axios';
 import AdminCollapseElem from "components/uiKit/AdminCollapse";
 import { TypeAction, TypeCollapseConfig } from 'components/uiKit/AdminCollapse/types';
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType } from "components/uiKit/ButtomElem/types";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { ReactComponent as DoneIcon } from '../../../../assets/images/admin/done.svg';
 import { ReactComponent as EditIcon } from '../../../../assets/images/admin/edit.svg';
 import { ReactComponent as TrashIcon } from '../../../../assets/images/admin/trash.svg';
 // import { getActions } from './constants';
 import styles from "./FaqPage.module.scss";
-import { questions } from './mocks';
 import { TypeFaqQuestion } from './types';
 
 const { TextArea } = Input;
 
 function FaqPage(): JSX.Element {
+    const [faqQuestions, setFaqQuestions] = useState<TypeFaqQuestion[]>([]);
+
+    const getQuestions = async () => {
+        const questionsResponse = await axios.get<TypeFaqQuestion[]>('/mocks/getFaqPageQuestions.json');
+        const questions = questionsResponse.data.map((question) => ({
+            ...question,
+            actions: getActions(false)
+        }));
+        setFaqQuestions(questions);
+    }
+
+    useEffect(() => {
+        getQuestions();
+    }, []);
+
+    // console.log(faqQuestions);
     const getActions = (isEditing: boolean = false): TypeAction[] => {
         return [
             {
@@ -22,7 +38,7 @@ function FaqPage(): JSX.Element {
                 icon: !isEditing ? <EditIcon /> : <DoneIcon />,
                 callback: (action: TypeAction, config: TypeCollapseConfig, formValues: Object) => {
                     config.isEditing = !config.isEditing;
-    
+
                     if (config.isEditing) {
                         action.icon = <DoneIcon />;
                     } else {
@@ -46,7 +62,7 @@ function FaqPage(): JSX.Element {
                 callback: (action: TypeAction, config: TypeCollapseConfig) => {
                     if (!config.id) {
                         return;
-                    } 
+                    }
                     if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
                         // TODO request to backend
                         setFaqQuestions(faqQuestions.filter(faqQuestion => faqQuestion.id !== config.id));
@@ -55,11 +71,6 @@ function FaqPage(): JSX.Element {
             }
         ]
     }
-
-    const [faqQuestions, setFaqQuestions] = useState<TypeFaqQuestion[]>(questions.map((question) => ({
-        ...question,
-        actions: getActions(false)
-    })));
 
     const handleCreate = () => {
         // TODO add http create request
@@ -84,7 +95,8 @@ function FaqPage(): JSX.Element {
                 </ButtonElem>
             </div>
             <div className={styles['faq-page__questions']}>
-                {faqQuestions.map((question, index) => (<AdminCollapseElem
+                {faqQuestions.map((question, index) => (
+                    <AdminCollapseElem
                         key={index}
                         config={question}
                     >
@@ -94,7 +106,8 @@ function FaqPage(): JSX.Element {
                                 rows={1}
                             />
                         </Form.Item>
-                    </AdminCollapseElem>)
+                    </AdminCollapseElem>
+                )
                 )}
             </div>
         </div>

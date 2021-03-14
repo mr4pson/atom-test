@@ -3,7 +3,7 @@ import AdminCollapseElem from "components/uiKit/AdminCollapse";
 import ExpansionSelectButton from 'components/uiKit/ExpansionSelectButton';
 import { TypeExpansionOption } from 'components/uiKit/ExpansionSelectButton/types';
 import { memo, useEffect, useState } from "react";
-import { getQuestionActions } from './helper';
+import { getQuestionActions, getQuestionOptionActions } from './helper';
 import TestQuestionsOption from "./TestQuestionsOption/TestQuestionsOption";
 import styles from "./TestQuestionsPage.module.scss";
 import { QuestionOptionType, TypeTestQuestion } from './types';
@@ -16,6 +16,13 @@ function TestQuestionsPage(): JSX.Element {
         const questions = questionsResponse.data.map((question) => ({
             ...question,
             actions: getQuestionActions(false, setTestQuestions, testQuestions),
+            // optionActions: getQuestionOptionActions(true, 1, setTestQuestions, []),
+            options: question.options.map((option) => (
+                {
+                    ...option,
+                    actions: getQuestionOptionActions(false, setTestQuestions, option.trueOption, [])
+                }
+            )),
             body: <div></div>
         }));
         setTestQuestions(questions);
@@ -33,7 +40,8 @@ function TestQuestionsPage(): JSX.Element {
             body: <div></div>,
             isEditing: true,
             collapseOn: 'edit',
-            actions: getQuestionActions(true, setTestQuestions, testQuestions)
+            actions: getQuestionActions(true, setTestQuestions, testQuestions),
+            options: [],
         }]));
     }
 
@@ -65,7 +73,7 @@ function TestQuestionsPage(): JSX.Element {
                             key={index}
                             config={question}
                         >
-                            <TestQuestionsOption config={question} />
+                            {question.options && <TestQuestionsOption config={question.options[0]} />}
                             {/* <Form.Item name="description">
                                 <TextArea
                                     placeholder="Введите ответ"

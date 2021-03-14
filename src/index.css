@@ -216,3 +216,7 @@ body {
 .test-questions-option .ant-checkbox-disabled {
 	cursor: initial;
 }
+
+.test-questions-option__action_active {
+	color: #00D890;	
+}

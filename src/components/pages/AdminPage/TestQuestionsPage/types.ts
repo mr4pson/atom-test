@@ -5,6 +5,13 @@ export enum QuestionOptionType {
     RADIO = 'RADIO'
 }
 
+export type TypeTestQuestionOption = {
+    isEditing: boolean;
+    title: string;
+    trueOption: boolean;
+    actions: TypeAction[];
+}
+
 export type TypeTestQuestion = {
     id?: number;
     title: string;
@@ -14,4 +21,5 @@ export type TypeTestQuestion = {
     isEditing: boolean;
     collapseOn?: string;
     actions: TypeAction[];
+    options: TypeTestQuestionOption[];
 }

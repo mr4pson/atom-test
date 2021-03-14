@@ -78,7 +78,13 @@ function CreateNews(): JSX.Element {
                 title="AtomTest"
               />
               Добавить медиафайл
-              <Input className={styles['main-data-header__file-input']} name="Загрузить фото" type='file' id='multi' onChange={uploadMediaFile} />
+              <Input
+                className={styles['main-data-header__file-input']}
+                name="Загрузить фото"
+                type='file'
+                id='multi'
+                onChange={uploadMediaFile}
+              />
             </label>
           </Form.Item>
         </div>

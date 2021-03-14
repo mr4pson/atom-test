@@ -11,32 +11,32 @@ export const initialTestFormState = {
   testSeconds: undefined,
 }
 
-export const bannerFormItems = [
-  {
-    name: 'bannerDays',
-    fieldName: 'bannerDays',
-    initialState: initialBannerFormState.bannerDays,
-    placeholder: 'Кол-во дней',
-  },
-  {
-    name: 'bannerHours',
-    fieldName: 'bannerHours',
-    initialState: initialBannerFormState.bannerHours,
-    placeholder: 'Кол-во часов',
-  },
-  {
-    name: 'bannerMinutes',
-    fieldName: 'bannerMinutes',
-    initialState: initialBannerFormState.bannerMinutes,
-    placeholder: 'Кол-во минут',
-  },
-  {
-    name: 'bannerSeconds',
-    fieldName: 'bannerSeconds',
-    initialState: initialBannerFormState.bannerSeconds,
-    placeholder: 'Кол-во секунд',
-  }
-];
+// export const bannerFormItems = [
+//   {
+//     name: 'bannerDays',
+//     fieldName: 'bannerDays',
+//     initialState: initialBannerFormState.bannerDays,
+//     placeholder: 'Кол-во дней',
+//   },
+//   {
+//     name: 'bannerHours',
+//     fieldName: 'bannerHours',
+//     initialState: initialBannerFormState.bannerHours,
+//     placeholder: 'Кол-во часов',
+//   },
+//   {
+//     name: 'bannerMinutes',
+//     fieldName: 'bannerMinutes',
+//     initialState: initialBannerFormState.bannerMinutes,
+//     placeholder: 'Кол-во минут',
+//   },
+//   {
+//     name: 'bannerSeconds',
+//     fieldName: 'bannerSeconds',
+//     initialState: initialBannerFormState.bannerSeconds,
+//     placeholder: 'Кол-во секунд',
+//   }
+// ];
 
 export const testFormItems = [
   {
@@ -44,17 +44,20 @@ export const testFormItems = [
     fieldName: 'testHours',
     initialState: initialTestFormState.testHours,
     placeholder: 'Кол-во часов',
+    maxValue: 23,
   },
   {
     name: 'testMinutes',
     fieldName: 'testMinutes',
     initialState: initialTestFormState.testMinutes,
     placeholder: 'Кол-во минут',
+    maxValue: 60,
   },
   {
     name: 'testSeconds',
     fieldName: 'testSeconds',
     initialState: initialTestFormState.testSeconds,
     placeholder: 'Кол-во секунд',
+    maxValue: 60,
   },
 ];

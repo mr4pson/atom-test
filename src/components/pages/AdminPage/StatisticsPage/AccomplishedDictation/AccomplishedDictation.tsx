@@ -49,7 +49,7 @@ function AccomplishedDictation(): JSX.Element {
     return (
         <div className={styles['accomplished-dictation']}>
             <div className={styles['accomplished-dictation__period']}>
-                <DatePickerElem />
+                <DatePickerElem placeholder="Период статистики" />
             </div>
             <div className={styles['accomplished-dictation__features']}>
                 <div className={styles['accomplished-dictation__left']}>

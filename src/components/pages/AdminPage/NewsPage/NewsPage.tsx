@@ -10,6 +10,7 @@ import { useHistory } from 'react-router';
 import { Page, paths } from 'components/pages/AdminPage/routes/constants';
 import { data, noteList } from './constants';
 import styles from './NewsPage.module.scss';
+import { TypeData } from './types';
 
 function NewsPage(): JSX.Element {
     const history = useHistory();
@@ -45,19 +46,20 @@ function NewsPage(): JSX.Element {
       {
         title: 'Редактирование',
         key: 'action',
-        render: (text) => (
+        render: (itemData) => (
           <Space size="middle">
             <Icon
               className={styles['admin-table__icon']}
               path={deleteIcon.path}
               viewBox={deleteIcon.viewBox}
-              onClick={() => showModal(text)}
+              onClick={() => showModal(itemData)}
               title="AtomTest"
             />
             <Icon
               className={styles['admin-table__icon']}
               path={editIcon.path}
               viewBox={editIcon.viewBox}
+              onClick={() => handleGoToEditPage(itemData)}
               title="AtomTest"
             />
           </Space>
@@ -81,9 +83,10 @@ function NewsPage(): JSX.Element {
     }
     // console.log(note);
 
-    const showModal = (text: any) => {
-      setChosenNews(text.name);
+    const showModal = (itemData: TypeData) => {
+      setChosenNews(itemData.name);
       setIsModalVisible(true);
+      console.log(itemData.key);
     };
   
     const handleOk = () => {
@@ -100,6 +103,10 @@ function NewsPage(): JSX.Element {
 
     const handleCreateNews = () => {
       history.push(paths[Page.NEWS_CREATE])
+    }
+
+    const handleGoToEditPage = (itemData: TypeData) => {
+      history.push(`${paths[Page.NEWS_CREATE]}/${itemData.key}`)
     }
 
     function onSubmit (): void {

@@ -12,6 +12,11 @@
     margin-bottom: 16px;
   }
 
+  &__description {
+    margin: 15px 0;
+    font-size: 15px;
+  }
+
   &__form-item {
     margin-bottom: 0px;
   }
@@ -26,24 +31,22 @@
 }
 
 .banner-counter, .test-counter {
+  width: 759px;
+
   &__input {
     border-radius: 30px;
   }
 
   &__tools {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     margin-bottom: 35px;
   }
 
   &__tool {
     width: 140px;
+    height: 34px !important;
   }
-}
-
-.test-counter {
-  width: 759px;
 }
 
 .test-counter__tool {

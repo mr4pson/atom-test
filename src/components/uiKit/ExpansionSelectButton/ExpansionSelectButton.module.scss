@@ -1,0 +1,52 @@
+.expansion-select-button {
+    color: #fff;
+    position: relative;
+    &__header {
+        display: flex;
+        align-items: center;
+        padding: 5.5px 15px;
+        cursor: pointer;
+        background: #0085F8;
+        border-radius: 30px;
+        transition: all .6s ease-in;
+    }
+    &__icon {
+        transition: transform .3s;
+    }
+    &__title {
+        margin-left: 6px;
+        font-weight: bold;
+        font-size: 15px;
+    }
+    &__body {
+        position: absolute;
+        transition: all .2s;
+        max-height: 0;
+        visibility: hidden;
+        padding-bottom: 0;
+        z-index: 100;
+        background: #0085f8;
+        width: 100%;
+        border-radius: 0 0 15px 15px;
+    }
+    &__option {
+        padding: 3px 20px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+    &_active {
+        .expansion-select-button__header {
+            transition: none;
+            border-radius: 15px 15px 0 0;
+        }
+        .expansion-select-button__body {
+            max-height: 300px;
+            visibility: visible;
+            padding-bottom: 15px;
+        }
+        
+        .expansion-select-button__icon {
+            transform: rotate(180deg);
+        }
+    }
+}

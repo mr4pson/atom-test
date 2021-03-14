@@ -5,6 +5,14 @@
         "isEditing": false,
         "type": "CHECKBOX",
         "collapseOn": "edit",
-        "actions": []
+        "actions": [],
+        "options": [
+            {
+                "isEditing": false,
+                "title": "12 августа 1953 года, на Семипалатинском полигоне",
+                "trueOption": true,
+                "actions": []
+            }
+        ]
     }
 ]

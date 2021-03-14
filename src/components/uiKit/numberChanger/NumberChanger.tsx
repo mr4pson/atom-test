@@ -12,11 +12,13 @@ type Props = {
   fieldName: string;
   initialState: number | undefined;
   placeholder: string;
+  maxValue: number;
 }
 
 function NumberChanger(props: Props): JSX.Element {
 
   const NUMBER_CHANGER_MAX_LENGTH = 8;
+  const MIN_VALUE = 0;
 
   const { state, setState } = useNumberChanger(props.form, props.fieldName, props.initialState);
 
@@ -42,17 +44,34 @@ function NumberChanger(props: Props): JSX.Element {
   }
 
   function handleIncreaseValue(): void {
-    setState((prevState) => +(prevState ? prevState : 0)  + 1)
+    setState((prevState) => {
+      if (prevState && +prevState >= props.maxValue) {
+        return props.maxValue;
+      } else if (prevState && +prevState < props.maxValue) {
+        return +prevState + 1;
+      }
+      return MIN_VALUE + 1;
+    })
   }
 
   function handleDecreaseValue(): void {
-    setState((prevState) => +(prevState ? prevState : 0) - 1)
-
+    setState((prevState) => {
+      if (prevState && +prevState <= MIN_VALUE) {
+        return MIN_VALUE;
+      } else if (prevState && +prevState > MIN_VALUE) {
+        return +prevState - 1;
+      }
+      return MIN_VALUE;
+    })
   }
   
   function handleValueChange(event): void {
     if (regLimitNumber.test(event.target.value) && typeof +event.target.value === "number") {
-      setState(event.target.value);
+      setState(
+        event.target.value > MIN_VALUE && event.target.value < props.maxValue ? event.target.value
+        : event.target.value <= MIN_VALUE ? MIN_VALUE 
+        : event.target.value >= props.maxValue ? props.maxValue
+        : MIN_VALUE);
     } else {
       setState(0);
     }

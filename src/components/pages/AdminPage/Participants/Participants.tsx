@@ -5,11 +5,13 @@ import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import Icon from 'components/uiKit/Icon';
 import { deleteIcon, editIcon, searchIcon } from 'icons';
-import { memo, useRef, useState } from 'react';
+import { memo, useRef, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { paths } from 'components/pages/AdminPage/routes/constants';
-import { data, participantList } from './constants';
+import { participantList } from './constants';
 import styles from './Participants.module.scss';
+import axios from 'axios';
+import { TypeParticipantsData } from './types';
 
 function Participants(): JSX.Element {
     const history = useHistory();
@@ -20,6 +22,7 @@ function Participants(): JSX.Element {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [loading, setLoading] = useState(false);
     const [chosenParticipant, setChosenParticipant] = useState<string>('');
+    const [data, setData] = useState<any[]>([]);
 
     const inititalFormState = {
       participants: 'new',
@@ -50,13 +53,13 @@ function Participants(): JSX.Element {
       {
         title: 'Редактирование',
         key: 'action',
-        render: (text) => (
+        render: (itemData) => (
           <Space size="middle">
             <Icon
               className={styles['admin-table__icon']}
               path={deleteIcon.path}
               viewBox={deleteIcon.viewBox}
-              onClick={() => showModal(text)}
+              onClick={() => showModal(itemData)}
               title="AtomTest"
             />
             <Icon
@@ -85,9 +88,10 @@ function Participants(): JSX.Element {
       console.log(searchValue);
     }
 
-    const showModal = (text: any) => {
-      setChosenParticipant(text.name);
+    const showModal = (itemData: any) => {
+      setChosenParticipant(itemData.name);
       setIsModalVisible(true);
+      console.log(itemData.id);
     };
   
     const handleOk = () => {
@@ -111,6 +115,21 @@ function Participants(): JSX.Element {
       // console.log('Success:', values);
       console.log(formRef.current?.getFieldsValue());
     };
+
+    async function getParticipantsData() {
+      const response = await axios.get<TypeParticipantsData[]>('/mocks/getParticipantsData.json');
+      const responseWithKey = response.data.map((item, index) => (
+        {
+          ...item,
+          key: index,
+        }
+      ))
+      setData(responseWithKey);
+    }
+  
+    useEffect(() => {
+      getParticipantsData();
+    }, [])
 
     return (
       <div className={styles['participants-page']}>

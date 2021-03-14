@@ -31,7 +31,7 @@ function RegistratedUsers(): JSX.Element {
     return (
         <div className={styles['registrated-users']}>
             <div className={styles['registrated-users__period']}>
-                <DatePickerElem />
+                <DatePickerElem placeholder="Период статистики" />
             </div>
             <div className={styles['registrated-users__features']}>
                 <div className={styles['registrated-users__left']}>

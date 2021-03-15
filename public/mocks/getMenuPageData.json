@@ -1,0 +1,38 @@
+[
+  {
+      "id": 1,
+      "title": "Главное меню",
+      "body": "Content",
+      "isEditing": false,
+      "visible": true,
+      "collapseOn": "edit",
+      "actions": []
+  },
+  {
+      "id": 2,
+      "title": "Меню личного кабинета",
+      "body": "",
+      "isEditing": false,
+      "visible": true,
+      "collapseOn": "edit",
+      "actions": []
+  },
+  {
+      "id": 3,
+      "title": "Меню номер два",
+      "body": "",
+      "isEditing": false,
+      "visible": true,
+      "collapseOn": "edit",
+      "actions": []
+  },
+  {
+    "id": 4,
+    "title": "Меню номер пять",
+    "body": "",
+    "isEditing": false,
+    "visible": true,
+    "collapseOn": "edit",
+    "actions": []
+  }
+]

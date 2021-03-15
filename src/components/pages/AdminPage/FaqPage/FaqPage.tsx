@@ -82,6 +82,7 @@ function FaqPage(): JSX.Element {
             actions: getActions(true)
         }]));
     }
+
     return (
         <div className={styles['faq-page']}>
             <div className={styles['faq-page__create-wrap']}>

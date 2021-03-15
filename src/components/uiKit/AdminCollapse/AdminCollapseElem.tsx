@@ -1,28 +1,27 @@
 import { memo, useEffect, useRef, useState } from "react";
 import styles from './AdminCollapseElem.module.scss';
 import classNames from 'classnames';
-import { Props, TypeAction } from "./types";
+import { TypeAction, TypeCollapseConfig } from "./types";
 import { Form, FormInstance } from 'antd';
 import { Input } from 'antd';
 
-const { TextArea } = Input;
+export type Props = {
+    config: TypeCollapseConfig;
+    children: any;
+}
 
 function AdminCollapseElem(props: Props): JSX.Element {
-    const [collapsed, setCollapsed] = useState<boolean>(props.config.isEditing);
+    const [collapsed, setCollapsed] = useState<boolean>(props.config.isEditing!);
     const [rerender, setRerender] = useState<boolean>(false);
     const formRef = useRef<FormInstance>(null);
     const componentRef = useRef(null);
-    
-    const getCollapseElemClassNames = () => {
-        const classes = [styles['admin-collapse-elem']];
-        if (collapsed) {
-            classes.push(styles['admin-collapse-elem--collapsed']);
-        }
-        return classNames(...classes);
-    }
+
+    const { TextArea } = Input;
+
     const changeButtonCollapse = () => {
         setCollapsed(!collapsed);
     }
+
     const onActionClick = (action: TypeAction) => {
         if (action.id === props.config.collapseOn) {
             changeButtonCollapse();
@@ -36,6 +35,7 @@ function AdminCollapseElem(props: Props): JSX.Element {
         this.style.height = 'auto';
         this.style.height = (this.scrollHeight) + 'px';
     }
+
     useEffect(() => {
         // Adding rows automatically for a textarea
         if (props.config.isEditing) {
@@ -47,8 +47,14 @@ function AdminCollapseElem(props: Props): JSX.Element {
             }
         }
     });
+
     return (
-        <div ref={componentRef} className={getCollapseElemClassNames()}>
+        <div 
+            ref={componentRef}
+            className={classNames(styles['admin-collapse-elem'], {
+                [styles['admin-collapse-elem--collapsed']]: collapsed,
+            })}
+        >
             <Form
                 initialValues={props.config}
                 className="admin-collapse-elem-form"
@@ -56,7 +62,7 @@ function AdminCollapseElem(props: Props): JSX.Element {
             >
                 <div className={styles['admin-collapse-elem__body']}>
                     <div className={styles['admin-collapse-elem__title']}>
-                        {!props.config.isEditing 
+                        {!props.config.isEditing
                             ? props.config.title
                             : <Form.Item name="title">
                                 <TextArea

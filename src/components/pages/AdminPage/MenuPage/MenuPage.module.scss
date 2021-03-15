@@ -1,0 +1,16 @@
+.menu-page {
+  width: 74.34%;
+  &__create-wrap {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  &__create-btn {
+    margin-right: 0;
+    margin-bottom: 25px;
+    font-size: 15px;
+    height: 34px;
+    line-height: 15px;
+    padding: 0;
+    width: 196px;
+  }
+}

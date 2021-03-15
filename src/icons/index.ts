@@ -16,3 +16,6 @@ export { chartOutlineIcon } from './chartOutlineIcon';
 export { imageAltIcon } from './imageAltIcon';
 export { fileBlankIcon } from './fileBlankIcon';
 export { arrowDownIcon } from './arrowDownIcon';
+export { trashIcon } from './trashIcon';
+export { visibleIcon } from './visibleIcon';
+export { unVisibleIcon } from './unVisibleIcon';

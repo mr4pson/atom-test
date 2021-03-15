@@ -7,6 +7,7 @@ $blue-100: #4daafa;
     .container {
         display: flex;
         align-items: center;
+        justify-content: space-between;
     }
     .nav-bar-header, .nav-bar-footer {
         width: 852px;
@@ -37,6 +38,9 @@ $blue-100: #4daafa;
         }
     }
     .nav-bar-header {
+        &_hide {
+            display: none;
+        }
         &__user-info-icon {
             width: 18px;
             height: 19px;

@@ -203,7 +203,6 @@ function NewsPage(): JSX.Element {
           title={`Удаление "${chosenNews}"`}
           isModalVisible={isModalVisible}
           loading={loading}
-          showModal={showModal}
           handleOk={handleOk}
           handleCancel={handleCancel}
         >

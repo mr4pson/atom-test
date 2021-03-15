@@ -11,12 +11,7 @@ export type TypeCollapseConfig = {
     title: string;
     data?: any;
     actions: TypeAction[];
-    isEditing: boolean;
+    isEditing?: boolean;
     collapseOn?: string;
     options?: TypeTestQuestionOption[];
-}
-
-export type Props = {
-    config: TypeCollapseConfig;
-    children: any;
 }

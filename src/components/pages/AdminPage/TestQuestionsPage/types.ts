@@ -6,6 +6,7 @@ export enum QuestionOptionType {
 }
 
 export type TypeTestQuestionOption = {
+    id?: number;
     isEditing: boolean;
     title: string;
     trueOption: boolean;

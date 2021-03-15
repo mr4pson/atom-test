@@ -8,9 +8,31 @@
         "actions": [],
         "options": [
             {
+                "id": 1,
                 "isEditing": false,
                 "title": "12 августа 1953 года, на Семипалатинском полигоне",
                 "trueOption": true,
+                "actions": []
+            },
+            {
+                "id": 2,
+                "isEditing": false,
+                "title": "12 октября 1954, на полигоне на Новой земле",
+                "trueOption": false,
+                "actions": []
+            },
+            {
+                "id": 3,
+                "isEditing": false,
+                "title": "11 сентября 1955, на полигоне Капустин Яр",
+                "trueOption": false,
+                "actions": []
+            },
+            {
+                "id": 4,
+                "isEditing": false,
+                "title": "11 декабря 1956, на полигоне Азгир",
+                "trueOption": false,
                 "actions": []
             }
         ]

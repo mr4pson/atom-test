@@ -1,3 +1,5 @@
+import { TypeTestQuestionOption } from "components/pages/AdminPage/TestQuestionsPage/types"
+
 export type TypeAction = {
     id: string;
     icon: React.ReactElement;
@@ -11,6 +13,7 @@ export type TypeCollapseConfig = {
     actions: TypeAction[];
     isEditing: boolean;
     collapseOn?: string;
+    options?: TypeTestQuestionOption[];
 }
 
 export type Props = {

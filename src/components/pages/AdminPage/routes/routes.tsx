@@ -4,6 +4,7 @@ import CreateNews from "components/pages/AdminPage/CreateNews";
 import { Page, paths } from "./constants";
 import { TypeRoute } from "./type";
 import Participants from "components/pages/AdminPage/Participants";
+import SetCounterParameters from "components/pages/AdminPage/SetCounterParameters";
 import FaqPage from "components/pages/AdminPage/FaqPage";
 import TestQuestionsPage from "components/pages/AdminPage/TestQuestionsPage";
 
@@ -36,6 +37,11 @@ export function getRoutes(): TypeRoute[] {
       type: Page.STATISTICS,
       path: paths[Page.STATISTICS],
       component: <StatisticsPage />
+    },
+    {
+      type: Page.COUNTER,
+      path: paths[Page.COUNTER],
+      component: <SetCounterParameters />,
     },
     {
       type: Page.MAIN,

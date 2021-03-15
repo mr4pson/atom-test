@@ -10,11 +10,12 @@ import { useTextRedactor } from "./useTextRedactor";
 
 type Props = {
   formRef: any;
+  initialValue: string;
 }
 
 function TextRedactor(props: Props): JSX.Element {
 
-  const { state, setState } = useTextRedactor(props.formRef);
+  const { state, setState } = useTextRedactor(props.formRef, props.initialValue);
 
   function handleValueChange(e: any): void {
     setState(e)

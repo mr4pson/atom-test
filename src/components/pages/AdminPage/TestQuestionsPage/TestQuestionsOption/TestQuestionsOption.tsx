@@ -1,9 +1,12 @@
-import { Checkbox, FormInstance } from 'antd';
+import { Checkbox, Form, FormInstance, Input } from 'antd';
 import classNames from 'classnames';
 import { memo, useRef, useState } from "react";
 import { TypeTestQuestionOption } from "../types";
 import styles from "./TestQuestionsOption.module.scss";
 import { TypeAction } from './types';
+
+const { TextArea } = Input;
+
 
 type Props = {
     config: TypeTestQuestionOption
@@ -15,13 +18,28 @@ function TestQuestionsOption(props: Props): JSX.Element {
 
     const onActionClick = (action: TypeAction) => {
         action.callback(action, props.config, formRef.current?.getFieldsValue());
-        // Just for rerender component when editing state is true to show textarea
+        // Just for rerendering component when editing state is true to show textarea
         setRerender(!rerender);
     }
 
     return(
         <div className={classNames(styles['test-questions-option'], 'test-questions-option')}>
-            <Checkbox disabled={true}>{props.config?.title}</Checkbox>
+            <Form
+                initialValues={props.config}
+                className="admin-collapse-elem-form"
+                ref={formRef}
+            >
+                <Checkbox disabled={true}>
+                    {!props.config.isEditing 
+                        ? props.config.title
+                        : <Form.Item name="title">
+                            <TextArea
+                                placeholder="Введите вопрос"
+                                rows={1}
+                            />
+                        </Form.Item>
+                }</Checkbox>
+            </Form>
             <div className={styles['test-questions-option__actions']}>
                 {props.config.actions.map((action, index) => (
                         <button 

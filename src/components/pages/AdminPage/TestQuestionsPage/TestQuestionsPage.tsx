@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AdminCollapseElem from "components/uiKit/AdminCollapse";
+import ButtonElem from 'components/uiKit/ButtomElem';
 import ExpansionSelectButton from 'components/uiKit/ExpansionSelectButton';
 import { TypeExpansionOption } from 'components/uiKit/ExpansionSelectButton/types';
 import { memo, useEffect, useState } from "react";
@@ -10,27 +11,44 @@ import { QuestionOptionType, TypeTestQuestion } from './types';
 
 function TestQuestionsPage(): JSX.Element {
     const [testQuestions, setTestQuestions] = useState<TypeTestQuestion[]>([]);
+    const [rerender, setRerender] = useState<boolean>(true);
 
     const getQuestions = async () => {
         const questionsResponse = await axios.get<TypeTestQuestion[]>('/mocks/getTestPageQuestions.json');
-        const questions = questionsResponse.data.map((question) => ({
-            ...question,
-            actions: getQuestionActions(false, setTestQuestions, testQuestions),
-            // optionActions: getQuestionOptionActions(true, 1, setTestQuestions, []),
-            options: question.options.map((option) => (
+        return questionsResponse.data;
+    }
+
+    function transformQuestionData(data: TypeTestQuestion[]) {
+        const questions = data.map((question) => {
+            question.actions = getQuestionActions(question.isEditing, setTestQuestions, testQuestions);
+            question.options = question.options.map((option) => (
                 {
                     ...option,
-                    actions: getQuestionOptionActions(false, setTestQuestions, option.trueOption, [])
+                    actions: getQuestionOptionActions(option.isEditing, setTestQuestions, option.trueOption, question, setRerender)
                 }
-            )),
-            body: <div></div>
-        }));
+            ));
+            question.body = <div></div>;
+            return question;
+        });
         setTestQuestions(questions);
+        setRerender(false);
+    }
+
+    const getNewQuestions = async () => {
+        let questions;
+        if (testQuestions.length === 0) {
+            questions = await getQuestions();
+        } else {
+            questions = testQuestions;
+        }
+        if (rerender) {
+            transformQuestionData(questions);
+        }
     }
 
     useEffect(() => {
-        getQuestions();
-    }, []);
+            getNewQuestions();
+    })
 
     const handleCreate = (type: QuestionOptionType) => {
         // TODO add http create request
@@ -47,6 +65,23 @@ function TestQuestionsPage(): JSX.Element {
 
     const onOptionPick = (type: QuestionOptionType) => {
         handleCreate(type);
+    }
+
+    const onOptionCreate = (question: TypeTestQuestion) => {
+        setTestQuestions((prevStateQuestions) => {
+            question.options.push();
+            const questions = [...prevStateQuestions];
+            const curQuestion = questions.find((curQuestion) => curQuestion.id === question.id) as TypeTestQuestion;
+            curQuestion.options.push({
+                id: Math.round(Math.random() * 100),
+                isEditing: true,
+                title: '',
+                trueOption: false,
+                actions: getQuestionOptionActions(true, setTestQuestions, false, question, setRerender)
+            });
+        
+            return questions;
+        });
     }
 
     const expansionOptions: TypeExpansionOption[] = [
@@ -73,13 +108,16 @@ function TestQuestionsPage(): JSX.Element {
                             key={index}
                             config={question}
                         >
-                            {question.options && <TestQuestionsOption config={question.options[0]} />}
-                            {/* <Form.Item name="description">
-                                <TextArea
-                                    placeholder="Введите ответ"
-                                    rows={1}
+                            {question.options.map((option, index) => (
+                                <TestQuestionsOption
+                                    key={index}
+                                    config={option}
                                 />
-                            </Form.Item> */}
+                            ))}
+                            <ButtonElem
+                                className={styles['test-questions-page__add-btn']}
+                                onClick={() => onOptionCreate(question)}
+                            >Добавить вариант ответа</ButtonElem>
                         </AdminCollapseElem>
                     )
                 )}

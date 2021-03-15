@@ -107,7 +107,9 @@ export const getQuestionOptionActions = (
                     const questions = [...prevStateQuestions];
                     const curQuestion = questions.find(curQuestion => curQuestion.id === question.id) as TypeTestQuestion;
                     const activeOption = curQuestion.options.find((option) => option.trueOption) as TypeTestQuestionOption;
-                    activeOption.trueOption = false;
+                    if (activeOption) {
+                        activeOption.trueOption = false;
+                    }
                     action.icon = <TrueIcon className="test-questions-option__action_active" />;
                     config.trueOption = true;
 

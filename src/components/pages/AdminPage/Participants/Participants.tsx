@@ -4,7 +4,7 @@ import AdminModal from 'components/pages/AdminPage/AdminModal';
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import Icon from 'components/uiKit/Icon';
-import { deleteIcon, editIcon, searchIcon } from 'icons';
+import { deleteIcon, searchIcon, visibleIcon } from 'icons';
 import { memo, useRef, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { paths } from 'components/pages/AdminPage/routes/constants';
@@ -64,8 +64,8 @@ function Participants(): JSX.Element {
             />
             <Icon
               className={styles['admin-table__icon']}
-              path={editIcon.path}
-              viewBox={editIcon.viewBox}
+              path={visibleIcon.path}
+              viewBox={visibleIcon.viewBox}
               title="AtomTest"
             />
           </Space>
@@ -201,7 +201,6 @@ function Participants(): JSX.Element {
           title={`Удаление участника "${chosenParticipant}"`}
           isModalVisible={isModalVisible}
           loading={loading}
-          showModal={showModal}
           handleOk={handleOk}
           handleCancel={handleCancel}
         >

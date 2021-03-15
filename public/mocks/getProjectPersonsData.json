@@ -1,0 +1,18 @@
+[
+  {
+      "id": 1,
+      "title": "Лицо проекта 1",
+      "body": "Content",
+      "isEditing": false,
+      "collapseOn": "edit",
+      "actions": []
+  },
+  {
+      "id": 2,
+      "title": "Лицо проекта 2",
+      "body": "",
+      "isEditing": false,
+      "collapseOn": "edit",
+      "actions": []
+  }
+]

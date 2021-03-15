@@ -71,7 +71,7 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push("");
+        history.push(paths[Page.PARTNERS]);
       },
     },
     {
@@ -101,7 +101,7 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push("");
+        history.push(paths[Page.PROJECT_PERSONS]);
       },
     },
     {

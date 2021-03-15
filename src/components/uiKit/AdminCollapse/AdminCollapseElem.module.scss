@@ -31,7 +31,10 @@
         white-space: pre-wrap;
     }
     &__actions {
-        min-width: 110px;
+        min-width: 115px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     &__action-btn {
         outline: none;

@@ -1,0 +1,31 @@
+.partners-page {
+  width: 74.34%;
+  &__create-wrap {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__create-btn {
+    width: 196px;
+    padding: 0;
+    height: 34px;
+    margin-right: 0;
+    margin-bottom: 25px;
+    font-size: 15px;
+  }
+
+}
+
+.action-icon {
+  &__edit {
+    width: 20px;
+  }
+
+  &__delete {
+    width: 17px;
+  }
+
+  &__watch {
+    width: 18px;
+  }
+}

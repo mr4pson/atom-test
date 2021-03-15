@@ -7,6 +7,10 @@ import Participants from "components/pages/AdminPage/Participants";
 import SetCounterParameters from "components/pages/AdminPage/SetCounterParameters";
 import FaqPage from "components/pages/AdminPage/FaqPage";
 import TestQuestionsPage from "components/pages/AdminPage/TestQuestionsPage";
+import PartnersPage from "components/pages/AdminPage/PartnersPage";
+import AddPartnerPage from "components/pages/AdminPage/AddPartnerPage";
+import MenuPage from "components/pages/AdminPage/MenuPage";
+import ProjectPersonsPage from "components/pages/AdminPage/ProjectPersonsPage"
 
 export function getRoutes(): TypeRoute[] {
   return [
@@ -25,7 +29,7 @@ export function getRoutes(): TypeRoute[] {
     {
       type: Page.MENU,
       path: paths[Page.MENU],
-      component: <div>Menu page!!!</div>,
+      component: <MenuPage />,
     },
     {
       type: Page.PARTICIPANTS,
@@ -57,6 +61,22 @@ export function getRoutes(): TypeRoute[] {
       type: Page.TEST_QUESTUIONS,
       path: paths[Page.TEST_QUESTUIONS],
       component: <TestQuestionsPage />,
+    },
+    {
+      type: Page.PARTNERS,
+      path: paths[Page.PARTNERS],
+      component: <PartnersPage />,
+      exact: true,
+    },
+    {
+      type: Page.ADD_PARTNER,
+      path: paths[Page.ADD_PARTNER],
+      component: <AddPartnerPage />,
+    },
+    {
+      type: Page.PROJECT_PERSONS,
+      path: paths[Page.PROJECT_PERSONS],
+      component: <ProjectPersonsPage />,
     },
   ];
 }

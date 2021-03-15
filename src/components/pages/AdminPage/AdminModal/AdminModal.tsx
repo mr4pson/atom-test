@@ -10,7 +10,6 @@ type Props = {
   isModalVisible: boolean;
   loading: boolean;
   children: ReactNode;
-  showModal: (text: any) => void;
   handleOk: () => void;
   handleCancel: () => void;
 }

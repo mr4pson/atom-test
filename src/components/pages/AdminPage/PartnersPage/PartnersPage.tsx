@@ -22,7 +22,7 @@ function PartnersPage(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [chosenPartner, setChosenPartner] = useState<string>('');
 
-  let history = useHistory();
+  const history = useHistory();
 
   const getPartners = async () => {
     const partnersResponse = await axios.get<TypePartner[]>(

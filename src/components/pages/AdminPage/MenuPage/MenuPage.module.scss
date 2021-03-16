@@ -14,3 +14,17 @@
     width: 196px;
   }
 }
+
+.action-icon {
+  &__edit {
+    width: 20px;
+  }
+
+  &__delete {
+    width: 17px;
+  }
+
+  &__watch {
+    width: 18px;
+  }
+}

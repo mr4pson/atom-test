@@ -10,7 +10,8 @@ import TestQuestionsPage from "components/pages/AdminPage/TestQuestionsPage";
 import PartnersPage from "components/pages/AdminPage/PartnersPage";
 import AddPartnerPage from "components/pages/AdminPage/AddPartnerPage";
 import MenuPage from "components/pages/AdminPage/MenuPage";
-import ProjectPersonsPage from "components/pages/AdminPage/ProjectPersonsPage"
+import ProjectPersonsPage from "components/pages/AdminPage/ProjectPersonsPage";
+import MenuCreatePage from "components/pages/AdminPage/MenuCreatePage/MenuCreatePage";
 
 export function getRoutes(): TypeRoute[] {
   return [
@@ -25,11 +26,21 @@ export function getRoutes(): TypeRoute[] {
       component: <NewsPage />,
       exact: true,
     },
-    
+    // {
+    //   type: Page.MENU_CREATE,
+    //   path: paths[Page.MENU_CREATE],
+    //   component: <MenuPage />,
+    // },
+    {
+      type: Page.MENU_ROUTE,
+      path: paths[Page.MENU_ROUTE],
+      component: <MenuCreatePage />,
+    },
     {
       type: Page.MENU,
       path: paths[Page.MENU],
       component: <MenuPage />,
+      exact: true,
     },
     {
       type: Page.PARTICIPANTS,

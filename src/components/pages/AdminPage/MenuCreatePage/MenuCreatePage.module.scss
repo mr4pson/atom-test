@@ -1,0 +1,28 @@
+.menu-create-page {
+    width: 75%;
+    &__actions {
+        display: flex;
+        flex-direction: row-reverse;
+        width: 100%;
+    }
+    &__create-btn {
+        margin-right: 0;
+        font-size: 15px;
+        height: 34px;
+        line-height: 15px;
+        padding: 7px 24px;
+        margin-bottom: 25px;
+    }
+    &__info {
+        color: #848484;
+        font-size: 14px;
+        line-height: 140%;
+        max-width: 815px;
+    }
+}
+
+.action-icon {
+  &__edit {
+    width: 20px;
+  }
+}

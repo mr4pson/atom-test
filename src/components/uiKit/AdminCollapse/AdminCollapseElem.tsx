@@ -6,6 +6,7 @@ import { Form, FormInstance } from 'antd';
 import { Input } from 'antd';
 
 export type Props = {
+    className?: string;
     config: TypeCollapseConfig;
     children: any;
 }
@@ -51,7 +52,7 @@ function AdminCollapseElem(props: Props): JSX.Element {
     return (
         <div 
             ref={componentRef}
-            className={classNames(styles['admin-collapse-elem'], {
+            className={classNames(props.className, styles['admin-collapse-elem'], {
                 [styles['admin-collapse-elem--collapsed']]: collapsed,
             })}
         >

@@ -2,20 +2,31 @@ import { Menu } from "antd";
 import classNames from "classnames";
 import Navigation from "components/modules/Navigation";
 import { NavigationType } from "components/modules/Navigation/constants";
-import Icon from 'components/uiKit/Icon';
-import { chartOutlineIcon, clockIcon, listPlusIcon, menuIcon, newFileIcon, partnersIcon, questionMarkIcon, userIcon, userPlusIcon } from 'icons';
+import Icon from "components/uiKit/Icon";
+import {
+  chartOutlineIcon,
+  clockIcon,
+  listPlusIcon,
+  menuIcon,
+  newFileIcon,
+  partnersIcon,
+  questionMarkIcon,
+  userIcon,
+  userPlusIcon,
+} from "icons";
 import { memo } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import styles from "./AdminPage.module.scss";
 import AppRoutes from "./routes/AppRoutes";
 import { Page, paths } from "./routes/constants";
 
 function AdminPage(): JSX.Element {
   const history = useHistory();
+  const location = useLocation();
 
   const menuItems = [
     {
-      key: "addChangeNew",
+      key: paths[Page.NEWS],
       title: "Добавить/изменить новость",
       icon: (
         <Icon
@@ -30,7 +41,7 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: "addChangeMenu",
+      key: paths[Page.MENU],
       title: "Добавить/изменить меню",
       icon: (
         <Icon
@@ -45,7 +56,7 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: "testQuestions",
+      key: paths[Page.TEST_QUESTUIONS],
       title: "Вопросы теста",
       icon: (
         <Icon
@@ -60,7 +71,7 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: "partners",
+      key: paths[Page.PARTNERS],
       title: "Партнёры",
       icon: (
         <Icon
@@ -75,7 +86,7 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: "participants",
+      key: paths[Page.PARTICIPANTS],
       title: "Список участников",
       icon: (
         <Icon
@@ -90,7 +101,7 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: "addProjectParticipant",
+      key: paths[Page.PROJECT_PERSONS],
       title: "Добавить лиц проекта",
       icon: (
         <Icon
@@ -105,7 +116,7 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: "setCounterParameters",
+      key: paths[Page.COUNTER],
       title: "Задать параметры счетчика",
       icon: (
         <Icon
@@ -120,7 +131,7 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: "addChangeFAQ",
+      key: paths[Page.FAQ],
       title: "Добавить/изменить FAQ",
       icon: (
         <Icon
@@ -135,7 +146,7 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: "statistics",
+      key: paths[Page.STATISTICS],
       title: "Статистика",
       icon: (
         <Icon
@@ -151,15 +162,21 @@ function AdminPage(): JSX.Element {
     },
   ];
 
+  console.log(location.pathname);
+
   return (
     <div className="container">
       <Navigation navigationType={NavigationType.HEADER} />
       <div className={styles["admin-page"]}>
         <Menu
           className={classNames("menu", styles["menu"])}
-          defaultSelectedKeys={[menuItems[0].key]}
-          mode={"inline"}
-          theme={"light"}
+          defaultSelectedKeys={[
+            location.pathname === "/admin"
+              ? paths[Page.NEWS]
+              : location.pathname,
+          ]}
+          mode="inline"
+          theme="light"
         >
           {menuItems.map((item) => {
             return (

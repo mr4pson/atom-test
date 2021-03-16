@@ -18,7 +18,7 @@ import { memo } from "react";
 import { useHistory, useLocation } from "react-router";
 import styles from "./AdminPage.module.scss";
 import AppRoutes from "./routes/AppRoutes";
-import { Page, paths } from "./routes/constants";
+import { AdminsPage, paths } from "./routes/constants";
 
 function AdminPage(): JSX.Element {
   const history = useHistory();
@@ -26,7 +26,7 @@ function AdminPage(): JSX.Element {
 
   const menuItems = [
     {
-      key: paths[Page.NEWS],
+      key: paths[AdminsPage.NEWS],
       title: "Добавить/изменить новость",
       icon: (
         <Icon
@@ -37,11 +37,11 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push(paths[Page.NEWS]);
+        history.push(paths[AdminsPage.NEWS]);
       },
     },
     {
-      key: paths[Page.MENU],
+      key: paths[AdminsPage.MENU],
       title: "Добавить/изменить меню",
       icon: (
         <Icon
@@ -52,11 +52,11 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push(paths[Page.MENU]);
+        history.push(paths[AdminsPage.MENU]);
       },
     },
     {
-      key: paths[Page.TEST_QUESTUIONS],
+      key: paths[AdminsPage.TEST_QUESTUIONS],
       title: "Вопросы теста",
       icon: (
         <Icon
@@ -67,11 +67,11 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push(paths[Page.TEST_QUESTUIONS]);
+        history.push(paths[AdminsPage.TEST_QUESTUIONS]);
       },
     },
     {
-      key: paths[Page.PARTNERS],
+      key: paths[AdminsPage.PARTNERS],
       title: "Партнёры",
       icon: (
         <Icon
@@ -82,11 +82,11 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push(paths[Page.PARTNERS]);
+        history.push(paths[AdminsPage.PARTNERS]);
       },
     },
     {
-      key: paths[Page.PARTICIPANTS],
+      key: paths[AdminsPage.PARTICIPANTS],
       title: "Список участников",
       icon: (
         <Icon
@@ -97,11 +97,11 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push(paths[Page.PARTICIPANTS]);
+        history.push(paths[AdminsPage.PARTICIPANTS]);
       },
     },
     {
-      key: paths[Page.PROJECT_PERSONS],
+      key: paths[AdminsPage.PROJECT_PERSONS],
       title: "Добавить лиц проекта",
       icon: (
         <Icon
@@ -112,11 +112,11 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push(paths[Page.PROJECT_PERSONS]);
+        history.push(paths[AdminsPage.PROJECT_PERSONS]);
       },
     },
     {
-      key: paths[Page.COUNTER],
+      key: paths[AdminsPage.COUNTER],
       title: "Задать параметры счетчика",
       icon: (
         <Icon
@@ -127,11 +127,11 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push(paths[Page.COUNTER]);
+        history.push(paths[AdminsPage.COUNTER]);
       },
     },
     {
-      key: paths[Page.FAQ],
+      key: paths[AdminsPage.FAQ],
       title: "Добавить/изменить FAQ",
       icon: (
         <Icon
@@ -142,11 +142,11 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push(paths[Page.FAQ]);
+        history.push(paths[AdminsPage.FAQ]);
       },
     },
     {
-      key: paths[Page.STATISTICS],
+      key: paths[AdminsPage.STATISTICS],
       title: "Статистика",
       icon: (
         <Icon
@@ -157,12 +157,10 @@ function AdminPage(): JSX.Element {
         />
       ),
       onClick: () => {
-        history.push(paths[Page.STATISTICS]);
+        history.push(paths[AdminsPage.STATISTICS]);
       },
     },
   ];
-
-  console.log(location.pathname);
 
   return (
     <div className="container">
@@ -171,8 +169,13 @@ function AdminPage(): JSX.Element {
         <Menu
           className={classNames("menu", styles["menu"])}
           defaultSelectedKeys={[
-            location.pathname === "/admin"
-              ? paths[Page.NEWS]
+            location.pathname === "/admin" ||
+            location.pathname === paths[AdminsPage.NEWS_CREATE] ||
+            location.pathname.includes(paths[AdminsPage.NEWS_EDIT])
+              ? paths[AdminsPage.NEWS]
+              : location.pathname === paths[AdminsPage.ADD_PARTNER] ||
+                location.pathname.includes(paths[AdminsPage.EDIT_PARTNER])
+              ? paths[AdminsPage.PARTNERS]
               : location.pathname,
           ]}
           mode="inline"

@@ -9,31 +9,52 @@ import { imageAltIcon } from "icons";
 import TextRedactor from "components/uiKit/TextRedactor";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import { Page, paths } from "../routes/constants";
+import { AdminsPage, paths } from "../routes/constants";
+import { useHistory } from "react-router";
+import classNames from 'classnames';
 // import { TypeCreateNewsPageData } from './types';
 
 function AddPartnerPage(): JSX.Element {
   const [data, setData] = useState<any | null>(null);
   const formRef = useRef<FormInstance>(null);
   const location = useLocation();
+  const history = useHistory();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isChoosenFileChecked, setIsChoosenFileChecked] = useState<boolean>(
+    false
+  );
 
   const inititalFormState = {
-    name: '',
-    link: '',
+    name: "",
+    link: "",
     uploadFile: null,
-    description: '',
-  }
+    description: "",
+  };
 
   function onSubmit(): void {
     // console.log('Success:', values);
+    const formFieldsValue = formRef.current?.getFieldsValue();
+
+    if (
+      formFieldsValue.name &&
+      formFieldsValue.link &&
+      formFieldsValue.uploadFile
+    ) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        history.push(paths[AdminsPage.PARTNERS]);
+        setIsChoosenFileChecked(false);
+      }, 2000);
+    }
     console.log(formRef.current?.getFieldsValue());
   }
 
   function uploadMediaFile(e): void {
     console.log(formRef.current?.getFieldsValue());
     const files = Array.from(e.target.files);
-
     const formData = new FormData();
+
     files.forEach((file: any, i: any) => {
       formData.append(i, file);
     });
@@ -41,6 +62,7 @@ function AddPartnerPage(): JSX.Element {
     formRef.current?.setFieldsValue({
       uploadFile: formData,
     });
+    setIsChoosenFileChecked(false);
   }
 
   async function getPartnerPageData() {
@@ -52,6 +74,8 @@ function AddPartnerPage(): JSX.Element {
     getPartnerPageData();
   }, []);
 
+  console.log(!formRef.current?.getFieldsValue().uploadFile, isChoosenFileChecked)
+
   return (
     <>
       {data && (
@@ -61,7 +85,7 @@ function AddPartnerPage(): JSX.Element {
           onFinish={onSubmit}
           ref={formRef}
           initialValues={
-            location.pathname === paths[Page.ADD_PARTNER]
+            location.pathname === paths[AdminsPage.ADD_PARTNER]
               ? inititalFormState
               : data
           }
@@ -70,7 +94,8 @@ function AddPartnerPage(): JSX.Element {
             type={buttonElemType.Primary}
             htmlType={htmlType.SUBMIT}
             className={styles["add-partner-page__button-add"]}
-            onClick={onSubmit}
+            loading={loading}
+            onClick={() => setIsChoosenFileChecked(true)}
           >
             Добавить партнёра
           </ButtonElem>
@@ -94,6 +119,7 @@ function AddPartnerPage(): JSX.Element {
                   placeholder="Введите название партнёра"
                   type="text"
                   value={data?.article}
+                  disabled={loading}
                 />
               </Form.Item>
               <Form.Item
@@ -108,10 +134,13 @@ function AddPartnerPage(): JSX.Element {
                   placeholder="Ссылка на партнёра"
                   type="url"
                   value={data?.article}
+                  disabled={loading}
                 />
               </Form.Item>
               <Form.Item className={styles["form-item"]} name="uploadFile">
-                <label className={styles["page-content__upload-file"]}>
+                <label className={classNames(styles["page-content__upload-file"], {
+                  [styles['page-content__upload-file_disabled']]: loading
+                })}>
                   <Icon
                     className={styles["page-content__button-icon"]}
                     path={imageAltIcon.path}
@@ -125,9 +154,16 @@ function AddPartnerPage(): JSX.Element {
                     type="file"
                     id="multi"
                     onChange={uploadMediaFile}
+                    disabled={loading}
                   />
                 </label>
               </Form.Item>
+              {!formRef.current?.getFieldsValue().uploadFile &&
+                isChoosenFileChecked && (
+                  <span className={styles["choose-file"]}>
+                    Пожалйуста, выберите файл!
+                  </span>
+                )}
             </div>
             <div className={styles["page-content-description"]}>
               <div className={styles["page-content__title"]}>
@@ -136,9 +172,9 @@ function AddPartnerPage(): JSX.Element {
               <Form.Item className={styles["form-item"]} name="description">
                 <TextRedactor
                   initialValue={
-                    location.pathname === paths[Page.ADD_PARTNER]
-                    ? inititalFormState.description
-                    : data.description
+                    location.pathname === paths[AdminsPage.ADD_PARTNER]
+                      ? inititalFormState.description
+                      : data.description
                   }
                   formRef={formRef}
                 />

@@ -7,7 +7,7 @@ import Icon from 'components/uiKit/Icon';
 import { deleteIcon, editIcon, searchIcon } from 'icons';
 import { memo, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
-import { Page, paths } from 'components/pages/AdminPage/routes/constants';
+import { AdminsPage, paths } from 'components/pages/AdminPage/routes/constants';
 import { noteList } from './constants';
 import styles from './NewsPage.module.scss';
 import { TypeNewsPageData } from './types';
@@ -61,7 +61,7 @@ function NewsPage(): JSX.Element {
               className={styles['admin-table__icon']}
               path={editIcon.path}
               viewBox={editIcon.viewBox}
-              onClick={() => redirectToEditPage(itemData)}
+              onClick={() => handleEditNews(itemData)}
               title="AtomTest"
             />
           </Space>
@@ -104,11 +104,11 @@ function NewsPage(): JSX.Element {
     };
 
     const handleCreateNews = () => {
-      history.push(paths[Page.NEWS_CREATE])
+      history.push(paths[AdminsPage.NEWS_CREATE])
     }
 
-    const redirectToEditPage = (itemData: TypeNewsPageData) => {
-      history.push(`${paths[Page.NEWS_CREATE]}/${itemData.id}`)
+    const handleEditNews = (itemData: TypeNewsPageData) => {
+      history.push(`${paths[AdminsPage.NEWS_EDIT]}/${itemData.id}`)
     }
 
     function onSubmit (): void {

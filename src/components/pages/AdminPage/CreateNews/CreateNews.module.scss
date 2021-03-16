@@ -56,8 +56,14 @@
     margin-top: 5px;
     font-size: 16px;
     transition: opacity .5s;
+  
     &:hover {
       opacity: 0.7;
+    }
+
+    &_disabled {
+      opacity: 0.5;
+      cursor: progress;
     }
   }
   
@@ -143,4 +149,10 @@
 
 .form-item {
   margin-bottom: 0;
+}
+
+.choose-file {
+  display: block;
+  color: #ff4d4f;
+  margin-top: 15px;
 }

@@ -1,7 +1,7 @@
-import { Page } from "./constants";
+import { AdminsPage } from "./constants";
 
 export type TypeRoute = {
-  type: Page;
+  type: AdminsPage;
   path: string;
   exact?: boolean;
   component: JSX.Element;

@@ -10,12 +10,17 @@ import { statuses } from "./constants";
 import TextRedactor from "components/uiKit/TextRedactor";
 import axios from "axios";
 import { TypeCreateNewsPageData } from "./types";
-import { useLocation } from "react-router-dom";
-import { Page, paths } from "../routes/constants";
+import { useLocation, useHistory } from "react-router-dom";
+import { AdminsPage, paths } from "../routes/constants";
 
 function CreateNews(): JSX.Element {
   const [data, setData] = useState<TypeCreateNewsPageData | null>(null);
   const location = useLocation();
+  const history = useHistory();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isChoosenFileChecked, setIsChoosenFileChecked] = useState<boolean>(
+    false
+  );
 
   const inititalFormState = {
     article: "",
@@ -29,19 +34,40 @@ function CreateNews(): JSX.Element {
   const formRef = useRef<FormInstance>(null);
 
   function handleSave(): void {
+    const formFieldsValue = formRef.current?.getFieldsValue();
+
+    if (formFieldsValue.article && formFieldsValue.uploadFile) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        setIsChoosenFileChecked(false);
+        history.push(paths[AdminsPage.NEWS]);
+      }, 2000);
+      console.log(formRef.current?.getFieldsValue());
+    }
     console.log(formRef.current?.getFieldsValue());
   }
 
   function onSubmit(): void {
     // console.log('Success:', values);
-    console.log(formRef.current?.getFieldsValue());
+    const formFieldsValue = formRef.current?.getFieldsValue();
+
+    if (formFieldsValue.article && formFieldsValue.uploadFile) {
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        setIsChoosenFileChecked(false);
+        history.push(paths[AdminsPage.NEWS]);
+      }, 2000);
+      console.log(formRef.current?.getFieldsValue());
+    }
   }
 
   function uploadMediaFile(e): void {
     console.log(formRef.current?.getFieldsValue());
     const files = Array.from(e.target.files);
-
     const formData = new FormData();
+
     files.forEach((file: any, i: any) => {
       formData.append(i, file);
     });
@@ -49,12 +75,14 @@ function CreateNews(): JSX.Element {
     formRef.current?.setFieldsValue({
       uploadFile: formData,
     });
+    setIsChoosenFileChecked(false);
   }
 
   async function getCreateNewsPageData() {
     const response = await axios.get<TypeCreateNewsPageData>(
       "/mocks/getCreateNewsPageData.json"
     );
+
     setData(response.data);
   }
 
@@ -71,7 +99,7 @@ function CreateNews(): JSX.Element {
           onFinish={onSubmit}
           ref={formRef}
           initialValues={
-            location.pathname === paths[Page.NEWS_CREATE]
+            location.pathname === paths[AdminsPage.NEWS_CREATE]
               ? inititalFormState
               : data
           }
@@ -83,7 +111,7 @@ function CreateNews(): JSX.Element {
                 rules={[
                   {
                     required: true,
-                    message: "Пожалуйста, введите заголовок !",
+                    message: "Пожалуйста, введите название статьи !",
                   },
                 ]}
                 className={styles["form-item"]}
@@ -94,10 +122,13 @@ function CreateNews(): JSX.Element {
                   placeholder="Введите название статьи"
                   type="search"
                   value={data?.article}
+                  disabled={loading}
                 />
               </Form.Item>
               <Form.Item className={styles["form-item"]} name="uploadFile">
-                <label className={styles["main-data-header__upload-file"]}>
+                <label className={classNames(styles["main-data-header__upload-file"], {
+                  [styles["main-data-header__upload-file_disabled"]]: loading
+                })}>
                   <Icon
                     className={styles["main-data-header__button-icon"]}
                     path={imageAltIcon.path}
@@ -111,9 +142,14 @@ function CreateNews(): JSX.Element {
                     type="file"
                     id="multi"
                     onChange={uploadMediaFile}
+                    disabled={loading}
                   />
                 </label>
               </Form.Item>
+              {!formRef.current?.getFieldsValue().uploadFile &&
+                isChoosenFileChecked && (
+                  <span className={styles["choose-file"]}>Пожалйуста, выберите файл!</span>
+                )}
             </div>
             <div className={styles["main-data-description"]}>
               <div className={styles["create-news-page__title"]}>
@@ -122,9 +158,9 @@ function CreateNews(): JSX.Element {
               <Form.Item className={styles["form-item"]} name="description">
                 <TextRedactor
                   initialValue={
-                    location.pathname === paths[Page.NEWS_CREATE]
-                    ? inititalFormState.description
-                    : data.description
+                    location.pathname === paths[AdminsPage.NEWS_CREATE]
+                      ? inititalFormState.description
+                      : data.description
                   }
                   formRef={formRef}
                 />
@@ -147,6 +183,7 @@ function CreateNews(): JSX.Element {
                     "publication-status__select",
                     styles["publication-status__select"]
                   )}
+                  disabled={loading}
                 >
                   {statuses.map((item) => (
                     <Option key={item?.value} value={item?.value}>
@@ -162,6 +199,7 @@ function CreateNews(): JSX.Element {
                 htmlType="button"
                 className={styles["publication-footer__button-save"]}
                 onClick={handleSave}
+                loading={loading}
               >
                 Сохранить
               </ButtonElem>
@@ -169,7 +207,8 @@ function CreateNews(): JSX.Element {
                 type={buttonElemType.Primary}
                 htmlType={htmlType.SUBMIT}
                 className={styles["publication-footer__button-publish"]}
-                onClick={onSubmit}
+                onClick={() => setIsChoosenFileChecked(true)}
+                loading={loading}
               >
                 Опубликовать
               </ButtonElem>

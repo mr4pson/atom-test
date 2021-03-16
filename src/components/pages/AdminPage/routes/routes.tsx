@@ -1,7 +1,7 @@
 import NewsPage from "components/pages/AdminPage/NewsPage";
 import StatisticsPage from "components/pages/AdminPage/StatisticsPage";
 import CreateNews from "components/pages/AdminPage/CreateNews";
-import { Page, paths } from "./constants";
+import { AdminsPage, paths } from "./constants";
 import { TypeRoute } from "./type";
 import Participants from "components/pages/AdminPage/Participants";
 import SetCounterParameters from "components/pages/AdminPage/SetCounterParameters";
@@ -15,67 +15,76 @@ import ProjectPersonsPage from "components/pages/AdminPage/ProjectPersonsPage"
 export function getRoutes(): TypeRoute[] {
   return [
     {
-      type: Page.NEWS_CREATE,
-      path: paths[Page.NEWS_CREATE],
+      type: AdminsPage.NEWS_CREATE,
+      path: paths[AdminsPage.NEWS_CREATE],
       component: <CreateNews />,
     },
     {
-      type: Page.NEWS,
-      path: paths[Page.NEWS],
+      type: AdminsPage.NEWS,
+      path: paths[AdminsPage.NEWS],
       component: <NewsPage />,
       exact: true,
     },
-    
     {
-      type: Page.MENU,
-      path: paths[Page.MENU],
+      type: AdminsPage.NEWS_EDIT,
+      path: paths[AdminsPage.NEWS_EDIT],
+      component: <CreateNews />,
+    },
+    {
+      type: AdminsPage.MENU,
+      path: paths[AdminsPage.MENU],
       component: <MenuPage />,
     },
     {
-      type: Page.PARTICIPANTS,
-      path: paths[Page.PARTICIPANTS],
+      type: AdminsPage.PARTICIPANTS,
+      path: paths[AdminsPage.PARTICIPANTS],
       component: <Participants />,
       exact: true,
     },
     {
-      type: Page.STATISTICS,
-      path: paths[Page.STATISTICS],
+      type: AdminsPage.STATISTICS,
+      path: paths[AdminsPage.STATISTICS],
       component: <StatisticsPage />
     },
     {
-      type: Page.COUNTER,
-      path: paths[Page.COUNTER],
+      type: AdminsPage.COUNTER,
+      path: paths[AdminsPage.COUNTER],
       component: <SetCounterParameters />,
     },
     {
-      type: Page.MAIN,
-      path: paths[Page.MAIN],
+      type: AdminsPage.MAIN,
+      path: paths[AdminsPage.MAIN],
       component: <div />,
     },
     {
-      type: Page.FAQ,
-      path: paths[Page.FAQ],
+      type: AdminsPage.FAQ,
+      path: paths[AdminsPage.FAQ],
       component: <FaqPage />,
     },
     {
-      type: Page.TEST_QUESTUIONS,
-      path: paths[Page.TEST_QUESTUIONS],
+      type: AdminsPage.TEST_QUESTUIONS,
+      path: paths[AdminsPage.TEST_QUESTUIONS],
       component: <TestQuestionsPage />,
     },
     {
-      type: Page.PARTNERS,
-      path: paths[Page.PARTNERS],
+      type: AdminsPage.PARTNERS,
+      path: paths[AdminsPage.PARTNERS],
       component: <PartnersPage />,
       exact: true,
     },
     {
-      type: Page.ADD_PARTNER,
-      path: paths[Page.ADD_PARTNER],
+      type: AdminsPage.ADD_PARTNER,
+      path: paths[AdminsPage.ADD_PARTNER],
       component: <AddPartnerPage />,
     },
     {
-      type: Page.PROJECT_PERSONS,
-      path: paths[Page.PROJECT_PERSONS],
+      type: AdminsPage.EDIT_PARTNER,
+      path: paths[AdminsPage.EDIT_PARTNER],
+      component: <AddPartnerPage />,
+    },
+    {
+      type: AdminsPage.PROJECT_PERSONS,
+      path: paths[AdminsPage.PROJECT_PERSONS],
       component: <ProjectPersonsPage />,
     },
   ];

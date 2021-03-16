@@ -12,14 +12,14 @@ import { TypePartner } from "./types";
 import Icon from "components/uiKit/Icon";
 import AdminModal from 'components/pages/AdminPage/AdminModal';
 import { useHistory } from 'react-router';
-import { Page, paths } from "../routes/constants";
+import { AdminsPage, paths } from "../routes/constants";
 
 const { TextArea } = Input;
 
 function PartnersPage(): JSX.Element {
   const [partners, setPartners] = useState<TypePartner[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [chosenPartner, setChosenPartner] = useState<string>('');
 
   let history = useHistory();
@@ -84,7 +84,7 @@ function PartnersPage(): JSX.Element {
             viewBox={editIcon.viewBox}
           />
         ),
-        callback: () => redirectToEditPage(itemData),
+        callback: () => handleEditPartner(itemData),
       },
       {
         id: "delete",
@@ -100,13 +100,13 @@ function PartnersPage(): JSX.Element {
     ];
   };
 
-  const redirectToEditPage = (itemData: TypePartner) => {
-    history.push(`${paths[Page.ADD_PARTNER]}/${itemData.id}`)
+  const handleEditPartner = (itemData: TypePartner) => {
+    history.push(`${paths[AdminsPage.EDIT_PARTNER]}/${itemData.id}`)
   };
 
-  const handleAdd = () => {
+  const handleAddPartner = () => {
     // TODO add http create request
-    history.push(paths[Page.ADD_PARTNER]);
+    history.push(paths[AdminsPage.ADD_PARTNER]);
   }
 
   const showModal = (itemData: TypePartner) => {
@@ -134,7 +134,7 @@ function PartnersPage(): JSX.Element {
           type={buttonElemType.Primary}
           htmlType="button"
           className={styles["partners-page__create-btn"]}
-          onClick={handleAdd}
+          onClick={handleAddPartner}
         >
           Добавить партнера
         </ButtonElem>

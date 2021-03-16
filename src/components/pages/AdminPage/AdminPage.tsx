@@ -162,8 +162,6 @@ function AdminPage(): JSX.Element {
     },
   ];
 
-  console.log(location.pathname);
-
   return (
     <div className="container">
       <Navigation navigationType={NavigationType.HEADER} />

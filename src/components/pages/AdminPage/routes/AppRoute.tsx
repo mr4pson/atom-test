@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
-import { paths, Page } from './constants';
+import { paths, AdminsPage } from './constants';
 
 type Props = {
   path: string;
@@ -18,14 +18,14 @@ export function AppRoute({
   const location = useLocation();
 
   function hasRedirect(): boolean {
-    return `${location.pathname}/` === paths[Page.MAIN];
+    return `${location.pathname}/` === paths[AdminsPage.MAIN];
   }
 
   if (hasRedirect()) {
     return (
       <Redirect
         to={{
-          pathname: paths[Page.NEWS],
+          pathname: paths[AdminsPage.NEWS],
         }}
       />
     );

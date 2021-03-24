@@ -1,24 +1,47 @@
-import { memo, useRef } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from './LoginPage.module.scss';
-import { Form, Input, Button, FormInstance } from 'antd';
-import { useHistory } from 'react-router';
+import { Form, Input, Button, FormInstance, notification } from 'antd';
 import { Page, paths } from 'routes/constants';
 import { Link } from "react-router-dom";
+import { useAuth } from './useAuth';
 // import { loginPage } from 'i18n'
 
 function LoginPage(): JSX.Element {
     const formRef = useRef<FormInstance>(null);
-    const history = useHistory();
+    const { loading, login, errorInfo } = useAuth();
+    const [errorNotification, setErrorNotification] = useState<boolean>(false);
 
-    function onSubmit (): void {
-        // console.log('Success:', values);
-        console.log(formRef.current?.getFieldsValue());
-        history.push(paths[Page.HOME])
+    const close = () => {
+        console.log(
+          'Notification was closed. Either the close button was clicked or duration time elapsed.',
+        );
     };
 
-    console.log(paths[Page.FORGOT_PASSWORD]);
+    const openNotification = (type: string) => {
+        const key = `open${Date.now()}`;  
+        notification[type]({
+          message: errorInfo.message,
+          key,
+          onClose: close,
+        });
+    };
+
+    async function onSubmit (): Promise<any> {
+        const formValues = formRef.current?.getFieldsValue();
+        console.log(formValues);
+        login(formValues)
+        setErrorNotification(true);
+        // errorInfo && openNotification();
+    };
+
+    useEffect(() => {
+        if (errorNotification) {
+            setErrorNotification(false);
+            openNotification('error');
+        }
+    }, [errorInfo])
 
     return (
         <>
@@ -33,7 +56,7 @@ function LoginPage(): JSX.Element {
                 >
                     <span className={styles['login-page__title']}>Вход</span>
                     <Form.Item
-                        name="login"
+                        name="username"
                         rules={[{ required: true, message: 'Please input your login!' }]}
                     >
                         <Input className={styles['login-page__input']} placeholder='Логин' />
@@ -49,6 +72,7 @@ function LoginPage(): JSX.Element {
                             className={styles['login-page__button']}
                             type="primary"
                             htmlType="submit"
+                            loading={loading}
                         >
                             Войти
                         </Button>

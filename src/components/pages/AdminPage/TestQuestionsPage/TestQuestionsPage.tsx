@@ -84,6 +84,22 @@ function TestQuestionsPage(): JSX.Element {
         });
     }
 
+    const onQuestionSave = () => {
+        const questions = testQuestions.map((question) => ({
+            id: question.id,
+            options: question.options.map((option) => ({
+                id: option.id,
+                title: option.title,
+                image: option.image,
+                trueOption: option.trueOption,
+            })),
+            title: question.title,
+            type: question.type,
+            image: question.image,
+        }));
+        console.log(JSON.stringify(questions));
+    }
+
     const expansionOptions: TypeExpansionOption[] = [
         {
             title: 'Checkbox',
@@ -121,6 +137,12 @@ function TestQuestionsPage(): JSX.Element {
                         </AdminCollapseElem>
                     )
                 )}
+            </div>
+            <div className={styles['test-questions-page__save-wrap']}>
+                <ButtonElem
+                    className={styles['test-questions-page__add-btn']}
+                    onClick={() => onQuestionSave()}
+                >Сохранить</ButtonElem>
             </div>
         </div>
     );

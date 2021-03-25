@@ -67,6 +67,8 @@ function UserTest(props: UserTestProps): JSX.Element {
             answer: value,
         });
     }
+
+    console.log(props);
     return (
         <div className={styles['user-test']}>
             <div className="container">

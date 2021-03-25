@@ -11,6 +11,8 @@ import { TypeSelectOption } from 'components/common/types';
 import MaskedInput from 'antd-mask-input';
 import Icon from 'components/uiKit/Icon';
 import { editIcon } from 'icons';
+import { connect } from "react-redux";
+import { setJwtPairToState } from 'redux/reducers/Auth.reducer';
 import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
 import { ReactComponent as VkIcon } from './../../../assets/images/vk.svg';
 import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odnoclassniki.svg';
@@ -21,7 +23,7 @@ import { ReactComponent as TelegramIcon } from './../../../assets/images/telegra
 
 // import { loginPage } from 'i18n'
 
-function PrivateOffice(): JSX.Element {
+function PrivateOffice(props): JSX.Element {
     const formRef = useRef<any>(null);
 
     const { Option } = Select;
@@ -81,6 +83,8 @@ function PrivateOffice(): JSX.Element {
         setIsUploading(false);
 
     }
+
+    console.log(props);
 
     return (
         <>
@@ -355,4 +359,11 @@ function PrivateOffice(): JSX.Element {
     );
 }
 
-export default memo(PrivateOffice);
+const mapStateToProps = (state: any) => {
+    return {
+        jwtPair: state.auth?.jwtPair,
+    }
+}
+
+export default connect(mapStateToProps, 
+    { setJwtPairToState })(memo(PrivateOffice));

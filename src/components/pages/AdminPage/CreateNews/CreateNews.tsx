@@ -1,4 +1,4 @@
-import { Form, FormInstance, Input, Select } from "antd";
+import { Form, FormInstance, Input, Select, Spin } from "antd";
 import ButtonElem from "components/uiKit/ButtomElem";
 import { buttonElemType, htmlType } from "components/uiKit/ButtomElem/types";
 import { memo, useRef, useState, useEffect } from "react";
@@ -8,22 +8,24 @@ import classNames from "classnames";
 import { fileBlankIcon, imageAltIcon } from "icons";
 import { statuses } from "./constants";
 import TextRedactor from "components/uiKit/TextRedactor";
-import axios from "axios";
-import { TypeCreateNewsPageData } from "./types";
 import { useLocation, useHistory } from "react-router-dom";
 import { AdminsPage, paths } from "../routes/constants";
+import { useCreateNews } from "./useUpdateNews";
+import { connect } from "react-redux";
+import { newsCreationMode } from "../NewsPage/types";
+import { setCurrentIdToState } from "redux/reducers/News.reducer";
 
-function CreateNews(): JSX.Element {
-  const [data, setData] = useState<TypeCreateNewsPageData | null>(null);
+function CreateNews(props: any): JSX.Element {
   const location = useLocation();
   const history = useHistory();
-  const [loading, setLoading] = useState<boolean>(false);
   const [isChoosenFileChecked, setIsChoosenFileChecked] = useState<boolean>(
     false
   );
-
+  const { loading, createNews, currentNews, getCurrentNews, updateNews } = useCreateNews();
+  
   const inititalFormState = {
-    article: "",
+    name: "",
+    heading: "",
     status: "drafts",
     description: "",
     uploadFile: null,
@@ -33,32 +35,29 @@ function CreateNews(): JSX.Element {
 
   const formRef = useRef<FormInstance>(null);
 
-  function handleSave(): void {
+  async function handleSave(): Promise<void> {
     const formFieldsValue = formRef.current?.getFieldsValue();
 
-    if (formFieldsValue.article && formFieldsValue.uploadFile) {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
+    if (formFieldsValue.name && formFieldsValue.uploadFile && formFieldsValue.heading) {
         setIsChoosenFileChecked(false);
+        await updateNews({ ...formFieldsValue }, props.currentId)
         history.push(paths[AdminsPage.NEWS]);
-      }, 2000);
-      console.log(formRef.current?.getFieldsValue());
+        console.log(formRef.current?.getFieldsValue());
     }
     console.log(formRef.current?.getFieldsValue());
   }
 
-  function onSubmit(): void {
-    // console.log('Success:', values);
+  async function onSubmit(): Promise<void> {
     const formFieldsValue = formRef.current?.getFieldsValue();
 
-    if (formFieldsValue.article && formFieldsValue.uploadFile) {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        setIsChoosenFileChecked(false);
-        history.push(paths[AdminsPage.NEWS]);
-      }, 2000);
+    if (formFieldsValue.name && formFieldsValue.uploadFile && formFieldsValue.heading) {
+      if (props.creationMode === newsCreationMode.CREATE) {
+        await createNews({ ...formFieldsValue });
+      } else {
+        await updateNews({ ...formFieldsValue }, props.currentId);
+      }
+      setIsChoosenFileChecked(false);
+      history.push(paths[AdminsPage.NEWS]);
       console.log(formRef.current?.getFieldsValue());
     }
   }
@@ -78,30 +77,27 @@ function CreateNews(): JSX.Element {
     setIsChoosenFileChecked(false);
   }
 
-  async function getCreateNewsPageData() {
-    const response = await axios.get<TypeCreateNewsPageData>(
-      "/mocks/getCreateNewsPageData.json"
-    );
-
-    setData(response.data);
-  }
-
   useEffect(() => {
-    getCreateNewsPageData();
+    if (props.creationMode === newsCreationMode.EDIT) {
+      getCurrentNews(props.currentId);
+    }
+    return () => {
+      props.setCurrentIdToState(null);
+    }
   }, []);
 
   return (
     <>
-      {data && (
+      {(props.creationMode === newsCreationMode.EDIT ? currentNews : true) ? (
         <Form
           className={styles["create-news-page"]}
           name="basic"
           onFinish={onSubmit}
           ref={formRef}
           initialValues={
-            location.pathname === paths[AdminsPage.NEWS_CREATE]
+            location.pathname === paths[AdminsPage.NEWS_CREATE] && props.creationMode === newsCreationMode.CREATE
               ? inititalFormState
-              : data
+              : currentNews!
           }
         >
           <div className={styles["main-data"]}>
@@ -115,13 +111,32 @@ function CreateNews(): JSX.Element {
                   },
                 ]}
                 className={styles["form-item"]}
-                name="article"
+                name="name"
               >
                 <Input
                   className={styles["main-data-header__input"]}
                   placeholder="Введите название статьи"
                   type="search"
-                  value={data?.article}
+                  value={currentNews?.name}
+                  disabled={loading}
+                />
+              </Form.Item>
+              <div className={styles["create-news-page__title"]}>Рубрика</div>
+              <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Пожалуйста, введите название рубрики !",
+                  },
+                ]}
+                className={styles["form-item"]}
+                name="heading"
+              >
+                <Input
+                  className={styles["main-data-header__input"]}
+                  placeholder="Введите название рубрики"
+                  type="search"
+                  value={currentNews?.heading}
                   disabled={loading}
                 />
               </Form.Item>
@@ -160,7 +175,7 @@ function CreateNews(): JSX.Element {
                   initialValue={
                     location.pathname === paths[AdminsPage.NEWS_CREATE]
                       ? inititalFormState.description
-                      : data.description
+                      : currentNews?.description!
                   }
                   formRef={formRef}
                 />
@@ -215,9 +230,18 @@ function CreateNews(): JSX.Element {
             </div>
           </div>
         </Form>
-      )}
+      ) : <div className={styles["spin-wrapper"]}>
+      <Spin size={"large"} />
+    </div>}
     </>
   );
 }
 
-export default memo(CreateNews);
+const mapStateToProps = (state: any) => {
+  return {
+      currentId: state.news?.currentId,
+      creationMode: state.news?.creationMode
+  }
+}
+
+export default connect(mapStateToProps, { setCurrentIdToState })(memo(CreateNews));

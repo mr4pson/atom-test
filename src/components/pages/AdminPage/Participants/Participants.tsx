@@ -94,7 +94,7 @@ function Participants(): JSX.Element {
       console.log(itemData.id);
     };
   
-    const handleOk = () => {
+    const handleDelete = () => {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
@@ -201,7 +201,7 @@ function Participants(): JSX.Element {
           title={`Удаление участника "${chosenParticipant}"`}
           isModalVisible={isModalVisible}
           loading={loading}
-          handleOk={handleOk}
+          handleDelete={handleDelete}
           handleCancel={handleCancel}
         >
           <span>Вы действительно хотите удалить участника "{chosenParticipant}"?</span>

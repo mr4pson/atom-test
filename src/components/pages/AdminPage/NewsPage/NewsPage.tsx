@@ -11,205 +11,213 @@ import { AdminsPage, paths } from 'components/pages/AdminPage/routes/constants';
 import { noteList } from './constants';
 import styles from './NewsPage.module.scss';
 import { TypeNewsPageData } from './types';
-import axios from 'axios';
+import { useRemoveNews } from './useRemoveNews';
+import { connect } from "react-redux";
+import {
+  setCurrentIdToState,
+  setCreationModeEditToState,
+  setCreationModeCreateToState
+} from 'redux/reducers/News.reducer';
 
-function NewsPage(): JSX.Element {
-    const history = useHistory();
+function NewsPage(props: {
+  currentId: string;
+  setCurrentIdToState: (id: string) => void;
+  setCreationModeEditToState: () => void;
+  setCreationModeCreateToState: () => void;
+}): JSX.Element {
+  const history = useHistory();
 
-    const formRef = useRef<FormInstance>(null);
-    const { Option } = Select;
-    const [note, setNote] = useState<string>(noteList[0].value);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [chosenNews, setChosenNews] = useState<string>('');
-    const [data, setData] = useState<TypeNewsPageData[]>([]);
+  const formRef = useRef<FormInstance>(null);
+  const { Option } = Select;
+  const [note, setNote] = useState<string>(noteList[0].value);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [chosenNews, setChosenNews] = useState<string>('');
 
-    const inititalFormState = {
-      note: 'all',
-      searchNews: '',
-    }
+  const { loading, getNews, news, deleteNews } = useRemoveNews();
 
-    const columns = [
-      {
-        title: 'Название',
-        dataIndex: 'name',
-        key: 'name',
-      },
-      {
-        title: 'Дата добавления',
-        dataIndex: 'createdDate',
-        key: 'createdDate',
-      },
-      {
-        title: 'Рубрика',
-        dataIndex: 'heading',
-        key: 'heading',
-      },
-      {
-        title: 'Редактирование',
-        key: 'action',
-        render: (itemData) => (
-          <Space size="middle">
-            <Icon
-              className={styles['admin-table__icon']}
-              path={deleteIcon.path}
-              viewBox={deleteIcon.viewBox}
-              onClick={() => showModal(itemData)}
-              title="AtomTest"
-            />
-            <Icon
-              className={styles['admin-table__icon']}
-              path={editIcon.path}
-              viewBox={editIcon.viewBox}
-              onClick={() => handleEditNews(itemData)}
-              title="AtomTest"
-            />
-          </Space>
-        ),
-      },
-    ];
+  const inititalFormState = {
+    note: 'all',
+    searchNews: '',
+  }
 
-    function handleSelectChange(value: string): void {
-      setNote(value);
-      onSubmit();
-    }
+  const columns = [
+    {
+      title: 'Название',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Дата добавления',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+    },
+    {
+      title: 'Рубрика',
+      dataIndex: 'heading',
+      key: 'heading',
+    },
+    {
+      title: 'Редактирование',
+      key: 'action',
+      render: (itemData) => (
+        <Space size="middle">
+          <Icon
+            className={styles['admin-table__icon']}
+            path={deleteIcon.path}
+            viewBox={deleteIcon.viewBox}
+            onClick={() => showModal(itemData)}
+            title="AtomTest"
+          />
+          <Icon
+            className={styles['admin-table__icon']}
+            path={editIcon.path}
+            viewBox={editIcon.viewBox}
+            onClick={() => handleEditNews(itemData)}
+            title="AtomTest"
+          />
+        </Space>
+      ),
+    },
+  ];
 
-    function handlePressEnter(e) {
-      e.target.blur(); 
-      //Write you validation logic here
-    }
+  function handleSelectChange(value: string): void {
+    setNote(value);
+    onSubmit();
+  }
 
-    function handleSearchChange(): void {
-      const searchValue = formRef.current?.getFieldValue('searchNews');
-      console.log(searchValue);
-    }
-    // console.log(note);
+  function handlePressEnter(e) {
+    e.target.blur();
+    //Write you validation logic here
+  }
 
-    const showModal = (itemData: TypeNewsPageData) => {
-      setChosenNews(itemData.name);
-      setIsModalVisible(true);
-      console.log(itemData.id);
-    };
-  
-    const handleOk = () => {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        setIsModalVisible(false);
-      }, 2000);
-    };
-  
-    const handleCancel = () => {
-      setIsModalVisible(false);
-    };
+  function handleSearchChange(): void {
+    const searchValue = formRef.current?.getFieldValue('searchNews');
+    console.log(searchValue);
+  }
 
-    const handleCreateNews = () => {
-      history.push(paths[AdminsPage.NEWS_CREATE])
-    }
+  const showModal = (itemData: TypeNewsPageData) => {
+    setChosenNews(itemData.name);
+    props.setCurrentIdToState(itemData.id);
+    setIsModalVisible(true);
+    console.log(itemData.id);
+  };
 
-    const handleEditNews = (itemData: TypeNewsPageData) => {
-      history.push(`${paths[AdminsPage.NEWS_EDIT]}/${itemData.id}`)
-    }
+  const handleDelete = async () => {
+    await deleteNews(props.currentId);
+    await getNews();
+    setIsModalVisible(false);
+  };
 
-    function onSubmit (): void {
-      // console.log('Success:', values);
-      console.log(formRef.current?.getFieldsValue());
-    };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
-    async function getNewsPageData() {
-      const response = await axios.get<TypeNewsPageData[]>('/mocks/getNewsPageData.json');
-      const responseWithKey = response.data.map((item, index) => (
-        {
-          ...item,
-          key: index,
-        }
-      ))
-      setData(responseWithKey);
-    }
-  
-    useEffect(() => {
-      getNewsPageData();
-    }, [])
+  const handleCreateNews = () => {
+    history.push(paths[AdminsPage.NEWS_CREATE]);
+    props.setCreationModeCreateToState();
+  }
 
-    console.log(data);
+  const handleEditNews = (itemData: TypeNewsPageData) => {
+    history.push(`${paths[AdminsPage.NEWS_EDIT]}/${itemData.id}`)
+    props.setCurrentIdToState(itemData.id);
+    props.setCreationModeEditToState();
+  }
 
-    return (
-      <div className={styles['news-page']}>
-        <Form
-          name="basic"
-          onFinish={onSubmit}
-          ref={formRef}
-          initialValues={inititalFormState}
-        >
-          <div className={styles["tool-bar"]}>
-            <div className={styles["tool-bar__input-select-wrapper"]}>
-              <Form.Item className={styles["news-page__form-item"]} name="note">
-                <Select
-                  placeholder="Выбирите запись"
-                  className={classNames(
-                    "tool-bar__select",
-                    styles["tool-bar__select"]
-                  )}
-                  onChange={handleSelectChange}
-                  value={note}
-                >
-                  {noteList.map((item) => (
-                    <Option key={item?.id} value={item?.value}>
-                      {item?.title}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                className={styles["news-page__form-item"]}
-                name="searchNews"
+  function onSubmit(): void {
+    //TODO: after creation necessary servers API methods
+    console.log(formRef.current?.getFieldsValue());
+  };
+
+  useEffect(() => {
+    (async () => {
+      await getNews();
+    })();
+  }, [])
+
+  return (
+    <div className={styles['news-page']}>
+      <Form
+        name="basic"
+        onFinish={onSubmit}
+        ref={formRef}
+        initialValues={inititalFormState}
+      >
+        <div className={styles["tool-bar"]}>
+          <div className={styles["tool-bar__input-select-wrapper"]}>
+            <Form.Item className={styles["news-page__form-item"]} name="note">
+              <Select
+                placeholder="Выбирите запись"
+                className={classNames(
+                  "tool-bar__select",
+                  styles["tool-bar__select"]
+                )}
+                onChange={handleSelectChange}
+                value={note}
               >
-                <Input
-                  className={styles["tool-bar__input"]}
-                  placeholder="Поиск новости"
-                  type="search"
-                  onChange={handleSearchChange}
-                  onBlur={onSubmit}
-                  onPressEnter={handlePressEnter}
-                  suffix={
-                    <Icon
-                      className={styles["tool-bar__search-icon"]}
-                      path={searchIcon.path}
-                      viewBox={searchIcon.viewBox}
-                      title="AtomTest"
-                    />
-                  }
-                />
-              </Form.Item>
-            </div>
-            <ButtonElem
-              type={buttonElemType.Primary}
-              htmlType="button"
-              className={styles["tool-bar__button"]}
-              onClick={handleCreateNews}
+                {noteList.map((item) => (
+                  <Option key={item?.id} value={item?.value}>
+                    {item?.title}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              className={styles["news-page__form-item"]}
+              name="searchNews"
             >
-              Добавить новость
-            </ButtonElem>
+              <Input
+                className={styles["tool-bar__input"]}
+                placeholder="Поиск новости"
+                type="search"
+                onChange={handleSearchChange}
+                onBlur={onSubmit}
+                onPressEnter={handlePressEnter}
+                suffix={
+                  <Icon
+                    className={styles["tool-bar__search-icon"]}
+                    path={searchIcon.path}
+                    viewBox={searchIcon.viewBox}
+                    title="AtomTest"
+                  />
+                }
+              />
+            </Form.Item>
           </div>
-          <Table
-              rowClassName={styles["admin-table__row"]}
-              className={styles["admin-table"]}
-              columns={columns}
-              dataSource={data}
-              pagination={false}
-            />
-        </Form>
-        <AdminModal
-          title={`Удаление "${chosenNews}"`}
-          isModalVisible={isModalVisible}
+          <ButtonElem
+            type={buttonElemType.Primary}
+            htmlType="button"
+            className={styles["tool-bar__button"]}
+            onClick={handleCreateNews}
+          >
+            Добавить новость
+            </ButtonElem>
+        </div>
+        <Table
+          rowClassName={styles["admin-table__row"]}
+          className={styles["admin-table"]}
+          columns={columns}
+          dataSource={news}
+          pagination={false}
           loading={loading}
-          handleOk={handleOk}
-          handleCancel={handleCancel}
-        >
-          <span>Вы действительно хотите удалить "{chosenNews}"?</span>
-        </AdminModal>
-      </div>
-    );
+        />
+      </Form>
+      <AdminModal
+        title={`Удаление "${chosenNews}"`}
+        isModalVisible={isModalVisible}
+        loading={loading}
+        handleDelete={handleDelete}
+        handleCancel={handleCancel}
+      >
+        <span>Вы действительно хотите удалить "{chosenNews}"?</span>
+      </AdminModal>
+    </div>
+  );
+}
+const mapStateToProps = (state: any) => {
+  return {
+      currentId: state.news?.currentId,
+  }
 }
 
-export default memo(NewsPage);
+export default connect(mapStateToProps, 
+  { setCurrentIdToState, setCreationModeEditToState, setCreationModeCreateToState })(memo(NewsPage));

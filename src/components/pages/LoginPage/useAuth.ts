@@ -30,7 +30,6 @@ export function useAuth(): TypeUseAuthHookResult {
       history.push(paths[Page.HOME])
       return {};
     } catch ({ response }) {
-      setLoading(false);
       setAuthenticated(false);
       console.log(response);
       if (response.status === 401) {
@@ -40,6 +39,8 @@ export function useAuth(): TypeUseAuthHookResult {
         setErrorInfo({ message: 'Внутрення ошибка сервера' });
       }
       return { error: getLoginError(response) };
+    } finally {
+      setLoading(false);
     }
   }
   

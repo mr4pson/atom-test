@@ -68,7 +68,7 @@ function NumberChanger(props: Props): JSX.Element {
   function handleValueChange(event): void {
     if (regLimitNumber.test(event.target.value) && typeof +event.target.value === "number") {
       setState(
-        event.target.value > MIN_VALUE && event.target.value < props.maxValue ? event.target.value
+        event.target.value > MIN_VALUE && event.target.value < props.maxValue ? +event.target.value
         : event.target.value <= MIN_VALUE ? MIN_VALUE 
         : event.target.value >= props.maxValue ? props.maxValue
         : MIN_VALUE);

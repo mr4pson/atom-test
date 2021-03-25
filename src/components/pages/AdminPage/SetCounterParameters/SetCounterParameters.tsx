@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import styles from "./SetCounterParameters.module.scss";
 import classNames from "classnames";
 import NumberChanger from "components/uiKit/numberChanger";
@@ -11,6 +11,8 @@ import {
 } from "./constants";
 import { Form, notification, DatePicker } from "antd";
 import moment from "moment";
+import { useUpdateCounterParameters } from "./useUpdateCounterParameters";
+import { counterParametersType, StatusType } from "./types";
 
 // import { loginPage } from 'i18n'
 
@@ -18,38 +20,45 @@ function SetCounterParameters(): JSX.Element {
   const [bannerForm] = Form.useForm();
   const [testForm] = Form.useForm();
 
+  const { loading, statusType, counterName, updateCounterParameters } = useUpdateCounterParameters();
+
   const close = () => {
     console.log(
       "Notification was closed. Either the close button was clicked or duration time elapsed."
     );
   };
 
-  const openNotification = (counterName: string) => {
+  const openNotification = (counterName: string, type: string) => {
     const key = `open${Date.now()}`;
-
-    notification.open({
-      message: `Счетчик ${counterName} успешно опубликован`,
-      // description:
-      //   'A function will be be called after the notification is closed (automatically after the "duration" time of manually).',
+    notification[type]({
+      message: `Счетчик ${counterName} успешно опубликован!`,
       key,
       onClose: close,
     });
   };
 
-  function onSubmit(values: any): void {
-    // console.log('Success:', values);
-    console.log(bannerForm.getFieldValue('bannerDate'));
+  async function onSubmit(): Promise<void> {
     const bannerDate = bannerForm.getFieldValue('bannerDate');
-    console.log(moment(bannerDate).format('YYYY-MM-DD HH:mm:ss'))
     bannerForm.resetFields();
-    openNotification("баннера");
+    await updateCounterParameters(moment(bannerDate)
+      .format('YYYY-MM-DD HH:mm:ss'), counterParametersType.BANNER);
   }
 
-  function onTestSubmit(values: any): void {
-    console.log(testForm.getFieldsValue());
+  async function onTestSubmit(): Promise<void> {
+    const testDate = testForm.getFieldsValue();
     testForm.resetFields();
-    openNotification("теста");
+    await updateCounterParameters(JSON.stringify(testDate), counterParametersType.TEST);
   }
+
+  useEffect(() => {
+    if (statusType === StatusType.ERROR || statusType === StatusType.SUCCESS) {
+      openNotification(
+        counterName === counterParametersType.BANNER
+          ? 'баннера' : 'теста',
+          statusType!
+      );
+    }
+  }, [statusType, counterName])
 
   return (
     <div className={styles["counter-page"]}>
@@ -68,6 +77,12 @@ function SetCounterParameters(): JSX.Element {
           <Form.Item
             name="bannerDate"
             className={styles["counter-page__form-item"]}
+            rules={[
+              {
+                required: true,
+                message: "Пожалуйста, введите дату баннера !",
+              },
+            ]}
           >
             <DatePicker
               className={classNames(
@@ -82,6 +97,7 @@ function SetCounterParameters(): JSX.Element {
             className={styles["counter-page__button"]}
             type={buttonElemType.Primary}
             htmlType="submit"
+            loading={loading}
           >
             Опубликовать
           </ButtonElem>
@@ -104,6 +120,12 @@ function SetCounterParameters(): JSX.Element {
               key={formItem.name}
               name={formItem.name}
               className={styles["counter-page__form-item"]}
+              rules={[
+                {
+                  required: true,
+                  message: `Введите ${formItem.translation} теста !`,
+                },
+              ]}
             >
               <NumberChanger
                 className={classNames(
@@ -122,6 +144,7 @@ function SetCounterParameters(): JSX.Element {
             className={styles["counter-page__button"]}
             type={buttonElemType.Primary}
             htmlType="submit"
+            loading={loading}
           >
             Опубликовать
           </ButtonElem>

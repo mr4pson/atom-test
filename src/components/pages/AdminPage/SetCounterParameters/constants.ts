@@ -45,6 +45,7 @@ export const testFormItems = [
     initialState: initialTestFormState.testHours,
     placeholder: 'Кол-во часов',
     maxValue: 23,
+    translation: 'часы',
   },
   {
     name: 'testMinutes',
@@ -52,6 +53,7 @@ export const testFormItems = [
     initialState: initialTestFormState.testMinutes,
     placeholder: 'Кол-во минут',
     maxValue: 60,
+    translation: 'минуты',
   },
   {
     name: 'testSeconds',
@@ -59,5 +61,6 @@ export const testFormItems = [
     initialState: initialTestFormState.testSeconds,
     placeholder: 'Кол-во секунд',
     maxValue: 60,
+    translation: 'секунды',
   },
 ];

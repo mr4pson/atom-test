@@ -1,6 +1,6 @@
 import { TypeSupporter } from "./types";
 
-export const cutArrayByThree = (supporters): TypeSupporter[][] => {
+export const cutArrayByThree = (supporters: TypeSupporter[]): TypeSupporter[][] => {
     return supporters.reduce((accumulator: TypeSupporter[][], currentValue, index) => {
         if (index % 3 === 0) {
             accumulator.push([currentValue]);

@@ -13,7 +13,7 @@ import { questions, supporters } from './constants';
 import { TypeSupporter } from './types';
 import { cutArrayByThree } from './helpers';
 import CollapseElem from 'components/uiKit/CollapseElem/CollapseElem';
-import { Form, Input, Button, FormInstance } from 'antd';
+import { Form, Input, FormInstance } from 'antd';
 import { ReactComponent as SupporterLeft } from './../../../assets/images/supporter-left.svg';
 import { ReactComponent as SupporterCenter } from './../../../assets/images/supporter-center.svg';
 import { ReactComponent as SupporterRight } from './../../../assets/images/supporter-right.svg';
@@ -25,19 +25,21 @@ import { ReactComponent as Ellipse1 } from './../../../assets/images/home-page/e
 import { ReactComponent as Ellipse2 } from './../../../assets/images/home-page/ellipse2.svg';
 import { ReactComponent as Ellipse3 } from './../../../assets/images/home-page/ellipse3.svg';
 import { ReactComponent as ContactUsFooter } from './../../../assets/images/home-page/contact-us-footer.svg';
+import axios from 'axios';
 
 const { TextArea } = Input;
 
 function HomePage(): JSX.Element {
     const getSupporterClasses = (index): string => {
         return classNames(styles['supporter'], {
-            [styles['supporter--left']]: index % 3 == 0,
-            [styles['supporter--center']]: index % 3 == 1,
-            [styles['supporter--right']]: index % 3 == 2,
+            [styles['supporter--left']]: index % 3 === 0,
+            [styles['supporter--center']]: index % 3 === 1,
+            [styles['supporter--right']]: index % 3 === 2,
         });
     };
 
-    const supporterRows = cutArrayByThree(supporters);
+    let supporterRows: TypeSupporter[][] = [];
+    //  = cutArrayByThree(supporters);
     const formRef = useRef<FormInstance>(null);
 
     const renderSwitch = (index: number): JSX.Element => {
@@ -52,6 +54,15 @@ function HomePage(): JSX.Element {
                 return <SupporterLeft/>;
         }
     }
+
+    async function getPartnersData() {
+        const response = await axios.get<TypeSupporter[]>("/api/partners");
+        console.log(response.data);
+        supporterRows = cutArrayByThree(response.data);
+    }
+
+    getPartnersData();
+
 
     const onSubmit = (e) => {
         console.log(e);

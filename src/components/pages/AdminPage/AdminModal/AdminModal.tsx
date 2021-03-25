@@ -10,7 +10,7 @@ type Props = {
   isModalVisible: boolean;
   loading: boolean;
   children: ReactNode;
-  handleOk: () => void;
+  handleDelete: () => void;
   handleCancel: () => void;
 }
 
@@ -20,7 +20,7 @@ function AdminModal(props: Props): JSX.Element {
         title={props.title}
         className={classNames("delete-modal", styles["delete-modal"])}
         visible={props.isModalVisible}
-        onOk={props.handleOk}
+        onOk={props.handleDelete}
         onCancel={props.handleCancel}
         footer={[
           <ButtonElem
@@ -35,7 +35,7 @@ function AdminModal(props: Props): JSX.Element {
             key="submit"
             type={buttonElemType.Primary}
             loading={props.loading}
-            onClick={props.handleOk}
+            onClick={props.handleDelete}
           >
             Подтвердить
           </ButtonElem>,

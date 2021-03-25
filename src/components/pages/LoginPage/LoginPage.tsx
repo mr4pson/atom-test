@@ -6,9 +6,11 @@ import { Form, Input, Button, FormInstance, notification } from 'antd';
 import { Page, paths } from 'routes/constants';
 import { Link } from "react-router-dom";
 import { useAuth } from './useAuth';
+import { connect } from "react-redux";
+import { setJwtPairToState } from 'redux/reducers/Auth.reducer';
 // import { loginPage } from 'i18n'
 
-function LoginPage(): JSX.Element {
+function LoginPage(props): JSX.Element {
     const formRef = useRef<FormInstance>(null);
     const { loading, login, errorInfo } = useAuth();
     const [errorNotification, setErrorNotification] = useState<boolean>(false);
@@ -40,6 +42,9 @@ function LoginPage(): JSX.Element {
         if (errorNotification) {
             setErrorNotification(false);
             openNotification('error');
+        }
+        return () => {
+            props.setJwtPairToState(localStorage.getItem('jwtPair'));
         }
     }, [errorInfo])
 
@@ -90,4 +95,5 @@ function LoginPage(): JSX.Element {
     );
 }
 
-export default memo(LoginPage);
+export default connect(null, 
+    { setJwtPairToState })(memo(LoginPage));

@@ -115,7 +115,7 @@ function PartnersPage(): JSX.Element {
     console.log(itemData.id);
   };
 
-  const handleOk = () => {
+  const handleDelete = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -152,7 +152,7 @@ function PartnersPage(): JSX.Element {
         title={`Удаление "${chosenPartner}"`}
         isModalVisible={isModalVisible}
         loading={loading}
-        handleOk={handleOk}
+        handleDelete={handleDelete}
         handleCancel={handleCancel}
       >
         <span>Вы действительно хотите удалить партнера "{chosenPartner}"?</span>

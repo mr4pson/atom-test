@@ -1,31 +1,27 @@
-import { memo, useRef } from 'react';
+import { Col, Form, FormInstance, Input, Row } from 'antd';
+import classNames from 'classnames';
+import DictationTimer from 'components/modules/DictationTimer';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import ButtonElem from 'components/uiKit/ButtomElem';
-import styles from './HomePage.module.scss';
-import { homePage } from 'i18n'
 import { buttonElemType, htmlType } from 'components/uiKit/ButtomElem/types';
-import DictationTimer from 'components/modules/DictationTimer';
-import ReactHtmlParser from 'react-html-parser';
-import { Row, Col } from 'antd';
-import classNames from 'classnames';
-import { questions, supporters } from './constants';
-import { TypeSupporter } from './types';
-import { cutArrayByThree } from './helpers';
 import CollapseElem from 'components/uiKit/CollapseElem/CollapseElem';
-import { Form, Input, FormInstance } from 'antd';
-import { ReactComponent as SupporterLeft } from './../../../assets/images/supporter-left.svg';
-import { ReactComponent as SupporterCenter } from './../../../assets/images/supporter-center.svg';
-import { ReactComponent as SupporterRight } from './../../../assets/images/supporter-right.svg';
+import { homePage } from 'i18n';
+import { memo, useEffect, useRef } from 'react';
+import ReactHtmlParser from 'react-html-parser';
+import { ReactComponent as ContactUsFooter } from './../../../assets/images/home-page/contact-us-footer.svg';
+import { ReactComponent as Ellipse1 } from './../../../assets/images/home-page/ellipse1.svg';
+import { ReactComponent as Ellipse2 } from './../../../assets/images/home-page/ellipse2.svg';
+import { ReactComponent as Ellipse3 } from './../../../assets/images/home-page/ellipse3.svg';
 import { ReactComponent as HowToParticipate1 } from './../../../assets/images/home-page/how-to-participate1.svg';
 import { ReactComponent as HowToParticipate2 } from './../../../assets/images/home-page/how-to-participate2.svg';
 import { ReactComponent as HowToParticipate3 } from './../../../assets/images/home-page/how-to-participate3.svg';
 import { ReactComponent as HowToParticipate4 } from './../../../assets/images/home-page/how-to-participate4.svg';
-import { ReactComponent as Ellipse1 } from './../../../assets/images/home-page/ellipse1.svg';
-import { ReactComponent as Ellipse2 } from './../../../assets/images/home-page/ellipse2.svg';
-import { ReactComponent as Ellipse3 } from './../../../assets/images/home-page/ellipse3.svg';
-import { ReactComponent as ContactUsFooter } from './../../../assets/images/home-page/contact-us-footer.svg';
-import axios from 'axios';
+import { supporters } from './constants';
+import { cutArrayByThree, renderSwitch } from './helpers';
+import styles from './HomePage.module.scss';
+import { TypeSupporter } from './types';
+import { useHomePage } from './useHomePage';
 
 const { TextArea } = Input;
 
@@ -38,35 +34,23 @@ function HomePage(): JSX.Element {
         });
     };
 
-    let supporterRows: TypeSupporter[][] = [];
-    //  = cutArrayByThree(supporters);
+    const supporterRows = cutArrayByThree(supporters);
     const formRef = useRef<FormInstance>(null);
-
-    const renderSwitch = (index: number): JSX.Element => {
-        switch(index % 3) {
-            case 0:
-                return <SupporterLeft/>;
-            case 1:
-                return <SupporterCenter/>;
-            case 2:
-                return <SupporterRight/>;
-            default:
-                return <SupporterLeft/>;
-        }
-    }
-
-    async function getPartnersData() {
-        const response = await axios.get<TypeSupporter[]>("/api/partners");
-        console.log(response.data);
-        supporterRows = cutArrayByThree(response.data);
-    }
-
-    getPartnersData();
-
+    
+    const { questions, counterParameters, getFaqQuestions, getCounterParameters } = useHomePage();
 
     const onSubmit = (e) => {
         console.log(e);
     }
+
+    useEffect(() => {
+        Promise.all([
+            getFaqQuestions(),
+            getCounterParameters(),
+        ]).then(() => {
+            console.log('loaded');
+        });
+    }, []);
 
     return (
         <div className={styles["home-page"]}>
@@ -82,7 +66,7 @@ function HomePage(): JSX.Element {
                         </div>
                     </div>
                     <div className="right-bar">
-                        <DictationTimer />
+                        {counterParameters?.data && <DictationTimer dictantDateString={counterParameters?.data as string} />}
                     </div>
                 </div>
                 <div className={styles['about-project']}>
@@ -140,11 +124,11 @@ function HomePage(): JSX.Element {
                     <div className={styles['supporters__body']}>
                         {supporterRows.map((supporterRow: TypeSupporter[], index) => (
                             <Row key={index}>
-                                {supporterRow.map((supporter: TypeSupporter, index) => (
-                                    <Col span={8} className={styles['gutter-row']}>
-                                        <div key={index} className={getSupporterClasses(index)}>
+                                {supporterRow.map((supporter: TypeSupporter, i) => (
+                                    <Col key={i} span={8} className={styles['gutter-row']}>
+                                        <div className={getSupporterClasses(i)}>
                                             <div className={styles['supporter__bg']}>
-                                                {renderSwitch(index)}
+                                                {renderSwitch(i)}
                                             </div>
                                             <div className={styles['supporter__avatar']} style={{ backgroundImage: 'url(supporters/'+ supporter.avatar +')' }}></div>
                                             <div className={styles['supporter__name']}>{ReactHtmlParser(supporter.fullName)}</div>
@@ -213,8 +197,8 @@ function HomePage(): JSX.Element {
                         {ReactHtmlParser(homePage.frequentlyAskedQuestions.title)}
                     </div>
                     <div className={styles['q-and-a__body']}>
-                        {questions.map((question) => (
-                            <CollapseElem title={question.title}>{question.answer}</CollapseElem>
+                        {questions.map((question, index) => (
+                            <CollapseElem key={index} title={question.title}>{question.description as string}</CollapseElem>
                         ))}
                     </div>
                 </div>

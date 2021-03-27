@@ -4,10 +4,10 @@ import AdminModal from 'components/pages/AdminPage/AdminModal';
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import Icon from 'components/uiKit/Icon';
-import { deleteIcon, searchIcon, visibleIcon } from 'icons';
+import { deleteIcon, editIcon, searchIcon, unVisibleIcon, visibleIcon } from 'icons';
 import { memo, useRef, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { paths } from 'components/pages/AdminPage/routes/constants';
+import { AdminsPage, paths } from 'components/pages/AdminPage/routes/constants';
 import { participantList } from './constants';
 import styles from './Participants.module.scss';
 import axios from 'axios';
@@ -62,11 +62,27 @@ function Participants(): JSX.Element {
               onClick={() => showModal(itemData)}
               title="AtomTest"
             />
+            {
+              itemData.visible 
+                ? <Icon
+                className={styles['admin-table__icon']}
+                path={visibleIcon.path}
+                viewBox={visibleIcon.viewBox}
+                title="AtomTest"
+                onClick={() => handleVisibleChange(itemData)}
+              />  : <Icon
+                className={styles['admin-table__icon']}
+                path={unVisibleIcon.path}
+                viewBox={unVisibleIcon.viewBox}
+                title="AtomTest"
+                onClick={() => handleVisibleChange(itemData)}
+              />
+              }
             <Icon
               className={styles['admin-table__icon']}
-              path={visibleIcon.path}
-              viewBox={visibleIcon.viewBox}
-              title="AtomTest"
+              path={editIcon.path}
+              viewBox={editIcon.viewBox}
+              title="EditParticipant"
             />
           </Space>
         ),
@@ -108,7 +124,7 @@ function Participants(): JSX.Element {
 
     const handleCreateParticipant = () => {
       // Add when mock up will finished
-      history.push(paths[''])
+      history.push(paths[AdminsPage.ADD_PARTICIPANT])
     }
 
     function onSubmit (): void {
@@ -126,10 +142,21 @@ function Participants(): JSX.Element {
       ))
       setData(responseWithKey);
     }
-  
+
+    function handleVisibleChange(itemData: any): void {
+      setData((prevState) => {
+        const data = [...prevState];
+        const dataItem = data.find((item) => item.id === itemData.id);
+        dataItem.visible = !dataItem.visible;
+        return data;
+      })
+    }
+
     useEffect(() => {
       getParticipantsData();
     }, [])
+
+    console.log(data);
 
     return (
       <div className={styles['participants-page']}>

@@ -43,7 +43,7 @@ function UserTest(props: UserTestProps): JSX.Element {
         const formValue = formRef.current?.getFieldsValue();
         const answers = { ...props.answers, [question.id]: formValue.answer };
         props.setStateAnswersToState(answers);
-        console.log(answers);
+        console.log(JSON.stringify(JSON.stringify(answers)));
 
         if (+questionNumber === questionsNumber) {
             history.push(paths[Page.USER_TEST_COMPLETE]);

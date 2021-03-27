@@ -11,6 +11,8 @@ export type TypeCollapseConfig = {
     title: string;
     data?: any;
     actions: TypeAction[];
+    body?: any;
+    description?: string;
     isEditing?: boolean;
     collapseOn?: string;
     options?: TypeTestQuestionOption[];

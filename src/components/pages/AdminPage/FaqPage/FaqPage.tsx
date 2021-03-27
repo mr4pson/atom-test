@@ -1,5 +1,6 @@
 import { Form, Input } from 'antd';
 import axios from 'axios';
+import { getJwtPair } from 'components/pages/LoginPage/helpers';
 import AdminCollapseElem from "components/uiKit/AdminCollapse";
 import { TypeAction, TypeCollapseConfig } from 'components/uiKit/AdminCollapse/types';
 import ButtonElem from 'components/uiKit/ButtomElem';
@@ -18,19 +19,29 @@ function FaqPage(): JSX.Element {
     const [faqQuestions, setFaqQuestions] = useState<TypeFaqQuestion[]>([]);
 
     const getQuestions = async () => {
-        const questionsResponse = await axios.get<TypeFaqQuestion[]>('/mocks/getFaqPageQuestions.json');
+        const questionsResponse = await axios.get<TypeFaqQuestion[]>('/api/faqs');
         const questions = questionsResponse.data.map((question) => ({
             ...question,
-            actions: getActions(false)
+            actions: getActions(false),
+            body: question.description as string,
+            isEditing: false,
+            collapseOn: 'edit'
         }));
         setFaqQuestions(questions);
+    }
+
+    const curJwtPair = getJwtPair();
+    const options = {
+        headers: {
+            'Authorization': `Bearer ${curJwtPair}`,
+            'withCredentials': true
+        },
     }
 
     useEffect(() => {
         getQuestions();
     }, []);
 
-    // console.log(faqQuestions);
     const getActions = (isEditing: boolean = false): TypeAction[] => {
         return [
             {
@@ -44,15 +55,24 @@ function FaqPage(): JSX.Element {
                     } else {
                         action.icon = <EditIcon />;
                         Object.assign(config, formValues);
-                        // TODO request to backend
                         if (config.id) {
-                            console.log('update');
+                            axios.put(
+                                '/api/faqs/' + config.id, 
+                                { description: config.body, title: config.title }, 
+                                options
+                            ).then(() => {
+                                console.log('Updated');
+                            });
                         } else {
-                            console.log('create');
-                            // TODO remove and replace with requested ID
-                            config.id = Math.round(Math.random() * 100);
+                            axios.post(
+                                '/api/faqs', 
+                                { description: config.description, title: config.title }, 
+                                options
+                            ).then((response) => {
+                                console.log('Created', response.data);
+                                config.id = response.data._id;
+                            });
                         }
-                        console.log(config);
                     }
                 },
             },
@@ -60,12 +80,21 @@ function FaqPage(): JSX.Element {
                 id: 'Delete',
                 icon: <TrashIcon />,
                 callback: (action: TypeAction, config: TypeCollapseConfig) => {
+                    console.log(faqQuestions);
                     if (!config.id) {
                         return;
                     }
                     if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
-                        // TODO request to backend
-                        setFaqQuestions(faqQuestions.filter(faqQuestion => faqQuestion.id !== config.id));
+                        axios.delete('/api/faqs/' + config.id, options).then((response) => {
+                            console.log(response.data);
+                            setFaqQuestions(response.data.map((question) => ({
+                                ...question,
+                                actions: getActions(false),
+                                body: question.description as string,
+                                isEditing: false,
+                                collapseOn: 'edit'
+                            })));
+                        });
                     }
                 },
             }

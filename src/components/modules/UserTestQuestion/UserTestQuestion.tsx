@@ -52,7 +52,7 @@ function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
                                     <UserTestOption
                                         key={index}
                                         type={props.question.type}
-                                        value={option.value}
+                                        value={option._id}
                                     >{option.title}</UserTestOption>)
                                 )}
                             </div>
@@ -71,7 +71,7 @@ function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
                                     <UserTestOption
                                         key={index}
                                         type={props.question.type}
-                                        value={option.value}
+                                        value={option._id}
                                     >{option.title}</UserTestOption>)
                                 )}
                             </div>

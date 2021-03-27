@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getJwtPair } from 'components/pages/LoginPage/helpers';
 import AdminCollapseElem from "components/uiKit/AdminCollapse";
 import ButtonElem from 'components/uiKit/ButtomElem';
 import ExpansionSelectButton from 'components/uiKit/ExpansionSelectButton';
@@ -12,15 +13,25 @@ import { QuestionOptionType, TypeTestQuestion } from './types';
 function TestQuestionsPage(): JSX.Element {
     const [testQuestions, setTestQuestions] = useState<TypeTestQuestion[]>([]);
     const [rerender, setRerender] = useState<boolean>(true);
+    const curJwtPair: string = getJwtPair();
+    const options = {
+        headers: {
+            'Authorization': `Bearer ${curJwtPair}`,
+            'withCredentials': true
+        },
+    }
 
     const getQuestions = async () => {
-        const questionsResponse = await axios.get<TypeTestQuestion[]>('/mocks/getTestPageQuestions.json');
-        return questionsResponse.data;
+        const questionsResponse = await axios.get<TypeTestQuestion[]>('/api/questions', options);
+        return questionsResponse.data.map((question) => ({
+            ...question,
+            collapseOn: 'edit',
+        }));
     }
 
     function transformQuestionData(data: TypeTestQuestion[]) {
         const questions = data.map((question) => {
-            question.actions = getQuestionActions(question.isEditing, setTestQuestions, testQuestions);
+            question.actions = getQuestionActions(question.isEditing, setTestQuestions, testQuestions, setRerender);
             question.options = question.options.map((option) => (
                 {
                     ...option,
@@ -58,7 +69,7 @@ function TestQuestionsPage(): JSX.Element {
             body: <div></div>,
             isEditing: true,
             collapseOn: 'edit',
-            actions: getQuestionActions(true, setTestQuestions, testQuestions),
+            actions: getQuestionActions(true, setTestQuestions, testQuestions, setRerender),
             options: [],
         }]));
     }
@@ -82,22 +93,6 @@ function TestQuestionsPage(): JSX.Element {
         
             return questions;
         });
-    }
-
-    const onQuestionSave = () => {
-        const questions = testQuestions.map((question) => ({
-            id: question.id,
-            options: question.options.map((option) => ({
-                id: option.id,
-                title: option.title,
-                image: option.image,
-                trueOption: option.trueOption,
-            })),
-            title: question.title,
-            type: question.type,
-            image: question.image,
-        }));
-        console.log(JSON.stringify(questions));
     }
 
     const expansionOptions: TypeExpansionOption[] = [
@@ -137,12 +132,6 @@ function TestQuestionsPage(): JSX.Element {
                         </AdminCollapseElem>
                     )
                 )}
-            </div>
-            <div className={styles['test-questions-page__save-wrap']}>
-                <ButtonElem
-                    className={styles['test-questions-page__add-btn']}
-                    onClick={() => onQuestionSave()}
-                >Сохранить</ButtonElem>
             </div>
         </div>
     );

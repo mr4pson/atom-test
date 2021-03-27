@@ -6,15 +6,16 @@ export enum QuestionType {
 }
 
 export type TypeUserTestQuestion = {
-    id: number;
+    _id: string;
     title: string;
     image?: string;
     type: QuestionType;
     options: TypeUserTestOption[];
 }
 export type TypeUserTestOption = {
+    _id: string;
     title: string;
-    value: number;
+    image: string;
 }
 
 export type UserTestProps = {

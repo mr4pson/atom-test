@@ -10,7 +10,8 @@ import TestQuestionsPage from "components/pages/AdminPage/TestQuestionsPage";
 import PartnersPage from "components/pages/AdminPage/PartnersPage";
 import AddPartnerPage from "components/pages/AdminPage/AddPartnerPage";
 import MenuPage from "components/pages/AdminPage/MenuPage";
-import ProjectPersonsPage from "components/pages/AdminPage/ProjectPersonsPage"
+import ProjectPersonsPage from "components/pages/AdminPage/ProjectPersonsPage";
+import UpdateParticipant from "components/pages/AdminPage/UpdateParticipant";
 
 export function getRoutes(): TypeRoute[] {
   return [
@@ -40,6 +41,16 @@ export function getRoutes(): TypeRoute[] {
       path: paths[AdminsPage.PARTICIPANTS],
       component: <Participants />,
       exact: true,
+    },
+    {
+      type: AdminsPage.ADD_PARTICIPANT,
+      path: paths[AdminsPage.ADD_PARTICIPANT],
+      component: <UpdateParticipant />,
+    },
+    {
+      type: AdminsPage.EDIT_PARTICIPANT,
+      path: paths[AdminsPage.EDIT_PARTICIPANT],
+      component: <UpdateParticipant />,
     },
     {
       type: AdminsPage.STATISTICS,

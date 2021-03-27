@@ -3,16 +3,9 @@ import moment from "moment";
 import { useState } from "react";
 import { TypeNewsPageData } from "../NewsPage/types";
 import { getJwtPair } from "components/pages/LoginPage/helpers";
+import { TypeUseUpdateNewsResult } from "./types";
 
-type TypeUseCreateNewsResult = {
-  loading: boolean;
-  createNews: (formData: any) => Promise<any>;
-  currentNews: TypeNewsPageData | null;
-  getCurrentNews: (id: string) => Promise<any>;
-  updateNews: (formData: any, id: string) => Promise<any>;
-}
-
-export function useCreateNews(): TypeUseCreateNewsResult {
+export function useCreateNews(): TypeUseUpdateNewsResult {
   const [loading, setLoading] = useState<boolean>(false);
   const curJwtPair: string = getJwtPair();
   const [currentNews, setCurrentNews] = useState<TypeNewsPageData | null>(null);

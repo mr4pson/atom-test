@@ -84,8 +84,6 @@ function PrivateOffice(props): JSX.Element {
 
     }
 
-    console.log(props);
-
     return (
         <>
             <div className='container'>

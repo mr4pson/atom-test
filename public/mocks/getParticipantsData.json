@@ -4,69 +4,79 @@
     "name": "Иванов Андрей Павлович",
     "registrationDate": "01.03.2021",
     "city": "Омск",
-    "number": "+7 (999) 999-99-99"
+    "number": "+7 (999) 999-99-99",
+    "visible": true
   },
   {
     "id": "2",
     "name": "Иванов Андрей Павлович",
     "registrationDate": "01.03.2021",
     "city": "Омск",
-    "number": "+7 (999) 999-99-99"
+    "number": "+7 (999) 999-99-99",
+    "visible": true
   },
   {
     "id": "3",
     "name": "Иванов Андрей Павлович",
     "registrationDate": "01.03.2021",
     "city": "Омск",
-    "number": "+7 (999) 999-99-99"
+    "number": "+7 (999) 999-99-99",
+    "visible": false
   },
   {
     "id": "4",
     "name": "Иванов Андрей Павлович",
     "registrationDate": "01.03.2021",
     "city": "Омск",
-    "number": "+7 (999) 999-99-99"
+    "number": "+7 (999) 999-99-99",
+    "visible": true
   },
   {
     "id": "5",
     "name": "Иванов Андрей Павлович",
     "registrationDate": "01.03.2021",
     "city": "Омск",
-    "number": "+7 (999) 999-99-99"
+    "number": "+7 (999) 999-99-99",
+    "visible": false
   },
   {
     "id": "6",
     "name": "Иванов Андрей Павлович",
     "registrationDate": "01.03.2021",
     "city": "Омск",
-    "number": "+7 (999) 999-99-99"
+    "number": "+7 (999) 999-99-99",
+    "visible": true
   },
   {
     "id": "7",
     "name": "Иванов Андрей Павлович",
     "registrationDate": "01.03.2021",
     "city": "Омск",
-    "number": "+7 (999) 999-99-99"
+    "number": "+7 (999) 999-99-99",
+    "visible": true
   },
   {
     "id": "8",
     "name": "Иванов Андрей Павлович",
     "registrationDate": "01.03.2021",
     "city": "Омск",
-    "number": "+7 (999) 999-99-99"
+    "number": "+7 (999) 999-99-99",
+    "visible": true
   },
   {
     "id": "9",
     "name": "Иванов Андрей Павлович",
     "registrationDate": "01.03.2021",
     "city": "Омск",
-    "number": "+7 (999) 999-99-99"
+    "number": "+7 (999) 999-99-99",
+    "visible": false
   },
   {
     "id": "10",
     "name": "Иванов Андрей Павлович",
     "registrationDate": "01.03.2021",
     "city": "Омск",
-    "number": "+7 (999) 999-99-99"
+    "number": "+7 (999) 999-99-99",
+    "visible": true
   }
 ]

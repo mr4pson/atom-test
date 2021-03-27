@@ -1,16 +1,13 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import styles from "./SetCounterParameters.module.scss";
 import classNames from "classnames";
 import NumberChanger from "components/uiKit/numberChanger";
 import ButtonElem from "components/uiKit/ButtomElem";
 import { buttonElemType } from "components/uiKit/ButtomElem/types";
-import {
-  initialBannerFormState,
-  initialTestFormState,
-  testFormItems,
-} from "./constants";
 import { Form, notification, DatePicker } from "antd";
 import moment from "moment";
+import { useUpdateCounterParameters } from "./useUpdateCounterParameters";
+import { counterParametersType, StatusType } from "./types";
 
 // import { loginPage } from 'i18n'
 
@@ -18,42 +15,98 @@ function SetCounterParameters(): JSX.Element {
   const [bannerForm] = Form.useForm();
   const [testForm] = Form.useForm();
 
+  const {
+    bannerData,
+    testData,
+    loading,
+    statusType,
+    counterName,
+    getCounterParameters,
+    updateCounterParameters
+  } = useUpdateCounterParameters();
+
+  const initialBannerFormState = {
+    bannerDate: moment(bannerData)
+  };
+
+  const initialTestFormState = {
+    testHours: testData?.testHours,
+    testMinutes: testData?.testMinutes,
+    testSeconds: testData?.testSeconds,
+  }
+
+  const testFormItems = [
+    {
+      name: 'testHours',
+      fieldName: 'testHours',
+      initialState: initialTestFormState.testHours,
+      placeholder: 'Кол-во часов',
+      maxValue: 23,
+      translation: 'часы',
+    },
+    {
+      name: 'testMinutes',
+      fieldName: 'testMinutes',
+      initialState: initialTestFormState.testMinutes,
+      placeholder: 'Кол-во минут',
+      maxValue: 60,
+      translation: 'минуты',
+    },
+    {
+      name: 'testSeconds',
+      fieldName: 'testSeconds',
+      initialState: initialTestFormState.testSeconds,
+      placeholder: 'Кол-во секунд',
+      maxValue: 60,
+      translation: 'секунды',
+    },
+  ];
+
   const close = () => {
     console.log(
       "Notification was closed. Either the close button was clicked or duration time elapsed."
     );
   };
 
-  const openNotification = (counterName: string) => {
+  const openNotification = (counterName: string, type: string) => {
     const key = `open${Date.now()}`;
-
-    notification.open({
-      message: `Счетчик ${counterName} успешно опубликован`,
-      // description:
-      //   'A function will be be called after the notification is closed (automatically after the "duration" time of manually).',
+    notification[type]({
+      message: `Счетчик ${counterName} успешно опубликован!`,
       key,
       onClose: close,
     });
   };
 
-  function onSubmit(values: any): void {
-    // console.log('Success:', values);
-    console.log(bannerForm.getFieldValue('bannerDate'));
+  async function onSubmit(): Promise<void> {
     const bannerDate = bannerForm.getFieldValue('bannerDate');
-    console.log(moment(bannerDate).format('YYYY-MM-DD HH:mm:ss'))
-    bannerForm.resetFields();
-    openNotification("баннера");
+    console.log(moment(bannerDate).format());
+    await updateCounterParameters(moment(bannerDate)
+      .format('YYYY-MM-DD HH:mm:ss'), counterParametersType.BANNER);
   }
 
-  function onTestSubmit(values: any): void {
-    console.log(testForm.getFieldsValue());
-    testForm.resetFields();
-    openNotification("теста");
+  async function onTestSubmit(): Promise<void> {
+    const testDate = testForm.getFieldsValue();
+    await updateCounterParameters(JSON.stringify(testDate), counterParametersType.TEST);
   }
+
+  useEffect(() => {
+    getCounterParameters(counterParametersType.BANNER);
+    getCounterParameters(counterParametersType.TEST);
+  }, []);
+
+  useEffect(() => {
+    if (statusType === StatusType.ERROR || statusType === StatusType.SUCCESS) {
+      openNotification(
+        counterName === counterParametersType.BANNER
+          ? 'баннера' : 'теста',
+          statusType!
+      );
+    }
+  }, [statusType, counterName])
 
   return (
     <div className={styles["counter-page"]}>
-      <Form
+      {bannerData && <Form
         form={bannerForm}
         name="basic"
         initialValues={initialBannerFormState}
@@ -68,13 +121,19 @@ function SetCounterParameters(): JSX.Element {
           <Form.Item
             name="bannerDate"
             className={styles["counter-page__form-item"]}
+            rules={[
+              {
+                required: true,
+                message: "Пожалуйста, введите дату баннера !",
+              },
+            ]}
           >
             <DatePicker
               className={classNames(
                 styles["test-counter__input"],
                 styles["test-counter__tool"],
-              )} 
-              placeholder="Счетчик баннера" 
+              )}
+              placeholder="Счетчик баннера"
               showTime
             />
           </Form.Item>
@@ -82,12 +141,13 @@ function SetCounterParameters(): JSX.Element {
             className={styles["counter-page__button"]}
             type={buttonElemType.Primary}
             htmlType="submit"
+            loading={loading}
           >
             Опубликовать
           </ButtonElem>
         </div>
-      </Form>
-      <Form
+      </Form>}
+      {testData && <Form
         form={testForm}
         name="basic"
         initialValues={initialTestFormState}
@@ -104,6 +164,12 @@ function SetCounterParameters(): JSX.Element {
               key={formItem.name}
               name={formItem.name}
               className={styles["counter-page__form-item"]}
+              rules={[
+                {
+                  required: true,
+                  message: `Введите ${formItem.translation} теста !`,
+                },
+              ]}
             >
               <NumberChanger
                 className={classNames(
@@ -122,11 +188,12 @@ function SetCounterParameters(): JSX.Element {
             className={styles["counter-page__button"]}
             type={buttonElemType.Primary}
             htmlType="submit"
+            loading={loading}
           >
             Опубликовать
           </ButtonElem>
         </div>
-      </Form>
+      </Form>}
     </div>
   );
 }

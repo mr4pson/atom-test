@@ -1,5 +1,6 @@
 import { Form, FormInstance } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import axios from 'axios';
 import classNames from 'classnames';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from "components/modules/Navigation/constants";
@@ -13,20 +14,42 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import { setStateAnswersToState, setStateIsTimerFinishedToState } from 'redux/reducers/UserTest.reducer';
 import { Page, paths } from 'routes/constants';
+import { getJwtPair } from '../LoginPage/helpers';
 import { ReactComponent as QuestionsInfoBg } from './../../../assets/images/user-test/questions-info-bg.svg';
 import { getNextQuestionLink } from './helper';
-import { questions } from './mocks';
-import { UserTestProps } from './types';
+import { QuestionType, TypeUserTestQuestion, UserTestProps } from './types';
 import styles from './UserTest.module.scss';
 
 function UserTest(props: UserTestProps): JSX.Element {
     const { questionNumber } = useParams() as any;
-    const questionsNumber = questions.length;
-    const questionIndex = questions.findIndex((question) => question.id === +questionNumber);
-    const question = questions[questionIndex];
+    const [questions, setQuestions] = useState<TypeUserTestQuestion[]>([]);
+    const [question, setQuestion] = useState<TypeUserTestQuestion>();
+    const [questionsNumber, setQuestionsNumber] = useState<number>();
     const formRef = useRef<FormInstance>(null);
     const history = useHistory();
     const [nextButtonDisabled, setNextButtonDisabled] = useState<boolean>(true);
+
+    const curJwtPair: string = getJwtPair();
+    const options = {
+        headers: {
+            'Authorization': `Bearer ${curJwtPair}`,
+            'withCredentials': true
+        },
+    }
+
+    const getQuestions = async () => {
+        const response = await axios.get<TypeUserTestQuestion[]>('/api/questions', options);
+        const questions = response.data.map((question) => ({
+            ...question,
+            type: question.type === ('CHECKBOX' as QuestionType) && !question.options.find((option) => option.image) ? QuestionType.SINGLE :
+            question.type === ('CHECKBOX' as QuestionType) && question.options.find((option) => option.image) ? QuestionType.SENGLE_PICTURE :
+            question.type === ('RADIO' as QuestionType) && !question.options.find((option) => option.image) ? QuestionType.MULTIPLE :
+            question.type === ('RADIO' as QuestionType) && question.options.find((option) => option.image) ? QuestionType.MULTIPLE_PICTURE : QuestionType.SINGLE,
+        }));
+        setQuestions(questions);
+        setQuestionsNumber(questions.length);
+        setQuestion(questions[questionNumber - 1]);
+    }
 
     useEffect(() => {
         return () => {
@@ -37,11 +60,13 @@ function UserTest(props: UserTestProps): JSX.Element {
 
     useEffect(() => {
         props.setStateIsTimerFinishedToState(false);
+        getQuestions();
     }, [])
 
     const onFinish = () => {
+        setQuestion(questions[questionNumber]);
         const formValue = formRef.current?.getFieldsValue();
-        const answers = { ...props.answers, [question.id]: formValue.answer };
+        const answers = { ...props?.answers, [question?._id as string]: formValue?.answer };
         props.setStateAnswersToState(answers);
         console.log(JSON.stringify(JSON.stringify(answers)));
 
@@ -68,10 +93,11 @@ function UserTest(props: UserTestProps): JSX.Element {
         });
     }
 
-    console.log(props);
+    // console.log(props);
+        console.log(question);
     return (
         <div className={styles['user-test']}>
-            <div className="container">
+            {question && <div className="container">
                 <Navigation navigationType={NavigationType.HEADER}/>
                 <div className={styles['user-test__body']}>
                     <div className={styles['user-test__left-col']}>
@@ -107,7 +133,7 @@ function UserTest(props: UserTestProps): JSX.Element {
                     >{userTest.buttons.stopTest}</ButtonElem>
                 </div>
                 <Navigation navigationType={NavigationType.FOOTER}/>
-            </div>
+            </div>}
         </div>
     );
 }

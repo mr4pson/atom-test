@@ -1,9 +1,11 @@
+import axios from 'axios';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import { userTestComplete } from 'i18n/userTestComplete';
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { connect } from "react-redux";
-import { questions } from '../UserTest/mocks';
+import { getJwtPair } from '../LoginPage/helpers';
+import { TypeUserTestQuestion } from '../UserTest/types';
 import styles from './UserTestComplete.module.scss';
 
 type UserTestCompleteProps = {
@@ -12,8 +14,28 @@ type UserTestCompleteProps = {
 }
 
 function UserTest(props: UserTestCompleteProps): JSX.Element {
+    const [questionsNumber, setQuestionsNumber] = useState<number>();
+
+    const curJwtPair: string = getJwtPair();
+    const options = {
+        headers: {
+            'Authorization': `Bearer ${curJwtPair}`,
+            'withCredentials': true
+        },
+    }
+
+    const getQuestions = async () => {
+        const response = await axios.get<TypeUserTestQuestion[]>('/api/questions', options);
+        const questions = response.data;
+        setQuestionsNumber(questions.length);
+    }
+
+    useEffect(() => {
+        getQuestions();
+    }, []);
+
     const answeredQuiestionsNumber = Object.keys(props.answers).length;
-    const quiestionsNumber = questions.length;
+    const quiestionsNumber = questionsNumber;
     return(
         <div className={styles['user-test-complete']}>
             <div className="container">

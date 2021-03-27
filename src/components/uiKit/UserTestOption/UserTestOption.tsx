@@ -6,7 +6,7 @@ import styles from './UserTestOption.module.scss';
 
 type Props = {
     type: QuestionType;
-    value: number;
+    value: string;
     children: string;
 }
 

@@ -9,6 +9,7 @@ export type TypeTestQuestionOption = {
     id?: number;
     isEditing: boolean;
     title: string;
+    image?: string;
     trueOption: boolean;
     actions: TypeAction[];
 }
@@ -21,6 +22,7 @@ export type TypeTestQuestion = {
     type: QuestionOptionType;
     isEditing: boolean;
     collapseOn?: string;
+    image?: string;
     actions: TypeAction[];
     options: TypeTestQuestionOption[];
 }

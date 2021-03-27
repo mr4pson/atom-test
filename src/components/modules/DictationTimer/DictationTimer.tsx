@@ -5,9 +5,12 @@ import { getPadTime, getRemainingSeconds, getTimeObjectFromSeconds } from './hel
 import { i18n } from './i18n';
 import { TypeTime } from "./types";
 
-function DictationTimer(): JSX.Element {
-    const dictantDateString: string = '2021-09-10T10:00:00.000Z';
-    const seconds = getRemainingSeconds(dictantDateString);
+type Props = {
+    dictantDateString: string;
+}
+
+function DictationTimer(props: Props): JSX.Element {
+    const seconds = getRemainingSeconds(props.dictantDateString);
     const time = getTimeObjectFromSeconds(seconds);
     const [remainingTime, setTime] = useState<TypeTime>(getPadTime(time));
     useEffect(() => {

@@ -4,11 +4,6 @@ import classNames from "classnames";
 import NumberChanger from "components/uiKit/numberChanger";
 import ButtonElem from "components/uiKit/ButtomElem";
 import { buttonElemType } from "components/uiKit/ButtomElem/types";
-import {
-  initialBannerFormState,
-  initialTestFormState,
-  testFormItems,
-} from "./constants";
 import { Form, notification, DatePicker } from "antd";
 import moment from "moment";
 import { useUpdateCounterParameters } from "./useUpdateCounterParameters";
@@ -20,7 +15,52 @@ function SetCounterParameters(): JSX.Element {
   const [bannerForm] = Form.useForm();
   const [testForm] = Form.useForm();
 
-  const { loading, statusType, counterName, updateCounterParameters } = useUpdateCounterParameters();
+  const {
+    bannerData,
+    testData,
+    loading,
+    statusType,
+    counterName,
+    getCounterParameters,
+    updateCounterParameters
+  } = useUpdateCounterParameters();
+
+  const initialBannerFormState = {
+    bannerDate: moment(bannerData)
+  };
+
+  const initialTestFormState = {
+    testHours: testData?.testHours,
+    testMinutes: testData?.testMinutes,
+    testSeconds: testData?.testSeconds,
+  }
+
+  const testFormItems = [
+    {
+      name: 'testHours',
+      fieldName: 'testHours',
+      initialState: initialTestFormState.testHours,
+      placeholder: 'Кол-во часов',
+      maxValue: 23,
+      translation: 'часы',
+    },
+    {
+      name: 'testMinutes',
+      fieldName: 'testMinutes',
+      initialState: initialTestFormState.testMinutes,
+      placeholder: 'Кол-во минут',
+      maxValue: 60,
+      translation: 'минуты',
+    },
+    {
+      name: 'testSeconds',
+      fieldName: 'testSeconds',
+      initialState: initialTestFormState.testSeconds,
+      placeholder: 'Кол-во секунд',
+      maxValue: 60,
+      translation: 'секунды',
+    },
+  ];
 
   const close = () => {
     console.log(
@@ -39,16 +79,20 @@ function SetCounterParameters(): JSX.Element {
 
   async function onSubmit(): Promise<void> {
     const bannerDate = bannerForm.getFieldValue('bannerDate');
-    bannerForm.resetFields();
+    console.log(moment(bannerDate).format());
     await updateCounterParameters(moment(bannerDate)
       .format('YYYY-MM-DD HH:mm:ss'), counterParametersType.BANNER);
   }
 
   async function onTestSubmit(): Promise<void> {
     const testDate = testForm.getFieldsValue();
-    testForm.resetFields();
     await updateCounterParameters(JSON.stringify(testDate), counterParametersType.TEST);
   }
+
+  useEffect(() => {
+    getCounterParameters(counterParametersType.BANNER);
+    getCounterParameters(counterParametersType.TEST);
+  }, []);
 
   useEffect(() => {
     if (statusType === StatusType.ERROR || statusType === StatusType.SUCCESS) {
@@ -62,7 +106,7 @@ function SetCounterParameters(): JSX.Element {
 
   return (
     <div className={styles["counter-page"]}>
-      <Form
+      {bannerData && <Form
         form={bannerForm}
         name="basic"
         initialValues={initialBannerFormState}
@@ -88,8 +132,8 @@ function SetCounterParameters(): JSX.Element {
               className={classNames(
                 styles["test-counter__input"],
                 styles["test-counter__tool"],
-              )} 
-              placeholder="Счетчик баннера" 
+              )}
+              placeholder="Счетчик баннера"
               showTime
             />
           </Form.Item>
@@ -102,8 +146,8 @@ function SetCounterParameters(): JSX.Element {
             Опубликовать
           </ButtonElem>
         </div>
-      </Form>
-      <Form
+      </Form>}
+      {testData && <Form
         form={testForm}
         name="basic"
         initialValues={initialTestFormState}
@@ -149,7 +193,7 @@ function SetCounterParameters(): JSX.Element {
             Опубликовать
           </ButtonElem>
         </div>
-      </Form>
+      </Form>}
     </div>
   );
 }

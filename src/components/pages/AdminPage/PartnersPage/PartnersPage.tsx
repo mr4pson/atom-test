@@ -1,45 +1,52 @@
 import { Form, Input } from "antd";
-import axios from "axios";
 import AdminCollapseElem from "components/uiKit/AdminCollapse";
 import { TypeAction } from "components/uiKit/AdminCollapse/types";
 import ButtonElem from "components/uiKit/ButtomElem";
 import { buttonElemType } from "components/uiKit/ButtomElem/types";
 import { editIcon, trashIcon, unVisibleIcon, visibleIcon } from "icons";
 import { memo, useEffect, useState } from "react";
-// import { getActions } from './constants';
 import styles from "./PartnersPage.module.scss";
 import { TypePartner } from "./types";
 import Icon from "components/uiKit/Icon";
 import AdminModal from 'components/pages/AdminPage/AdminModal';
 import { useHistory } from 'react-router';
 import { AdminsPage, paths } from "../routes/constants";
+import { useRemovePartner } from "./useRemovePartner";
+import { connect } from "react-redux";
+import { setCurrentIdToState } from 'redux/reducers/Partners.reducer';
+import { useUpdatePartner } from "../AddPartnerPage/useUpdatePartner";
+import Loader from 'components/uiKit/Loader';
 
 const { TextArea } = Input;
 
-function PartnersPage(): JSX.Element {
-  const [partners, setPartners] = useState<TypePartner[]>([]);
+type Props = {
+  currentId: string;
+  setCurrentIdToState: (id: string | number | undefined) => void;
+};
+
+function PartnersPage(props: Props): JSX.Element {
+  const [data, setData] = useState<TypePartner[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const [chosenPartner, setChosenPartner] = useState<string>('');
 
+  const { loading, getPartners, partners, deletePartner } = useRemovePartner();
+  const { updatePartner } = useUpdatePartner();
   let history = useHistory();
 
-  const getPartners = async () => {
-    const partnersResponse = await axios.get<TypePartner[]>(
-      "/mocks/getPartnersPageData.json"
-    );
-    const newPartners = partnersResponse.data.map((item) => ({
+  useEffect(() => {
+    (async () => {
+      await getPartners();
+    })();
+  }, [])
+
+  useEffect(() => {
+    const newPartners = partners?.map((item) => ({
       ...item,
       actions: getActions(item),
     }));
-    setPartners(newPartners);
-  };
+    setData(newPartners);
+  }, [partners]);
 
-  useEffect(() => {
-    getPartners();
-  }, []);
-
-  console.log(partners);
   const getActions = (itemData: TypePartner): TypeAction[] => {
     return [
       {
@@ -57,9 +64,8 @@ function PartnersPage(): JSX.Element {
             viewBox={unVisibleIcon.viewBox}
           />
         ),
-        callback: (action: TypeAction, config: any, formValues: Object) => {
+        callback: async (action: TypeAction, config: any, formValues: Object) => {
           console.log(config);
-          config.visible = !config.visible;
           action.icon = config.visible ? (
             <Icon
               className={styles["action-icon__watch"]}
@@ -73,6 +79,8 @@ function PartnersPage(): JSX.Element {
               viewBox={unVisibleIcon.viewBox}
             />
           );
+          await updatePartner({ ...itemData, visible: !itemData.visible }, itemData.id?.toString()!)
+          await getPartners();
         },
       },
       {
@@ -95,9 +103,15 @@ function PartnersPage(): JSX.Element {
             viewBox={trashIcon.viewBox}
           />
         ),
-        callback: () =>  showModal(itemData),
+        callback: () => showModal(itemData),
       },
     ];
+  };
+
+  const showModal = (itemData: TypePartner) => {
+    setChosenPartner(itemData.title);
+    props.setCurrentIdToState(itemData.id);
+    setIsModalVisible(true);
   };
 
   const handleEditPartner = (itemData: TypePartner) => {
@@ -105,60 +119,61 @@ function PartnersPage(): JSX.Element {
   };
 
   const handleAddPartner = () => {
-    // TODO add http create request
     history.push(paths[AdminsPage.ADD_PARTNER]);
   }
-
-  const showModal = (itemData: TypePartner) => {
-    setChosenPartner(itemData.title);
-    setIsModalVisible(true);
-    console.log(itemData.id);
-  };
-
-  const handleDelete = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setIsModalVisible(false);
-    }, 2000);
-  };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
+  async function handleDelete(): Promise<void> {
+    await deletePartner(props.currentId);
+    await getPartners();
+    setIsModalVisible(false);
+  };
+
   return (
-    <div className={styles["partners-page"]}>
-      <div className={styles["partners-page__create-wrap"]}>
-        <ButtonElem
-          type={buttonElemType.Primary}
-          htmlType="button"
-          className={styles["partners-page__create-btn"]}
-          onClick={handleAddPartner}
-        >
-          Добавить партнера
+    <>
+      {
+        !loading ? <div className={styles["partners-page"]}>
+          <div className={styles["partners-page__create-wrap"]}>
+            <ButtonElem
+              type={buttonElemType.Primary}
+              htmlType="button"
+              className={styles["partners-page__create-btn"]}
+              onClick={handleAddPartner}
+            >
+              Добавить партнера
         </ButtonElem>
-      </div>
-      <>
-        {partners.map((question, index) => (
-          <AdminCollapseElem key={index} config={question}>
-            <Form.Item name="description">
-              <TextArea placeholder="Введите ответ" rows={1} />
-            </Form.Item>
-          </AdminCollapseElem>
-        ))}
-      </>
-      <AdminModal
-        title={`Удаление "${chosenPartner}"`}
-        isModalVisible={isModalVisible}
-        loading={loading}
-        handleDelete={handleDelete}
-        handleCancel={handleCancel}
-      >
-        <span>Вы действительно хотите удалить партнера "{chosenPartner}"?</span>
-      </AdminModal>
-    </div>
+          </div>
+          <>
+            {data?.map((partner, index) => (
+              <AdminCollapseElem key={index} config={partner}>
+                <Form.Item name={"description"}>
+                  <TextArea placeholder="Введите ответ" rows={1} />
+                </Form.Item>
+              </AdminCollapseElem>
+            ))}
+          </>
+          <AdminModal
+            title={`Удаление "${chosenPartner}"`}
+            isModalVisible={isModalVisible}
+            loading={loading}
+            handleDelete={handleDelete}
+            handleCancel={handleCancel}
+          >
+            <span>Вы действительно хотите удалить партнера "{chosenPartner}"?</span>
+          </AdminModal>
+        </div> : <Loader />
+      }
+    </>
   );
 }
 
-export default memo(PartnersPage);
+const mapStateToProps = (state: any) => {
+  return {
+    currentId: state.partners?.currentId,
+  }
+}
+
+export default connect(mapStateToProps, { setCurrentIdToState })(memo(PartnersPage));

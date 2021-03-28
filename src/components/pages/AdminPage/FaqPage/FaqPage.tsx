@@ -12,6 +12,7 @@ import { ReactComponent as TrashIcon } from '../../../../assets/images/admin/tra
 // import { getActions } from './constants';
 import styles from "./FaqPage.module.scss";
 import { TypeFaqQuestion } from './types';
+import Loader from 'components/uiKit/Loader';
 
 const { TextArea } = Input;
 
@@ -112,8 +113,11 @@ function FaqPage(): JSX.Element {
         }]));
     }
 
+    console.log(faqQuestions);
+
     return (
-        <div className={styles['faq-page']}>
+        <>
+        {faqQuestions.length ? <div className={styles['faq-page']}>
             <div className={styles['faq-page__create-wrap']}>
                 <ButtonElem
                     type={buttonElemType.Primary}
@@ -140,7 +144,8 @@ function FaqPage(): JSX.Element {
                 )
                 )}
             </div>
-        </div>
+        </div> : <Loader />}
+        </>
     );
 }
 

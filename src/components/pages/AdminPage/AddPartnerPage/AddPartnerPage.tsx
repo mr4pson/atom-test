@@ -5,49 +5,47 @@ import { memo, useRef, useState, useEffect } from "react";
 import styles from "./AddPartnerPage.module.scss";
 import Icon from "components/uiKit/Icon";
 import { imageAltIcon } from "icons";
-// import { statuses } from './constants';
 import TextRedactor from "components/uiKit/TextRedactor";
-import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { AdminsPage, paths } from "../routes/constants";
-import { useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import classNames from 'classnames';
-// import { TypeCreateNewsPageData } from './types';
+import { useUpdatePartner } from "./useUpdatePartner";
+import Loader from 'components/uiKit/Loader';
 
 function AddPartnerPage(): JSX.Element {
-  const [data, setData] = useState<any | null>(null);
   const formRef = useRef<FormInstance>(null);
   const location = useLocation();
   const history = useHistory();
-  const [loading, setLoading] = useState<boolean>(false);
   const [isChoosenFileChecked, setIsChoosenFileChecked] = useState<boolean>(
     false
   );
+  const { id } = useParams<{ id: string }>();
+
+  const { loading, addPartner, currentPartner, getCurrentPartner, updatePartner } = useUpdatePartner();
 
   const inititalFormState = {
-    name: "",
+    title: "",
     link: "",
     uploadFile: null,
     description: "",
   };
+  const formFieldsValue = formRef.current?.getFieldsValue();
 
-  function onSubmit(): void {
-    // console.log('Success:', values);
-    const formFieldsValue = formRef.current?.getFieldsValue();
-
+  async function onSubmit(): Promise<void> {
     if (
-      formFieldsValue.name &&
+      formFieldsValue.title &&
       formFieldsValue.link &&
       formFieldsValue.uploadFile
     ) {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        history.push(paths[AdminsPage.PARTNERS]);
-        setIsChoosenFileChecked(false);
-      }, 2000);
+      if (id) {
+        await updatePartner({ ...formFieldsValue, visible: true }, id);
+      } else {
+        await addPartner({ ...formFieldsValue, visible: true });
+      }
+      setIsChoosenFileChecked(false);
+      history.push(paths[AdminsPage.PARTNERS]);
     }
-    console.log(formRef.current?.getFieldsValue());
   }
 
   function uploadMediaFile(e): void {
@@ -65,20 +63,15 @@ function AddPartnerPage(): JSX.Element {
     setIsChoosenFileChecked(false);
   }
 
-  async function getPartnerPageData() {
-    const response = await axios.get<any>("/mocks/getPartnerPageData.json");
-    setData(response.data);
-  }
-
   useEffect(() => {
-    getPartnerPageData();
+    if (id) {
+      getCurrentPartner(id);
+    }
   }, []);
-
-  console.log(!formRef.current?.getFieldsValue().uploadFile, isChoosenFileChecked)
 
   return (
     <>
-      {data && (
+      {(id ? currentPartner : true) ? (
         <Form
           className={styles["add-partner-page"]}
           name="basic"
@@ -87,7 +80,7 @@ function AddPartnerPage(): JSX.Element {
           initialValues={
             location.pathname === paths[AdminsPage.ADD_PARTNER]
               ? inititalFormState
-              : data
+              : currentPartner!
           }
         >
           <ButtonElem
@@ -97,7 +90,7 @@ function AddPartnerPage(): JSX.Element {
             loading={loading}
             onClick={() => setIsChoosenFileChecked(true)}
           >
-            Добавить партнёра
+            {id ? 'Изменить партнёра' : 'Добавить партнёра'}
           </ButtonElem>
           <div className={styles["page-content"]}>
             <div className={styles["page-content__header"]}>
@@ -112,13 +105,13 @@ function AddPartnerPage(): JSX.Element {
                   },
                 ]}
                 className={styles["form-item"]}
-                name="name"
+                name="title"
               >
                 <Input
                   className={styles["page-content__input"]}
                   placeholder="Введите название партнёра"
                   type="text"
-                  value={data?.article}
+                  value={currentPartner?.title}
                   disabled={loading}
                 />
               </Form.Item>
@@ -133,7 +126,7 @@ function AddPartnerPage(): JSX.Element {
                   className={styles["page-content__input"]}
                   placeholder="Ссылка на партнёра"
                   type="url"
-                  value={data?.article}
+                  value={currentPartner?.link}
                   disabled={loading}
                 />
               </Form.Item>
@@ -150,7 +143,6 @@ function AddPartnerPage(): JSX.Element {
                   Добавить медиафайл
                   <Input
                     className={styles["page-content__file-input"]}
-                    name="Загрузить фото"
                     type="file"
                     id="multi"
                     onChange={uploadMediaFile}
@@ -174,7 +166,7 @@ function AddPartnerPage(): JSX.Element {
                   initialValue={
                     location.pathname === paths[AdminsPage.ADD_PARTNER]
                       ? inititalFormState.description
-                      : data.description
+                      : currentPartner?.description!
                   }
                   formRef={formRef}
                 />
@@ -182,7 +174,7 @@ function AddPartnerPage(): JSX.Element {
             </div>
           </div>
         </Form>
-      )}
+      ) : <Loader />}
     </>
   );
 }

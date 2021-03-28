@@ -1,13 +1,11 @@
 
 
-import { Form, FormInstance, Input, Spin } from "antd";
+import { Form, FormInstance, Input } from "antd";
 import { memo, useRef, useState } from "react";
 import styles from "./UpdateParticipant.module.scss";
 import TextRedactor from "components/uiKit/TextRedactor";
 import { useLocation, useHistory } from "react-router-dom";
 import { AdminsPage, paths } from "../routes/constants";
-import { connect } from "react-redux";
-import { setCurrentIdToState } from "redux/reducers/News.reducer";
 import axios from "axios";
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType, htmlType } from "components/uiKit/ButtomElem/types";
@@ -163,11 +161,4 @@ function UpdateParticipant(props: any): JSX.Element {
   );
 }
 
-const mapStateToProps = (state: any) => {
-  return {
-      currentId: state.news?.currentId,
-      creationMode: state.news?.creationMode
-  }
-}
-
-export default connect(mapStateToProps, { setCurrentIdToState })(memo(UpdateParticipant));
+export default memo(UpdateParticipant);

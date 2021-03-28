@@ -6,25 +6,19 @@ import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import Icon from 'components/uiKit/Icon';
 import { deleteIcon, editIcon, searchIcon } from 'icons';
 import { memo, useEffect, useRef, useState } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { AdminsPage, paths } from 'components/pages/AdminPage/routes/constants';
 import { noteList } from './constants';
 import styles from './NewsPage.module.scss';
 import { TypeNewsPageData } from './types';
 import { useRemoveNews } from './useRemoveNews';
 import { connect } from "react-redux";
-import {
-  setCurrentIdToState,
-  setCreationModeEditToState,
-  setCreationModeCreateToState
-} from 'redux/reducers/News.reducer';
+import { setCurrentIdToState } from 'redux/reducers/News.reducer';
 
 function NewsPage(props: {
   currentId: string;
   setCurrentIdToState: (id: string) => void;
-  setCreationModeEditToState: () => void;
-  setCreationModeCreateToState: () => void;
-}): JSX.Element {
+}): JSX.Element { 
   const history = useHistory();
 
   const formRef = useRef<FormInstance>(null);
@@ -34,6 +28,8 @@ function NewsPage(props: {
   const [chosenNews, setChosenNews] = useState<string>('');
 
   const { loading, getNews, news, deleteNews } = useRemoveNews();
+
+  const { id } = useParams() as any;
 
   const inititalFormState = {
     note: 'all',
@@ -114,13 +110,10 @@ function NewsPage(props: {
 
   const handleCreateNews = () => {
     history.push(paths[AdminsPage.NEWS_CREATE]);
-    props.setCreationModeCreateToState();
   }
 
   const handleEditNews = (itemData: TypeNewsPageData) => {
     history.push(`${paths[AdminsPage.NEWS_EDIT]}/${itemData.id}`)
-    props.setCurrentIdToState(itemData.id);
-    props.setCreationModeEditToState();
   }
 
   function onSubmit(): void {
@@ -213,11 +206,11 @@ function NewsPage(props: {
     </div>
   );
 }
+
 const mapStateToProps = (state: any) => {
   return {
       currentId: state.news?.currentId,
   }
 }
 
-export default connect(mapStateToProps, 
-  { setCurrentIdToState, setCreationModeEditToState, setCreationModeCreateToState })(memo(NewsPage));
+export default connect(mapStateToProps, { setCurrentIdToState })(memo(NewsPage));

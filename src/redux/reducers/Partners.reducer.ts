@@ -8,7 +8,7 @@ let initialState: TypeInitialState = {
   currentId: '',
 }
 
-const newsReducer = (state = initialState, action ) => {
+const partnersReducer = (state = initialState, action ) => {
   switch(action.type) {
     case SET_STATE_CURRENT_ID:
       return {
@@ -28,4 +28,4 @@ export const setCurrentIdToState = (id: string) => (dispatch) => {
   dispatch(setCurrentId(id));
 }
 
-export default newsReducer;
+export default partnersReducer;

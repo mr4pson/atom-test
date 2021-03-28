@@ -7,4 +7,16 @@ export type TypePartner = {
   data?: any;
   visible: boolean;
   actions: TypeAction[];
+  createdAt: string;
+  description?: string;
+  uploadFile?: string;
+  link: string;
+}
+
+export type TypeUseUpdatePartnerResult = {
+  loading: boolean;
+  addPartner: (formData: any) => Promise<any>;
+  currentPartner: TypePartner | null;
+  getCurrentPartner: (id: string) => Promise<any>;
+  updatePartner: (formData: any, id: string) => Promise<any>;
 }

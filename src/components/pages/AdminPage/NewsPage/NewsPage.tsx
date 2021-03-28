@@ -13,18 +13,13 @@ import styles from './NewsPage.module.scss';
 import { TypeNewsPageData } from './types';
 import { useRemoveNews } from './useRemoveNews';
 import { connect } from "react-redux";
-import {
-  setCurrentIdToState,
-  setCreationModeEditToState,
-  setCreationModeCreateToState
-} from 'redux/reducers/News.reducer';
+import { setCurrentIdToState } from 'redux/reducers/News.reducer';
+import { useCheckRole } from 'components/hooks/useCheckRole';
 
 function NewsPage(props: {
   currentId: string;
   setCurrentIdToState: (id: string) => void;
-  setCreationModeEditToState: () => void;
-  setCreationModeCreateToState: () => void;
-}): JSX.Element {
+}): JSX.Element { 
   const history = useHistory();
 
   const formRef = useRef<FormInstance>(null);
@@ -114,13 +109,10 @@ function NewsPage(props: {
 
   const handleCreateNews = () => {
     history.push(paths[AdminsPage.NEWS_CREATE]);
-    props.setCreationModeCreateToState();
   }
 
   const handleEditNews = (itemData: TypeNewsPageData) => {
     history.push(`${paths[AdminsPage.NEWS_EDIT]}/${itemData.id}`)
-    props.setCurrentIdToState(itemData.id);
-    props.setCreationModeEditToState();
   }
 
   function onSubmit(): void {
@@ -128,11 +120,13 @@ function NewsPage(props: {
     console.log(formRef.current?.getFieldsValue());
   };
 
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
+
   useEffect(() => {
     (async () => {
       await getNews();
     })();
-  }, [])
+  }, []);
 
   return (
     <div className={styles['news-page']}>
@@ -189,7 +183,7 @@ function NewsPage(props: {
             className={styles["tool-bar__button"]}
             onClick={handleCreateNews}
           >
-            Добавить новость
+            Добавить страницу
             </ButtonElem>
         </div>
         <Table
@@ -213,11 +207,11 @@ function NewsPage(props: {
     </div>
   );
 }
+
 const mapStateToProps = (state: any) => {
   return {
       currentId: state.news?.currentId,
   }
 }
 
-export default connect(mapStateToProps, 
-  { setCurrentIdToState, setCreationModeEditToState, setCreationModeCreateToState })(memo(NewsPage));
+export default connect(mapStateToProps, { setCurrentIdToState })(memo(NewsPage));

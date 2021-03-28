@@ -1,13 +1,13 @@
-import { memo, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from './PrivateOffice.module.scss';
-import { Form, Input, Select } from 'antd';
+import { Form, Input, Select, notification } from 'antd';
 import classNames from 'classnames';
 import ManFrameIcon from 'icons/components';
 import { Row, Col } from 'antd';
 import { inititalFormState, phoneNumberMask, sexItems } from './constants';
-import { TypeSelectOption } from 'components/common/types';
+import { TypeSelectOption, userType } from 'components/common/types';
 import MaskedInput from 'antd-mask-input';
 import Icon from 'components/uiKit/Icon';
 import { editIcon } from 'icons';
@@ -19,6 +19,9 @@ import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odn
 import { ReactComponent as FacebookIcon } from './../../../assets/images/facebook.svg';
 import { ReactComponent as InstagramIcon } from './../../../assets/images/instagram.svg';
 import { ReactComponent as TelegramIcon } from './../../../assets/images/telegram.svg';
+import { getUserInfo, openNotification } from 'components/common/commonHelper';
+import { useHistory } from 'react-router';
+import { Page, paths } from 'routes/constants';
 
 
 // import { loginPage } from 'i18n'
@@ -45,6 +48,9 @@ function PrivateOffice(props): JSX.Element {
     
     const [avatar, setAvatar] = useState<any>(null);
     const [isUploading, setIsUploading] = useState<boolean>(false);
+
+    const userInfo = getUserInfo();
+    const history = useHistory();
 
     function handleChange(e) {
         setSex(e);
@@ -81,8 +87,14 @@ function PrivateOffice(props): JSX.Element {
 
         //promise
         setIsUploading(false);
-
     }
+
+    useEffect(() => {
+        if (userInfo.role === userType.ADMIN) {
+            history.push(paths[Page.ADMIN]);
+            openNotification('error', 'У вас нет доступа к Личному кабинету, т.к. вы администратор!');
+        }
+    }, []);
 
     return (
         <>

@@ -12,6 +12,7 @@ import { participantList } from './constants';
 import styles from './Participants.module.scss';
 import axios from 'axios';
 import { TypeParticipantsData } from './types';
+import { useCheckRole } from 'components/hooks/useCheckRole';
 
 function Participants(): JSX.Element {
     const history = useHistory();
@@ -151,6 +152,8 @@ function Participants(): JSX.Element {
         return data;
       })
     }
+
+    useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
     useEffect(() => {
       getParticipantsData();

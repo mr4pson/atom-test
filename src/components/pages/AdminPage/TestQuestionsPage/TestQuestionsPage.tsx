@@ -9,6 +9,8 @@ import { getQuestionActions, getQuestionOptionActions } from './helper';
 import TestQuestionsOption from "./TestQuestionsOption/TestQuestionsOption";
 import styles from "./TestQuestionsPage.module.scss";
 import { QuestionOptionType, TypeTestQuestion } from './types';
+import Loader from 'components/uiKit/Loader';
+import { useCheckRole } from 'components/hooks/useCheckRole';
 
 function TestQuestionsPage(): JSX.Element {
     const [testQuestions, setTestQuestions] = useState<TypeTestQuestion[]>([]);
@@ -57,10 +59,6 @@ function TestQuestionsPage(): JSX.Element {
         }
     }
 
-    useEffect(() => {
-            getNewQuestions();
-    })
-
     const handleCreate = (type: QuestionOptionType) => {
         // TODO add http create request
         setTestQuestions(testQuestions.concat([{
@@ -90,7 +88,7 @@ function TestQuestionsPage(): JSX.Element {
                 trueOption: false,
                 actions: getQuestionOptionActions(true, setTestQuestions, false, question, setRerender)
             });
-        
+
             return questions;
         });
     }
@@ -105,37 +103,49 @@ function TestQuestionsPage(): JSX.Element {
             value: QuestionOptionType.RADIO
         }
     ];
+
+    useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
+
+    useEffect(() => {
+        getNewQuestions();
+    })
+
     return (
-        <div className={styles['test-questions-page']}>
-            <div className={styles['test-questions-page__create-wrap']}>
-                <ExpansionSelectButton
-                    options={expansionOptions}
-                    onOptionPick={onOptionPick}
-                >Добавить</ExpansionSelectButton>
-            </div>
-            <div className={styles['test-questions-page__questions']}>
-                {testQuestions.map((question, index) => (
-                        <AdminCollapseElem
-                            key={index}
-                            config={question}
-                        >
-                            {question.options.map((option, index) => (
-                                <TestQuestionsOption
+        <>
+            {
+                testQuestions.length
+                    ? <div className={styles['test-questions-page']}>
+                        <div className={styles['test-questions-page__create-wrap']}>
+                            <ExpansionSelectButton
+                                options={expansionOptions}
+                                onOptionPick={onOptionPick}
+                            >Добавить</ExpansionSelectButton>
+                        </div>
+                        <div className={styles['test-questions-page__questions']}>
+                            {testQuestions.map((question, index) => (
+                                <AdminCollapseElem
                                     key={index}
-                                    config={option}
-                                    type={question.type}
-                                />
-                            ))}
-                            <ButtonElem
-                                className={styles['test-questions-page__add-btn']}
-                                onClick={() => onOptionCreate(question)}
-                            >Добавить вариант ответа</ButtonElem>
-                        </AdminCollapseElem>
-                    )
-                )}
-            </div>
-        </div>
-    );
+                                    config={question}
+                                >
+                                    {question.options.map((option, index) => (
+                                        <TestQuestionsOption
+                                            key={index}
+                                            config={option}
+                                            type={question.type}
+                                        />
+                                    ))}
+                                    <ButtonElem
+                                        className={styles['test-questions-page__add-btn']}
+                                        onClick={() => onOptionCreate(question)}
+                                    >Добавить вариант ответа</ButtonElem>
+                                </AdminCollapseElem>
+                            )
+                            )}
+                        </div>
+                    </div>
+                    : <Loader />
+            }
+        </>);
 }
 
 export default memo(TestQuestionsPage);

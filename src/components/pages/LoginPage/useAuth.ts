@@ -1,4 +1,6 @@
 import axios from "axios";
+import { getUserInfo } from "components/common/commonHelper";
+import { userType } from "components/common/types";
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { Page, paths } from "routes/constants";
@@ -27,7 +29,12 @@ export function useAuth(): TypeUseAuthHookResult {
       console.log(axiosData.access_token);
       setJwtPair(axiosData.access_token);
       setAuthenticated(true);
-      history.push(paths[Page.HOME])
+      const userInfo = getUserInfo();
+      if (userInfo.role === userType.USER) {
+        history.push(paths[Page.PRIVATE_OFFICE]);
+      } else {
+        history.push(paths[Page.ADMIN]);
+      }
       return {};
     } catch ({ response }) {
       setAuthenticated(false);

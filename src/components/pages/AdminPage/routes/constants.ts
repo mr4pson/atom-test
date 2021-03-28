@@ -2,6 +2,7 @@ export enum AdminsPage {
   NEWS = 'NEWS',
   NEWS_CREATE = 'NEWS_CREATE',
   NEWS_EDIT = 'NEWS_EDIT',
+  NEWS_EDIT_ROUTE = 'NEWS_EDIT_ROUTE',
   MAIN = 'MAIN',
   MENU = 'MENU',
   STATISTICS = 'STATISTICS',
@@ -13,6 +14,7 @@ export enum AdminsPage {
   TEST_QUESTUIONS = 'TEST_QUESTUIONS',
   PARTNERS = 'PARTNERS',
   ADD_PARTNER = 'ADD_PARTNER',
+  EDIT_PARTNER_ROUTE = 'EDIT_PARTNER_ROUTE',
   EDIT_PARTNER = 'EDIT_PARTNER',
   PROJECT_PERSONS = 'PROJECT_PERSONS',
 }
@@ -21,6 +23,7 @@ export const paths = {
   [AdminsPage.NEWS]: '/admin/news',
   [AdminsPage.NEWS_CREATE]: '/admin/news/create',
   [AdminsPage.NEWS_EDIT]: '/admin/news/edit',
+  [AdminsPage.NEWS_EDIT_ROUTE]: '/admin/news/edit/:id',
   [AdminsPage.MAIN]: '/admin/',
   [AdminsPage.MENU]: '/admin/menu',
   [AdminsPage.STATISTICS]: '/admin/statistics',
@@ -33,5 +36,6 @@ export const paths = {
   [AdminsPage.PARTNERS]: '/admin/partners',
   [AdminsPage.ADD_PARTNER]: '/admin/partners/create',
   [AdminsPage.EDIT_PARTNER]: '/admin/partners/edit',
+  [AdminsPage.EDIT_PARTNER_ROUTE]: '/admin/partners/edit/:id',
   [AdminsPage.PROJECT_PERSONS]: '/admin/project-persons',
 }

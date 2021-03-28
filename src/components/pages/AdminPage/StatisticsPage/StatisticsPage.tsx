@@ -1,4 +1,5 @@
 import { Tabs } from 'antd';
+import { useCheckRole } from 'components/hooks/useCheckRole';
 import AccomplishedDictation from "components/pages/AdminPage/StatisticsPage/AccomplishedDictation";
 import RegistratedUsers from "components/pages/AdminPage/StatisticsPage/RegistratedUsers";
 import { memo, ReactNode } from 'react';
@@ -10,6 +11,7 @@ type TypeTabPane = {
 }
 
 function StatisticsPage(): JSX.Element {
+
     const { TabPane } = Tabs;
     const tabs: TypeTabPane[] = [
         {
@@ -21,6 +23,9 @@ function StatisticsPage(): JSX.Element {
             content: <AccomplishedDictation />
         }
     ]
+
+    useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
+
     return (
         <div className={styles['statistics-page']}>
             <Tabs className="statistics-tabs">

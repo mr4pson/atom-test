@@ -16,4 +16,5 @@ export type TypeCollapseConfig = {
     isEditing?: boolean;
     collapseOn?: string;
     options?: TypeTestQuestionOption[];
+    visible?: boolean;
 }

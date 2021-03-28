@@ -12,6 +12,7 @@ import { useHistory, useParams } from "react-router";
 import classNames from 'classnames';
 import { useUpdatePartner } from "./useUpdatePartner";
 import Loader from 'components/uiKit/Loader';
+import { useCheckRole } from "components/hooks/useCheckRole";
 
 function AddPartnerPage(): JSX.Element {
   const formRef = useRef<FormInstance>(null);
@@ -22,7 +23,7 @@ function AddPartnerPage(): JSX.Element {
   );
   const { id } = useParams<{ id: string }>();
 
-  const { loading, addPartner, currentPartner, getCurrentPartner, updatePartner } = useUpdatePartner();
+  const { loadingUpdate, addPartner, currentPartner, getCurrentPartner, updatePartner } = useUpdatePartner();
 
   const inititalFormState = {
     title: "",
@@ -63,6 +64,8 @@ function AddPartnerPage(): JSX.Element {
     setIsChoosenFileChecked(false);
   }
 
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
+
   useEffect(() => {
     if (id) {
       getCurrentPartner(id);
@@ -87,7 +90,7 @@ function AddPartnerPage(): JSX.Element {
             type={buttonElemType.Primary}
             htmlType={htmlType.SUBMIT}
             className={styles["add-partner-page__button-add"]}
-            loading={loading}
+            loading={loadingUpdate}
             onClick={() => setIsChoosenFileChecked(true)}
           >
             {id ? 'Изменить партнёра' : 'Добавить партнёра'}
@@ -112,7 +115,7 @@ function AddPartnerPage(): JSX.Element {
                   placeholder="Введите название партнёра"
                   type="text"
                   value={currentPartner?.title}
-                  disabled={loading}
+                  disabled={loadingUpdate}
                 />
               </Form.Item>
               <Form.Item
@@ -127,12 +130,12 @@ function AddPartnerPage(): JSX.Element {
                   placeholder="Ссылка на партнёра"
                   type="url"
                   value={currentPartner?.link}
-                  disabled={loading}
+                  disabled={loadingUpdate}
                 />
               </Form.Item>
               <Form.Item className={styles["form-item"]} name="uploadFile">
                 <label className={classNames(styles["page-content__upload-file"], {
-                  [styles['page-content__upload-file_disabled']]: loading
+                  [styles['page-content__upload-file_disabled']]: loadingUpdate
                 })}>
                   <Icon
                     className={styles["page-content__button-icon"]}
@@ -146,7 +149,7 @@ function AddPartnerPage(): JSX.Element {
                     type="file"
                     id="multi"
                     onChange={uploadMediaFile}
-                    disabled={loading}
+                    disabled={loadingUpdate}
                   />
                 </label>
               </Form.Item>

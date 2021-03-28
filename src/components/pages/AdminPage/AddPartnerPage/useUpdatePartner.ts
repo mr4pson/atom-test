@@ -5,12 +5,12 @@ import { getJwtPair } from "components/pages/LoginPage/helpers";
 import { TypePartner, TypeUseUpdatePartnerResult } from "../PartnersPage/types";
 
 export function useUpdatePartner(): TypeUseUpdatePartnerResult {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);
   const curJwtPair: string = getJwtPair();
   const [currentPartner, setCurrentPartner] = useState<TypePartner | null>(null);
 
   async function getCurrentPartner(id: string): Promise<any> {
-    setLoading(true);
+    setLoadingUpdate(true);
     const options = {
       headers: {
           'Authorization': `Bearer ${curJwtPair}`,
@@ -31,12 +31,12 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
       console.log(response);
       return { error: response };
     } finally {
-      setLoading(false);
+      setLoadingUpdate(false);
     }
   }
 
   async function addPartner(formData: any): Promise<any> {
-    setLoading(true);
+    setLoadingUpdate(true);
     const options = {
       headers: {
           'Authorization': `Bearer ${curJwtPair}`,
@@ -54,12 +54,12 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
       console.log(response);
       return { error: response };
     } finally {
-      setLoading(false);
+      setLoadingUpdate(false);
     }
   }
 
   async function updatePartner(formData: any, id: string): Promise<any> {
-    setLoading(true);
+    setLoadingUpdate(true);
     const options = {
       headers: {
           'Authorization': `Bearer ${curJwtPair}`,
@@ -77,12 +77,12 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
       console.log(response);
       return { error: response };
     } finally {
-      setLoading(false);
+      setLoadingUpdate(false);
     }
   }
 
   return {
-    loading,
+    loadingUpdate,
     addPartner,
     currentPartner,
     getCurrentPartner,

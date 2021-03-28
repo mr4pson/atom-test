@@ -1,4 +1,4 @@
-import { Form, FormInstance, Input, Select } from "antd";
+import { Form, FormInstance, Input, Select, notification } from "antd";
 import ButtonElem from "components/uiKit/ButtomElem";
 import { buttonElemType, htmlType } from "components/uiKit/ButtomElem/types";
 import { memo, useRef, useState, useEffect } from "react";
@@ -13,6 +13,7 @@ import { AdminsPage, paths } from "../routes/constants";
 import { useCreateNews } from "./useUpdateNews";
 import Loader from 'components/uiKit/Loader';
 import { useParams } from "react-router";
+import { useCheckRole } from "components/hooks/useCheckRole";
 
 function CreateNews(): JSX.Element {
   const location = useLocation();
@@ -76,6 +77,8 @@ function CreateNews(): JSX.Element {
     });
     setIsChoosenFileChecked(false);
   }
+
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
   useEffect(() => {
     if (id) {

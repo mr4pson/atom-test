@@ -6,7 +6,7 @@ import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import Icon from 'components/uiKit/Icon';
 import { deleteIcon, editIcon, searchIcon } from 'icons';
 import { memo, useEffect, useRef, useState } from 'react';
-import { useHistory, useParams } from 'react-router';
+import { useHistory } from 'react-router';
 import { AdminsPage, paths } from 'components/pages/AdminPage/routes/constants';
 import { noteList } from './constants';
 import styles from './NewsPage.module.scss';
@@ -14,6 +14,7 @@ import { TypeNewsPageData } from './types';
 import { useRemoveNews } from './useRemoveNews';
 import { connect } from "react-redux";
 import { setCurrentIdToState } from 'redux/reducers/News.reducer';
+import { useCheckRole } from 'components/hooks/useCheckRole';
 
 function NewsPage(props: {
   currentId: string;
@@ -28,8 +29,6 @@ function NewsPage(props: {
   const [chosenNews, setChosenNews] = useState<string>('');
 
   const { loading, getNews, news, deleteNews } = useRemoveNews();
-
-  const { id } = useParams() as any;
 
   const inititalFormState = {
     note: 'all',
@@ -121,11 +120,13 @@ function NewsPage(props: {
     console.log(formRef.current?.getFieldsValue());
   };
 
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
+
   useEffect(() => {
     (async () => {
       await getNews();
     })();
-  }, [])
+  }, []);
 
   return (
     <div className={styles['news-page']}>
@@ -182,7 +183,7 @@ function NewsPage(props: {
             className={styles["tool-bar__button"]}
             onClick={handleCreateNews}
           >
-            Добавить новость
+            Добавить страницу
             </ButtonElem>
         </div>
         <Table

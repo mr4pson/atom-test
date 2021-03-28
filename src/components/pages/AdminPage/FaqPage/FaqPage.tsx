@@ -13,6 +13,7 @@ import { ReactComponent as TrashIcon } from '../../../../assets/images/admin/tra
 import styles from "./FaqPage.module.scss";
 import { TypeFaqQuestion } from './types';
 import Loader from 'components/uiKit/Loader';
+import { useCheckRole } from 'components/hooks/useCheckRole';
 
 const { TextArea } = Input;
 
@@ -38,6 +39,9 @@ function FaqPage(): JSX.Element {
             'withCredentials': true
         },
     }
+
+
+    useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
     useEffect(() => {
         getQuestions();

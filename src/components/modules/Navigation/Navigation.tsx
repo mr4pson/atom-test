@@ -13,6 +13,7 @@ import Icon from "components/uiKit/Icon";
 import { arrowUpIcon, logoutIcon, userInfoIcon } from "icons";
 import { useHistory, useLocation } from "react-router";
 import { Page, paths } from "routes/constants";
+import { removeJwtPair } from "components/pages/LoginPage/helpers";
 
 type Props = {
   navigationType: NavigationType;
@@ -51,6 +52,7 @@ function Navigation(props: Props): JSX.Element {
             path={logoutIcon.path}
             viewBox={logoutIcon.viewBox}
             title="AtomTest"
+            onClick={removeJwtPair}
           />
         );
       }

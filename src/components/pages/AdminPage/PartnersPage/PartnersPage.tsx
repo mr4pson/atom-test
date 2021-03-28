@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { setCurrentIdToState } from 'redux/reducers/Partners.reducer';
 import { useUpdatePartner } from "../AddPartnerPage/useUpdatePartner";
 import Loader from 'components/uiKit/Loader';
+import { useCheckRole } from "components/hooks/useCheckRole";
 
 const { TextArea } = Input;
 
@@ -30,22 +31,8 @@ function PartnersPage(props: Props): JSX.Element {
   const [chosenPartner, setChosenPartner] = useState<string>('');
 
   const { loading, getPartners, partners, deletePartner } = useRemovePartner();
-  const { updatePartner } = useUpdatePartner();
+  const { loadingUpdate, updatePartner } = useUpdatePartner();
   let history = useHistory();
-
-  useEffect(() => {
-    (async () => {
-      await getPartners();
-    })();
-  }, [])
-
-  useEffect(() => {
-    const newPartners = partners?.map((item) => ({
-      ...item,
-      actions: getActions(item),
-    }));
-    setData(newPartners);
-  }, [partners]);
 
   const getActions = (itemData: TypePartner): TypeAction[] => {
     return [
@@ -132,10 +119,26 @@ function PartnersPage(props: Props): JSX.Element {
     setIsModalVisible(false);
   };
 
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
+
+  useEffect(() => {
+    (async () => {
+      await getPartners();
+    })();
+  }, []);
+
+  useEffect(() => {
+    const newPartners = partners?.map((item) => ({
+      ...item,
+      actions: getActions(item),
+    }));
+    setData(newPartners);
+  }, [partners]);
+
   return (
     <>
       {
-        !loading ? <div className={styles["partners-page"]}>
+        !(loading || loadingUpdate) ? <div className={styles["partners-page"]}>
           <div className={styles["partners-page__create-wrap"]}>
             <ButtonElem
               type={buttonElemType.Primary}

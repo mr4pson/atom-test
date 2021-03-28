@@ -9,6 +9,8 @@ import moment from "moment";
 import { useUpdateCounterParameters } from "./useUpdateCounterParameters";
 import { counterParametersType, StatusType } from "./types";
 import Loader from 'components/uiKit/Loader';
+import { userType } from "components/common/types";
+import { useCheckRole } from "components/hooks/useCheckRole";
 
 // import { loginPage } from 'i18n'
 
@@ -88,6 +90,8 @@ function SetCounterParameters(): JSX.Element {
     const testDate = testForm.getFieldsValue();
     await updateCounterParameters(JSON.stringify(testDate), counterParametersType.TEST);
   }
+
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
   useEffect(() => {
     getCounterParameters(counterParametersType.BANNER);

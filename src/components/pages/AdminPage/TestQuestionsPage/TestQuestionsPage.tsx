@@ -10,6 +10,7 @@ import TestQuestionsOption from "./TestQuestionsOption/TestQuestionsOption";
 import styles from "./TestQuestionsPage.module.scss";
 import { QuestionOptionType, TypeTestQuestion } from './types';
 import Loader from 'components/uiKit/Loader';
+import { useCheckRole } from 'components/hooks/useCheckRole';
 
 function TestQuestionsPage(): JSX.Element {
     const [testQuestions, setTestQuestions] = useState<TypeTestQuestion[]>([]);
@@ -58,10 +59,6 @@ function TestQuestionsPage(): JSX.Element {
         }
     }
 
-    useEffect(() => {
-        getNewQuestions();
-    })
-
     const handleCreate = (type: QuestionOptionType) => {
         // TODO add http create request
         setTestQuestions(testQuestions.concat([{
@@ -106,6 +103,13 @@ function TestQuestionsPage(): JSX.Element {
             value: QuestionOptionType.RADIO
         }
     ];
+
+    useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
+
+    useEffect(() => {
+        getNewQuestions();
+    })
+
     return (
         <>
             {

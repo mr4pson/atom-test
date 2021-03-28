@@ -14,7 +14,7 @@ export type TypePartner = {
 }
 
 export type TypeUseUpdatePartnerResult = {
-  loading: boolean;
+  loadingUpdate: boolean;
   addPartner: (formData: any) => Promise<any>;
   currentPartner: TypePartner | null;
   getCurrentPartner: (id: string) => Promise<any>;

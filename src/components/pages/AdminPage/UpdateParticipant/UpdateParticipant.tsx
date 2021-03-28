@@ -9,6 +9,7 @@ import { AdminsPage, paths } from "../routes/constants";
 import axios from "axios";
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType, htmlType } from "components/uiKit/ButtomElem/types";
+import { useCheckRole } from "components/hooks/useCheckRole";
 
 function UpdateParticipant(props: any): JSX.Element {
   const [data, setData] = useState<any | null>(null);
@@ -53,6 +54,7 @@ function UpdateParticipant(props: any): JSX.Element {
   //   getParticipantPageData();
   // }, []);
 
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
   return (
     <>

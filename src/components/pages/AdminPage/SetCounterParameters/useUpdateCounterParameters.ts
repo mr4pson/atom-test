@@ -33,10 +33,6 @@ export function useUpdateCounterParameters(): TypeUseUpdateCounterResult {
       const { data: axiosData } = await axios.get<any>(
         `/api/counter-parameters/${type}`, options,
       );
-      // const transformedNews = {
-      //     ...axiosData,
-      //     createdAt: moment(axiosData.createdAt).format('DD.MM.YYYY'),
-      //   }
       if (type === counterParametersType.BANNER) {
         setBannerData(axiosData.data);
       } else {

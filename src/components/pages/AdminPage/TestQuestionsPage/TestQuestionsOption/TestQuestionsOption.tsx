@@ -1,7 +1,7 @@
-import { Checkbox, Form, FormInstance, Input } from 'antd';
+import { Checkbox, Form, FormInstance, Input, Radio } from 'antd';
 import classNames from 'classnames';
 import { memo, useRef, useState } from "react";
-import { TypeTestQuestionOption } from "../types";
+import { QuestionOptionType, TypeTestQuestionOption } from "../types";
 import styles from "./TestQuestionsOption.module.scss";
 import { TypeAction } from './types';
 
@@ -9,7 +9,8 @@ const { TextArea } = Input;
 
 
 type Props = {
-    config: TypeTestQuestionOption
+    config: TypeTestQuestionOption,
+    type: QuestionOptionType,
 }
 
 function TestQuestionsOption(props: Props): JSX.Element {
@@ -29,7 +30,7 @@ function TestQuestionsOption(props: Props): JSX.Element {
                 className="admin-collapse-elem-form"
                 ref={formRef}
             >
-                <Checkbox disabled={true}>
+                {props.type === QuestionOptionType.CHECKBOX && <Checkbox disabled={true}>
                     {!props.config.isEditing 
                         ? props.config.title
                         : <Form.Item name="title">
@@ -38,7 +39,17 @@ function TestQuestionsOption(props: Props): JSX.Element {
                                 rows={1}
                             />
                         </Form.Item>
-                }</Checkbox>
+                }</Checkbox>}
+                {props.type === QuestionOptionType.RADIO && <Radio disabled={true}>
+                    {!props.config.isEditing 
+                        ? props.config.title
+                        : <Form.Item name="title">
+                            <TextArea
+                                placeholder="Введите вопрос"
+                                rows={1}
+                            />
+                        </Form.Item>
+                }</Radio>}
             </Form>
             <div className={styles['test-questions-option__actions']}>
                 {props.config.actions.map((action, index) => (

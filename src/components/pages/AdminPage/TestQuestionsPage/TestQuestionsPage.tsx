@@ -123,6 +123,7 @@ function TestQuestionsPage(): JSX.Element {
                                 <TestQuestionsOption
                                     key={index}
                                     config={option}
+                                    type={question.type}
                                 />
                             ))}
                             <ButtonElem

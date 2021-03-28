@@ -50,8 +50,6 @@ function AccomplishedDictation(): JSX.Element {
         },
     };
 
-    // const userDv = new DataView();
-
 
     const getPassedDictation = async (dateFrom: string, dateTo: string) => {
         const payload = {

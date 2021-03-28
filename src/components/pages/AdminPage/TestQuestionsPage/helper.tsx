@@ -1,14 +1,14 @@
-
-import { ReactComponent as DoneIcon } from '../../../../assets/images/admin/done.svg';
-import { ReactComponent as EditIcon } from '../../../../assets/images/admin/edit.svg';
-import { ReactComponent as TrueIcon } from '../../../../assets/images/admin/circle-check.svg';
-import { ReactComponent as ImageIcon } from '../../../../assets/images/admin/image.svg';
-import { ReactComponent as TrashIcon } from '../../../../assets/images/admin/trash.svg';
-import { TypeTestQuestion, TypeTestQuestionOption } from "./types";
-import { TypeAction } from './TestQuestionsOption/types';
-import { TypeCollapseConfig } from 'components/uiKit/AdminCollapse/types';
+import { Tooltip } from 'antd';
 import axios from 'axios';
 import { getJwtPair } from 'components/pages/LoginPage/helpers';
+import { TypeCollapseConfig } from 'components/uiKit/AdminCollapse/types';
+import { ReactComponent as TrueIcon } from '../../../../assets/images/admin/circle-check.svg';
+import { ReactComponent as DoneIcon } from '../../../../assets/images/admin/done.svg';
+import { ReactComponent as EditIcon } from '../../../../assets/images/admin/edit.svg';
+import { ReactComponent as ImageIcon } from '../../../../assets/images/admin/image.svg';
+import { ReactComponent as TrashIcon } from '../../../../assets/images/admin/trash.svg';
+import { TypeAction } from './TestQuestionsOption/types';
+import { TypeTestQuestion, TypeTestQuestionOption } from "./types";
 
 const curJwtPair: string = getJwtPair();
 const options = {
@@ -21,15 +21,19 @@ const options = {
 export const getQuestionActions = (
     isEditing: boolean = false,
     setTestQuestions: React.Dispatch<React.SetStateAction<TypeTestQuestion[]>>,
-    testQuestions: TypeTestQuestion[],
+    testQuestion: TypeTestQuestion | null,
     setRerender: React.Dispatch<React.SetStateAction<boolean>>,
+    setCurrentTest: React.Dispatch<React.SetStateAction<any>>,
+    setCurrentTestOption: React.Dispatch<React.SetStateAction<any>>,
 ): TypeAction[] => {
     return [
         {
             id: 'image',
-            icon: <ImageIcon />,
+            icon: testQuestion?.image ? <Tooltip title={testQuestion?.image}>
+                <ImageIcon className="test-questions-option__action_active" />
+            </Tooltip> : <ImageIcon />,
             callback: (action: TypeAction, config: TypeCollapseConfig) => {
-                console.log(config.data);
+                setCurrentTest(config);
             },
         },
         {
@@ -45,8 +49,6 @@ export const getQuestionActions = (
                     Object.assign(config, formValues);
                     // TODO request to backend
                     if (config.id) {
-                        console.log('update');
-                        console.log(config);
                         const payload = {
                             _id: config.id,
                             options: config.options.map((option) => ({
@@ -59,14 +61,9 @@ export const getQuestionActions = (
                             type: config.type,
                             image: config.image,
                         }
-                        const questionResponse = await axios.put<TypeTestQuestion>('/api/questions/' + config.id, payload, options);
-                        console.log(questionResponse);
-                        // questionResponse.data.m
-                        // setTestQuestions();
+                        await axios.put<TypeTestQuestion>('/api/questions/' + config.id, payload, options);
                     } else {
                         console.log('create');
-                        // TODO remove and replace with requested ID
-                        // config.id = Math.round(Math.random() * 100);
                         const payload = {
                             options: config.options.map((option) => ({
                                 id: option._id,
@@ -81,11 +78,11 @@ export const getQuestionActions = (
                         const questionResponse = await axios.post<TypeTestQuestion[]>('/api/questions', payload, options);
 
                         const questions = questionResponse.data.map((question) => {
-                            question.actions = getQuestionActions(question.isEditing, setTestQuestions, testQuestions, setRerender);
+                            question.actions = getQuestionActions(question.isEditing, setTestQuestions, question, setRerender, setCurrentTest, setCurrentTestOption);
                             question.options = question.options.map((option) => (
                                 {
                                     ...option,
-                                    actions: getQuestionOptionActions(option.isEditing, setTestQuestions, option.trueOption, question, setRerender)
+                                    actions: getQuestionOptionActions(option.isEditing, setTestQuestions, option, question, setRerender, setCurrentTestOption)
                                 }
                             ));
                             question.body = <div></div>;
@@ -93,9 +90,7 @@ export const getQuestionActions = (
                         });
 
                         setTestQuestions(questions);
-                        console.log(questions);
                     }
-                    console.log(config);
                 }
             },
         },
@@ -109,13 +104,12 @@ export const getQuestionActions = (
                 if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
                     // TODO request to backend
                     axios.delete('/api/questions/' + config.id, options).then((response) => {
-                        console.log(response.data);
                         setTestQuestions(response.data.map((question) => {
-                            question.actions = getQuestionActions(question.isEditing, setTestQuestions, testQuestions, setRerender);
+                            question.actions = getQuestionActions(question.isEditing, setTestQuestions, question, setRerender, setCurrentTest, setCurrentTestOption);
                             question.options = question.options.map((option) => (
                                 {
                                     ...option,
-                                    actions: getQuestionOptionActions(option.isEditing, setTestQuestions, option.trueOption, question, setRerender)
+                                    actions: getQuestionOptionActions(option.isEditing, setTestQuestions, option, question, setRerender, setCurrentTestOption)
                                 }
                             ));
                             question.body = <div></div>;
@@ -131,16 +125,19 @@ export const getQuestionActions = (
 export const getQuestionOptionActions = (
     isEditing: boolean = false,
     setTestQuestions: React.Dispatch<React.SetStateAction<TypeTestQuestion[]>>,
-    isTrueOption: boolean,
+    option: TypeTestQuestionOption | null,
     question: TypeTestQuestion,
     setRerender: React.Dispatch<React.SetStateAction<boolean>>,
+    setCurrentTestOption: React.Dispatch<React.SetStateAction<any>>,
 ): TypeAction[] => {
     return [
         {
             id: 'image',
-            icon: <ImageIcon />,
+            icon: option?.image ? <Tooltip title={option?.image}>
+                <ImageIcon className="test-questions-option__action_active" />
+            </Tooltip> : <ImageIcon />,
             callback: (action: TypeAction, config: TypeCollapseConfig) => {
-                console.log(config);
+                setCurrentTestOption(config);
             },
         },
         {
@@ -160,15 +157,14 @@ export const getQuestionOptionActions = (
                     } else {
                         console.log('create');
                         // TODO remove and replace with requested ID
-                        config.id = Math.round(Math.random() * 100);
+                        config.id = Math.round(Math.random() * 10000);
                     }
-                    console.log(config);
                 }
             },
         },
         {
             id: 'makeTrue',
-            icon: isTrueOption ? <TrueIcon className="test-questions-option__action_active" /> : <TrueIcon />,
+            icon: option?.trueOption ? <TrueIcon className="test-questions-option__action_active" /> : <TrueIcon />,
             callback: (action: TypeAction, config: any) => {
                 setTestQuestions((prevStateQuestions) => {
                     const questions = [...prevStateQuestions];
@@ -191,7 +187,7 @@ export const getQuestionOptionActions = (
             callback: (action: TypeAction, config: TypeCollapseConfig) => {
                 if (!config.id) {
                     return;
-                } 
+                }
                 if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
                     // TODO request to backend
                     setTestQuestions((prevStateQuestions) => {

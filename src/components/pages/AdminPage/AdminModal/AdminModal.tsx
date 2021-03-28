@@ -6,19 +6,20 @@ import classNames from 'classnames';
 import ButtonElem from 'components/uiKit/ButtomElem';
 
 type Props = {
-  title: string;
+  className?: string;
+  title?: string;
   isModalVisible: boolean;
-  loading: boolean;
+  loading?: boolean;
   children: ReactNode;
-  handleDelete: () => void;
-  handleCancel: () => void;
+  handleDelete?: () => void;
+  handleCancel?: () => void;
 }
 
 function AdminModal(props: Props): JSX.Element {
     return (
       <Modal
         title={props.title}
-        className={classNames("delete-modal", styles["delete-modal"])}
+        className={classNames(props.className, styles["admin-modal"])}
         visible={props.isModalVisible}
         onOk={props.handleDelete}
         onCancel={props.handleCancel}

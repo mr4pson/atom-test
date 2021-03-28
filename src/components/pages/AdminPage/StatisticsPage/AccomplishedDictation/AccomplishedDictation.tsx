@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import styles from './AccomplishedDictation.module.scss';
 import {
     Chart,
@@ -10,6 +10,10 @@ import {
 } from "bizcharts";
 import DatePickerElem from 'components/uiKit/DatePickerElem/DatePickerElem';
 import DataSet from "@antv/data-set";
+import axios from 'axios';
+import { TypePassedDictation } from './type';
+import moment from 'moment';
+import { getJwtPair } from 'components/pages/LoginPage/helpers';
 
 const registerShapeNew = registerShape as any;
 
@@ -35,38 +39,85 @@ registerShapeNew("interval", "sliceShape", {
 
 function AccomplishedDictation(): JSX.Element {
     const { DataView } = DataSet;
-    const userData = [
-        { type: '40%', value: 40 },
-        { type: '60%', value: 60 },
-    ];
-    const userDv = new DataView();
-    userDv.source(userData).transform({
-        type: 'percent',
-        field: 'value',
-        dimension: 'type',
-        as: 'percent',
-    });
+    const [passedDictation, setPassedDictation] = useState<TypePassedDictation>();
+    const [userDv, setUserDv] = useState<any>();
+    const initialDatePickerValue = { dateFrom: moment('01.01.2020').format('DD.MM.YY'), dateTo: moment().format('DD.MM.YY') };
+    const curJwtPair: string = getJwtPair();
+    const options = {
+        headers: {
+            'Authorization': `Bearer ${curJwtPair}`,
+            'withCredentials': true
+        },
+    };
+
+    // const userDv = new DataView();
+
+
+    const getPassedDictation = async (dateFrom: string, dateTo: string) => {
+        const payload = {
+            dateFrom,
+            dateTo,
+        }
+        const response = await axios.get<TypePassedDictation>('/api/statistics/passed-dictation', {
+            ...options,
+            params: payload
+        });
+        setPassedDictation({
+            ...response.data
+        });
+        const passedDictationNumber = Math.round(response.data.passedDictation / (response.data.notPassedDictation + response.data.passedDictation) * 100);
+        const notPassedDictation = 100 - passedDictationNumber;
+        const userData = [
+            { type: passedDictationNumber + '%', value: passedDictationNumber },
+            { type: notPassedDictation + '.0%', value: notPassedDictation },
+        ];
+        
+        const userDv = new DataView();
+        userDv.source(userData).transform({
+            type: 'percent',
+            field: 'value',
+            dimension: 'type',
+            as: 'percent',
+        });
+        setUserDv(userDv);
+    };
+
+    const onValuesChange = (dates: moment.Moment[]) => {
+        if (Array.isArray(dates)) {
+            const [dateFrom, dateTo] = dates;
+            getPassedDictation(dateFrom.format('DD.MM.YYYY'), dateTo.format('DD.MM.YYYY'));
+        }
+    };
+
+    useEffect(() => {
+        getPassedDictation(moment(initialDatePickerValue.dateFrom).format('DD.MM.YYYY'), moment().format('DD.MM.YYYY'));
+    }, []);
+
     return (
         <div className={styles['accomplished-dictation']}>
             <div className={styles['accomplished-dictation__period']}>
-                <DatePickerElem placeholder="Период статистики" />
+                <DatePickerElem
+                    initialValue={initialDatePickerValue}
+                    onChange={onValuesChange}
+                    placeholder="Период статистики"
+                />
             </div>
             <div className={styles['accomplished-dictation__features']}>
                 <div className={styles['accomplished-dictation__left']}>
                     <div className={styles['user-feature']}>
-                        <span className={styles['user-feature__number']}>452</span>
+                        <span className={styles['user-feature__number']}>{passedDictation?.weekNumber ? passedDictation?.weekNumber : 0}</span>
                         <span className={styles['user-feature__label']}>На этой неделе</span>
                     </div>
                     <div className={styles['user-feature']}>
-                        <span className={styles['user-feature__number']}>652</span>
+                        <span className={styles['user-feature__number']}>{passedDictation?.monthNumber ? passedDictation?.monthNumber : 0}</span>
                         <span className={styles['user-feature__label']}>За последний месяц</span>
                     </div>
                     <div className={styles['user-feature']}>
-                        <span className={styles['user-feature__number']}>8000</span>
+                        <span className={styles['user-feature__number']}>{passedDictation?.allTimeNumber ? passedDictation?.allTimeNumber : 0}</span>
                         <span className={styles['user-feature__label']}>За всё время</span>
                     </div>
                 </div>
-                <div className={styles['accomplished-dictation__right']}>
+                {userDv && <div className={styles['accomplished-dictation__right']}>
                     <Chart placeholder={false} height={200} padding={10} autoFit>
                         <Legend visible={false} />
                         <View data={userDv.rows} scale={{
@@ -86,7 +137,7 @@ function AccomplishedDictation(): JSX.Element {
                             />
                         </View>
                     </Chart>
-                </div>
+                </div>}
             </div>
         </div>
     );

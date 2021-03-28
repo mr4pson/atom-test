@@ -198,23 +198,23 @@ body {
 	box-shadow: none;
 }
 
-.test-questions-option .ant-checkbox-disabled + span {
+.test-questions-option .ant-checkbox-disabled + span, .test-questions-option .ant-radio-disabled + span {
 	font-size: 16px;
     color: #4B4B4B;
 	cursor: initial;
 	display: inline-block;
 }
 
-.test-questions-option .ant-checkbox-inner {
+.test-questions-option .ant-checkbox-inner, .test-questions-option .ant-radio-inner {
 	background-color: #fff;
 	cursor: initial;
 }
 
-.test-questions-option .ant-checkbox-input {
+.test-questions-option .ant-checkbox-input, .test-questions-option .ant-radio-input {
 	cursor: initial;
 }
 
-.test-questions-option .ant-checkbox-disabled {
+.test-questions-option .ant-checkbox-disabled, .test-questions-option .ant-radio-disabled {
 	cursor: initial;
 }
 

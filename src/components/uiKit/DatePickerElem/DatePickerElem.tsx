@@ -12,6 +12,8 @@ const { RangePicker } = DatePicker;
 
 type Props = {
 	placeholder: string;
+  initialValue?: { dateFrom: string, dateTo: string },
+  onChange: (data) => void,
 };
 
 const generateUiniqueId = () => {
@@ -24,6 +26,7 @@ function DatePickerElem(props: Props): JSX.Element {
 	const [currentDate, setCurrentDate] = useState<any>(null);
 
   const changeCalendarVisibility = (value) => {
+    props.onChange(value);
     setTimeout(() => {
       setIsActive(!isActive);
     });
@@ -37,6 +40,8 @@ function DatePickerElem(props: Props): JSX.Element {
         setIsActive(false);
       }
     });
+    setCurrentDate(
+			[props.initialValue?.dateFrom, props.initialValue?.dateTo]);
   }, []);
 
   return (

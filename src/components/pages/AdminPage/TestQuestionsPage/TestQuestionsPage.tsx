@@ -109,37 +109,39 @@ function TestQuestionsPage(): JSX.Element {
     return (
         <>
             {
-                testQuestions.length ? <div className={styles['test-questions-page']}>
-                    <div className={styles['test-questions-page__create-wrap']}>
-                        <ExpansionSelectButton
-                            options={expansionOptions}
-                            onOptionPick={onOptionPick}
-                        >Добавить</ExpansionSelectButton>
+                testQuestions.length
+                    ? <div className={styles['test-questions-page']}>
+                        <div className={styles['test-questions-page__create-wrap']}>
+                            <ExpansionSelectButton
+                                options={expansionOptions}
+                                onOptionPick={onOptionPick}
+                            >Добавить</ExpansionSelectButton>
+                        </div>
+                        <div className={styles['test-questions-page__questions']}>
+                            {testQuestions.map((question, index) => (
+                                <AdminCollapseElem
+                                    key={index}
+                                    config={question}
+                                >
+                                    {question.options.map((option, index) => (
+                                        <TestQuestionsOption
+                                            key={index}
+                                            config={option}
+                                            type={question.type}
+                                        />
+                                    ))}
+                                    <ButtonElem
+                                        className={styles['test-questions-page__add-btn']}
+                                        onClick={() => onOptionCreate(question)}
+                                    >Добавить вариант ответа</ButtonElem>
+                                </AdminCollapseElem>
+                            )
+                            )}
+                        </div>
                     </div>
-                    <div className={styles['test-questions-page__questions']}>
-                        {testQuestions.map((question, index) => (
-                            <AdminCollapseElem
-                                key={index}
-                                config={question}
-                            >
-                                {question.options.map((option, index) => (
-                                    <TestQuestionsOption
-                                        key={index}
-                                        config={option}
-                                    />
-                                ))}
-                                <ButtonElem
-                                    className={styles['test-questions-page__add-btn']}
-                                    onClick={() => onOptionCreate(question)}
-                                >Добавить вариант ответа</ButtonElem>
-                            </AdminCollapseElem>
-                        )
-                        )}
-                    </div>
-                </div> : <Loader />
+                    : <Loader />
             }
-        </>
-    );
+        </>);
 }
 
 export default memo(TestQuestionsPage);

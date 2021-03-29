@@ -196,6 +196,7 @@ function NewsPage(props: {
         />
       </Form>
       <AdminModal
+        className={'delete-modal'}
         title={`Удаление "${chosenNews}"`}
         isModalVisible={isModalVisible}
         loading={loading}

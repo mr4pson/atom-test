@@ -1,21 +1,25 @@
 import axios from 'axios';
+import { useCheckRole } from 'components/hooks/useCheckRole';
+import AdminModal from 'components/pages/AdminPage/AdminModal';
 import { getJwtPair } from 'components/pages/LoginPage/helpers';
 import AdminCollapseElem from "components/uiKit/AdminCollapse";
 import ButtonElem from 'components/uiKit/ButtomElem';
 import ExpansionSelectButton from 'components/uiKit/ExpansionSelectButton';
 import { TypeExpansionOption } from 'components/uiKit/ExpansionSelectButton/types';
-import { memo, useEffect, useState } from "react";
+import Loader from 'components/uiKit/Loader';
+import { memo, useEffect, useRef, useState } from "react";
 import { getQuestionActions, getQuestionOptionActions } from './helper';
 import TestQuestionsOption from "./TestQuestionsOption/TestQuestionsOption";
 import styles from "./TestQuestionsPage.module.scss";
-import { QuestionOptionType, TypeTestQuestion } from './types';
-import Loader from 'components/uiKit/Loader';
-import { useCheckRole } from 'components/hooks/useCheckRole';
+import { QuestionOptionType, TypeTestQuestion, TypeTestQuestionOption } from './types';
 
 function TestQuestionsPage(): JSX.Element {
+    const [currentTest, setCurrentTest] = useState<TypeTestQuestion | null>(null);
+    const [currentTestOption, setCurrentTestOption] = useState<TypeTestQuestionOption | null>(null);
     const [testQuestions, setTestQuestions] = useState<TypeTestQuestion[]>([]);
     const [rerender, setRerender] = useState<boolean>(true);
     const curJwtPair: string = getJwtPair();
+    const inputFileRef = useRef({} as HTMLInputElement);
     const options = {
         headers: {
             'Authorization': `Bearer ${curJwtPair}`,
@@ -33,11 +37,25 @@ function TestQuestionsPage(): JSX.Element {
 
     function transformQuestionData(data: TypeTestQuestion[]) {
         const questions = data.map((question) => {
-            question.actions = getQuestionActions(question.isEditing, setTestQuestions, testQuestions, setRerender);
+            question.actions = getQuestionActions(
+                question.isEditing,
+                setTestQuestions,
+                question,
+                setRerender,
+                setCurrentTest,
+                setCurrentTestOption
+            );
             question.options = question.options.map((option) => (
                 {
                     ...option,
-                    actions: getQuestionOptionActions(option.isEditing, setTestQuestions, option.trueOption, question, setRerender)
+                    actions: getQuestionOptionActions(
+                        option.isEditing,
+                        setTestQuestions,
+                        option,
+                        question,
+                        setRerender,
+                        setCurrentTestOption
+                    )
                 }
             ));
             question.body = <div></div>;
@@ -67,7 +85,14 @@ function TestQuestionsPage(): JSX.Element {
             body: <div></div>,
             isEditing: true,
             collapseOn: 'edit',
-            actions: getQuestionActions(true, setTestQuestions, testQuestions, setRerender),
+            actions: getQuestionActions(
+                true,
+                setTestQuestions,
+                null,
+                setRerender,
+                setCurrentTest,
+                setCurrentTestOption
+            ),
             options: [],
         }]));
     }
@@ -80,13 +105,22 @@ function TestQuestionsPage(): JSX.Element {
         setTestQuestions((prevStateQuestions) => {
             question.options.push();
             const questions = [...prevStateQuestions];
-            const curQuestion = questions.find((curQuestion) => curQuestion.id === question.id) as TypeTestQuestion;
+            const curQuestion = questions.find(
+                (curQuestion) => curQuestion.id === question.id
+            ) as TypeTestQuestion;
             curQuestion.options.push({
                 id: Math.round(Math.random() * 100),
                 isEditing: true,
                 title: '',
                 trueOption: false,
-                actions: getQuestionOptionActions(true, setTestQuestions, false, question, setRerender)
+                actions: getQuestionOptionActions(
+                    true,
+                    setTestQuestions,
+                    null,
+                    question,
+                    setRerender,
+                    setCurrentTestOption
+                )
             });
 
             return questions;
@@ -104,6 +138,139 @@ function TestQuestionsPage(): JSX.Element {
         }
     ];
 
+    const handleCancel = () => {
+        setCurrentTest(null);
+    }
+
+    const handleUploadButtonClick = () => {
+        inputFileRef.current.click();
+    }
+
+    const uploadFiles = async (files: FileList ) => {
+        const formData = new FormData();
+        formData.append("files", files[0]);
+        return await axios.post('/api/attachments/addAttachments', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    }
+
+    const handleFileChange = async (event: React.FormEvent<HTMLInputElement>) => {
+        setCurrentTest(null);
+        const uploadFileResponse = await uploadFiles(event.currentTarget.files as FileList);
+        const payload = {
+            _id: currentTest?.id,
+            options: currentTest?.options.map((option) => ({
+                id: option.id,
+                title: option.title,
+                image: option.image,
+                trueOption: option.trueOption,
+            })),
+            title: currentTest?.title,
+            type: currentTest?.type,
+            image: uploadFileResponse.data[0].fileName,
+        }
+        await axios.put<TypeTestQuestion[]>('/api/questions/' + currentTest?.id, payload, options);
+
+        const newTestQuestions = [...testQuestions];
+        const currentTestQuestion = newTestQuestions.find(
+            (question) => question.id === currentTest?.id
+        ) as TypeTestQuestion;
+        currentTestQuestion.image = uploadFileResponse.data[0].fileName;
+        currentTestQuestion.actions = getQuestionActions(
+            currentTestQuestion.isEditing,
+            setTestQuestions,
+            currentTestQuestion,
+            setRerender,
+            setCurrentTest,
+            setCurrentTestOption
+        );
+        currentTestQuestion.options = currentTestQuestion.options.map((option) => (
+            {
+                ...option,
+                actions: getQuestionOptionActions(
+                    option.isEditing,
+                    setTestQuestions,
+                    option,
+                    currentTestQuestion,
+                    setRerender,
+                    setCurrentTestOption
+                )
+            }
+        ));
+        setTestQuestions(newTestQuestions);
+    }
+
+    const handleOptionCancel = () => {
+        setCurrentTestOption(null);
+    }
+
+    const handleOptionFileChange = async (event) => {
+        let uploadFileResponse;
+        try {
+            uploadFileResponse = await uploadFiles(event.currentTarget.files as FileList);
+        }
+        catch {
+            console.log('Error');
+
+        }
+        const currentTest = testQuestions.find(
+            (question) => question.options.find(
+                (option) => option.id === currentTestOption?.id
+            )
+        );
+        const payload = {
+            _id: currentTest?.id,
+            options: currentTest?.options.map((option) => ({
+                id: option.id,
+                title: option.title,
+                image: option.id === currentTestOption?.id ? uploadFileResponse.data[0].fileName : option.image,
+                trueOption: option.trueOption,
+            })),
+            title: currentTest?.title,
+            type: currentTest?.type,
+            image: currentTest?.image,
+        }
+        try {
+            await axios.put<TypeTestQuestion>('/api/questions/' + currentTest?.id, payload, options);
+        } catch {
+            console.log('Error');
+        }
+
+        setCurrentTestOption(null);
+        const newTestQuestions = [...testQuestions];
+        const currentTestQuestion = newTestQuestions.find(
+            (question) => question.options.find(
+                (option) => option.id === currentTestOption?.id
+            )
+        ) as TypeTestQuestion;
+        currentTestQuestion.actions = getQuestionActions(
+            currentTestQuestion.isEditing,
+            setTestQuestions,
+            currentTestQuestion,
+            setRerender,
+            setCurrentTest,
+            setCurrentTestOption
+        );
+        currentTestQuestion.options = currentTestQuestion.options.map((option) => {
+            if (option.id === currentTestOption?.id) {
+                option.image = uploadFileResponse.data[0].fileName;
+            }
+            return {
+                ...option,
+                actions: getQuestionOptionActions(
+                    option.isEditing,
+                    setTestQuestions,
+                    option,
+                    currentTestQuestion,
+                    setRerender,
+                    setCurrentTestOption
+                )
+            }
+        });
+        setTestQuestions(newTestQuestions);
+    }
     useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
     useEffect(() => {
@@ -112,17 +279,16 @@ function TestQuestionsPage(): JSX.Element {
 
     return (
         <>
-            {
-                testQuestions.length
-                    ? <div className={styles['test-questions-page']}>
-                        <div className={styles['test-questions-page__create-wrap']}>
-                            <ExpansionSelectButton
-                                options={expansionOptions}
-                                onOptionPick={onOptionPick}
-                            >Добавить</ExpansionSelectButton>
-                        </div>
-                        <div className={styles['test-questions-page__questions']}>
-                            {testQuestions.map((question, index) => (
+            {testQuestions.length 
+                ? <div className={styles['test-questions-page']}>
+                    <div className={styles['test-questions-page__create-wrap']}>
+                        <ExpansionSelectButton
+                            options={expansionOptions}
+                            onOptionPick={onOptionPick}
+                        >Добавить</ExpansionSelectButton>
+                    </div>
+                    <div className={styles['test-questions-page__questions']}>
+                        {testQuestions.map((question, index) => (
                                 <AdminCollapseElem
                                     key={index}
                                     config={question}
@@ -140,12 +306,41 @@ function TestQuestionsPage(): JSX.Element {
                                     >Добавить вариант ответа</ButtonElem>
                                 </AdminCollapseElem>
                             )
-                            )}
-                        </div>
+                        )}
                     </div>
-                    : <Loader />
+                    {currentTest && <AdminModal
+                        className={'attachment-modal'}
+                        isModalVisible={!!currentTest}
+                        handleCancel={handleCancel}
+                    >
+                        <input
+                            hidden
+                            type="file"
+                            name="file"
+                            onChange={handleFileChange}
+                            ref={inputFileRef}
+                        />
+                        <ButtonElem onClick={handleUploadButtonClick}>Загрузить изображение</ButtonElem>
+                    </AdminModal>}
+                    {currentTestOption && <AdminModal
+                        className={'attachment-modal'}
+                        isModalVisible={!!currentTestOption}
+                        handleCancel={handleOptionCancel}
+                    >
+                        <input
+                            hidden
+                            type="file"
+                            name="file"
+                            onChange={handleOptionFileChange}
+                            ref={inputFileRef}
+                        />
+                        <ButtonElem onClick={handleUploadButtonClick}>Загрузить изображение</ButtonElem>
+                    </AdminModal>}
+                </div>
+                : <Loader />
             }
-        </>);
+        </>
+    );
 }
 
 export default memo(TestQuestionsPage);

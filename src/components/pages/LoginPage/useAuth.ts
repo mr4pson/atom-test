@@ -26,11 +26,10 @@ export function useAuth(): TypeUseAuthHookResult {
         },
         { withCredentials: true },
       );
-      console.log(axiosData.access_token);
       setJwtPair(axiosData.access_token);
       setAuthenticated(true);
       const userInfo = getUserInfo();
-      if (userInfo.role === userType.USER) {
+      if (userInfo?.role === userType.USER) {
         history.push(paths[Page.PRIVATE_OFFICE]);
       } else {
         history.push(paths[Page.ADMIN]);
@@ -54,6 +53,7 @@ export function useAuth(): TypeUseAuthHookResult {
   function logout(): void {
     removeJwtPair();
     setAuthenticated(false);
+    history.push("/login");
   }
 
   return {

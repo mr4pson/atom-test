@@ -8,7 +8,7 @@ export function useCheckRole(message): void {
   const userInfo = getUserInfo();
 
   useEffect(() => {
-    if (userInfo.role === userType.USER) {
+    if (userInfo?.role === userType.USER) {
         history.push('/private-office');
         openNotification('error', message);
     }

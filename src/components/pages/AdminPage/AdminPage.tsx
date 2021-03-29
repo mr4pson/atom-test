@@ -27,7 +27,7 @@ function AdminPage(): JSX.Element {
   const menuItems = [
     {
       key: paths[AdminsPage.NEWS],
-      title: "Добавить/изменить новость",
+      title: "Добавить/изменить страницу",
       icon: (
         <Icon
           className={styles["menu__icon"]}

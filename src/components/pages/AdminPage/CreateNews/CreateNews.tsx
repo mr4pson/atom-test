@@ -1,4 +1,4 @@
-import { Form, FormInstance, Input, Select, Spin } from "antd";
+import { Form, FormInstance, Input, Select } from "antd";
 import ButtonElem from "components/uiKit/ButtomElem";
 import { buttonElemType, htmlType } from "components/uiKit/ButtomElem/types";
 import { memo, useRef, useState, useEffect } from "react";
@@ -11,18 +11,19 @@ import TextRedactor from "components/uiKit/TextRedactor";
 import { useLocation, useHistory } from "react-router-dom";
 import { AdminsPage, paths } from "../routes/constants";
 import { useCreateNews } from "./useUpdateNews";
-import { connect } from "react-redux";
-import { newsCreationMode } from "../NewsPage/types";
-import { setCurrentIdToState } from "redux/reducers/News.reducer";
+import Loader from 'components/uiKit/Loader';
+import { useParams } from "react-router";
+import { useCheckRole } from "components/hooks/useCheckRole";
 
-function CreateNews(props: any): JSX.Element {
+function CreateNews(): JSX.Element {
   const location = useLocation();
   const history = useHistory();
   const [isChoosenFileChecked, setIsChoosenFileChecked] = useState<boolean>(
     false
   );
   const { loading, createNews, currentNews, getCurrentNews, updateNews } = useCreateNews();
-  
+  const { id } = useParams() as any;
+
   const inititalFormState = {
     name: "",
     heading: "",
@@ -39,10 +40,10 @@ function CreateNews(props: any): JSX.Element {
     const formFieldsValue = formRef.current?.getFieldsValue();
 
     if (formFieldsValue.name && formFieldsValue.uploadFile && formFieldsValue.heading) {
-        setIsChoosenFileChecked(false);
-        await updateNews({ ...formFieldsValue }, props.currentId)
-        history.push(paths[AdminsPage.NEWS]);
-        console.log(formRef.current?.getFieldsValue());
+      setIsChoosenFileChecked(false);
+      await updateNews({ ...formFieldsValue }, id)
+      history.push(paths[AdminsPage.NEWS]);
+      console.log(formRef.current?.getFieldsValue());
     }
     console.log(formRef.current?.getFieldsValue());
   }
@@ -51,10 +52,10 @@ function CreateNews(props: any): JSX.Element {
     const formFieldsValue = formRef.current?.getFieldsValue();
 
     if (formFieldsValue.name && formFieldsValue.uploadFile && formFieldsValue.heading) {
-      if (props.creationMode === newsCreationMode.CREATE) {
-        await createNews({ ...formFieldsValue });
+      if (id) {
+        await updateNews({ ...formFieldsValue }, id);
       } else {
-        await updateNews({ ...formFieldsValue }, props.currentId);
+        await createNews({ ...formFieldsValue });
       }
       setIsChoosenFileChecked(false);
       history.push(paths[AdminsPage.NEWS]);
@@ -77,25 +78,26 @@ function CreateNews(props: any): JSX.Element {
     setIsChoosenFileChecked(false);
   }
 
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
+
   useEffect(() => {
-    if (props.creationMode === newsCreationMode.EDIT) {
-      getCurrentNews(props.currentId);
-    }
-    return () => {
-      props.setCurrentIdToState(null);
+    if (id) {
+      getCurrentNews(id);
     }
   }, []);
 
+  console.log(id);
+
   return (
     <>
-      {(props.creationMode === newsCreationMode.EDIT ? currentNews : true) ? (
+      {(id ? currentNews : true) ? (
         <Form
           className={styles["create-news-page"]}
           name="basic"
           onFinish={onSubmit}
           ref={formRef}
           initialValues={
-            location.pathname === paths[AdminsPage.NEWS_CREATE] && props.creationMode === newsCreationMode.CREATE
+            location.pathname === paths[AdminsPage.NEWS_CREATE] && id
               ? inititalFormState
               : currentNews!
           }
@@ -230,18 +232,9 @@ function CreateNews(props: any): JSX.Element {
             </div>
           </div>
         </Form>
-      ) : <div className={styles["spin-wrapper"]}>
-      <Spin size={"large"} />
-    </div>}
+      ) : <Loader />}
     </>
   );
 }
 
-const mapStateToProps = (state: any) => {
-  return {
-      currentId: state.news?.currentId,
-      creationMode: state.news?.creationMode
-  }
-}
-
-export default connect(mapStateToProps, { setCurrentIdToState })(memo(CreateNews));
+export default memo(CreateNews);

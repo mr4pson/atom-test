@@ -1,6 +1,7 @@
 import { DatePicker, Input } from "antd";
 import { MaskedInput } from "antd-mask-input";
 import locale from "antd/es/date-picker/locale/ru_RU";
+import { generateUiniqueId } from "components/common/commonHelper";
 import moment from "moment";
 import "moment/locale/ru";
 import React, { memo, useEffect, useState } from "react";
@@ -14,10 +15,6 @@ type Props = {
 	placeholder: string;
   initialValue?: { dateFrom: string, dateTo: string },
   onChange: (data) => void,
-};
-
-const generateUiniqueId = () => {
-  return Math.random().toString(16).slice(2);
 };
 
 function DatePickerElem(props: Props): JSX.Element {

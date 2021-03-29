@@ -1,0 +1,75 @@
+$blue-300: #0085F8;
+$blue-100: #4daafa;
+
+.auth-button-wrapper {
+  position: relative;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-button {
+  position: relative;
+  width: 170px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+
+  &_justify-center {
+    justify-content: center;
+  }
+
+  &_justify-end {
+    justify-content: flex-end;
+  }
+
+  &__user-name-wrapper {
+    position: absolute;
+    width: 170px;
+    height: 42px;
+    border-radius: 30px;
+    background-color: #44A8FF;
+    color: #FFFFFF;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    text-transform: capitalize;
+    outline: none;
+    cursor: pointer;
+    border: none;
+
+    &__center {
+      justify-content: center;
+    }
+
+    &:focus, &_focus {
+      background-color: #449bff;
+    }
+
+    &_hide {
+      display: none;
+    }
+  }
+}
+
+.user-info__icon {
+  position: absolute;
+  z-index: 15;
+  background-color: $blue-300;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: background-color .3s;
+  &:hover {
+      background-color: $blue-100;
+  }
+}

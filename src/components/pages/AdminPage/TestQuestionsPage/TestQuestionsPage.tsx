@@ -1,16 +1,17 @@
 import axios from 'axios';
+import { useCheckRole } from 'components/hooks/useCheckRole';
+import AdminModal from 'components/pages/AdminPage/AdminModal';
 import { getJwtPair } from 'components/pages/LoginPage/helpers';
 import AdminCollapseElem from "components/uiKit/AdminCollapse";
 import ButtonElem from 'components/uiKit/ButtomElem';
 import ExpansionSelectButton from 'components/uiKit/ExpansionSelectButton';
 import { TypeExpansionOption } from 'components/uiKit/ExpansionSelectButton/types';
+import Loader from 'components/uiKit/Loader';
 import { memo, useEffect, useRef, useState } from "react";
 import { getQuestionActions, getQuestionOptionActions } from './helper';
 import TestQuestionsOption from "./TestQuestionsOption/TestQuestionsOption";
 import styles from "./TestQuestionsPage.module.scss";
 import { QuestionOptionType, TypeTestQuestion, TypeTestQuestionOption } from './types';
-import AdminModal from 'components/pages/AdminPage/AdminModal';
-import { notification } from 'antd';
 
 function TestQuestionsPage(): JSX.Element {
     const [currentTest, setCurrentTest] = useState<TypeTestQuestion | null>(null);
@@ -76,10 +77,6 @@ function TestQuestionsPage(): JSX.Element {
         }
     }
 
-    useEffect(() => {
-            getNewQuestions();
-    })
-
     const handleCreate = (type: QuestionOptionType) => {
         // TODO add http create request
         setTestQuestions(testQuestions.concat([{
@@ -125,7 +122,7 @@ function TestQuestionsPage(): JSX.Element {
                     setCurrentTestOption
                 )
             });
-        
+
             return questions;
         });
     }
@@ -274,64 +271,75 @@ function TestQuestionsPage(): JSX.Element {
         });
         setTestQuestions(newTestQuestions);
     }
+    useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
+
+    useEffect(() => {
+        getNewQuestions();
+    })
+
     return (
-        <div className={styles['test-questions-page']}>
-            <div className={styles['test-questions-page__create-wrap']}>
-                <ExpansionSelectButton
-                    options={expansionOptions}
-                    onOptionPick={onOptionPick}
-                >Добавить</ExpansionSelectButton>
-            </div>
-            <div className={styles['test-questions-page__questions']}>
-                {testQuestions.map((question, index) => (
-                        <AdminCollapseElem
-                            key={index}
-                            config={question}
-                        >
-                            {question.options.map((option, index) => (
-                                <TestQuestionsOption
+        <>
+            {testQuestions.length 
+                ? <div className={styles['test-questions-page']}>
+                    <div className={styles['test-questions-page__create-wrap']}>
+                        <ExpansionSelectButton
+                            options={expansionOptions}
+                            onOptionPick={onOptionPick}
+                        >Добавить</ExpansionSelectButton>
+                    </div>
+                    <div className={styles['test-questions-page__questions']}>
+                        {testQuestions.map((question, index) => (
+                                <AdminCollapseElem
                                     key={index}
-                                    config={option}
-                                    type={question.type}
-                                />
-                            ))}
-                            <ButtonElem
-                                className={styles['test-questions-page__add-btn']}
-                                onClick={() => onOptionCreate(question)}
-                            >Добавить вариант ответа</ButtonElem>
-                        </AdminCollapseElem>
-                    )
-                )}
-            </div>
-            {currentTest && <AdminModal
-                className={'attachment-modal'}
-                isModalVisible={!!currentTest}
-                handleCancel={handleCancel}
-            >
-                <input
-                    hidden
-                    type="file"
-                    name="file"
-                    onChange={handleFileChange}
-                    ref={inputFileRef}
-                />
-                <ButtonElem onClick={handleUploadButtonClick}>Загрузить изображение</ButtonElem>
-            </AdminModal>}
-            {currentTestOption && <AdminModal
-                className={'attachment-modal'}
-                isModalVisible={!!currentTestOption}
-                handleCancel={handleOptionCancel}
-            >
-                <input
-                    hidden
-                    type="file"
-                    name="file"
-                    onChange={handleOptionFileChange}
-                    ref={inputFileRef}
-                />
-                <ButtonElem onClick={handleUploadButtonClick}>Загрузить изображение</ButtonElem>
-            </AdminModal>}
-        </div>
+                                    config={question}
+                                >
+                                    {question.options.map((option, index) => (
+                                        <TestQuestionsOption
+                                            key={index}
+                                            config={option}
+                                            type={question.type}
+                                        />
+                                    ))}
+                                    <ButtonElem
+                                        className={styles['test-questions-page__add-btn']}
+                                        onClick={() => onOptionCreate(question)}
+                                    >Добавить вариант ответа</ButtonElem>
+                                </AdminCollapseElem>
+                            )
+                        )}
+                    </div>
+                    {currentTest && <AdminModal
+                        className={'attachment-modal'}
+                        isModalVisible={!!currentTest}
+                        handleCancel={handleCancel}
+                    >
+                        <input
+                            hidden
+                            type="file"
+                            name="file"
+                            onChange={handleFileChange}
+                            ref={inputFileRef}
+                        />
+                        <ButtonElem onClick={handleUploadButtonClick}>Загрузить изображение</ButtonElem>
+                    </AdminModal>}
+                    {currentTestOption && <AdminModal
+                        className={'attachment-modal'}
+                        isModalVisible={!!currentTestOption}
+                        handleCancel={handleOptionCancel}
+                    >
+                        <input
+                            hidden
+                            type="file"
+                            name="file"
+                            onChange={handleOptionFileChange}
+                            ref={inputFileRef}
+                        />
+                        <ButtonElem onClick={handleUploadButtonClick}>Загрузить изображение</ButtonElem>
+                    </AdminModal>}
+                </div>
+                : <Loader />
+            }
+        </>
     );
 }
 

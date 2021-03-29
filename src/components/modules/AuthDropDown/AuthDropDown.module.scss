@@ -1,0 +1,37 @@
+.auth-dropdown {
+  position: absolute;
+  top: 101px;
+  margin-top: 10px;
+  min-width: 214px;
+  height: 100px;
+  background: #0085F8;
+  border-radius: 30px;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: height 0.1s ease-in;
+  overflow: hidden;
+  &_hide {
+    height: 0;
+  }
+
+  &__item {
+    font-family: AGOpus;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color .3s;
+    &:hover {
+      color: #aad7ff
+    }
+  }
+
+  &__divider {
+    background-color: rgba(255, 255, 255, 0.21);
+    width: 182px;
+    height: 1px;
+    margin-bottom: 10px;
+  }
+}

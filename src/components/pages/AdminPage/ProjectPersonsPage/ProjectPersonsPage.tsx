@@ -5,6 +5,7 @@ import { buttonElemType } from "components/uiKit/ButtomElem/types";
 import ButtonElem from "components/uiKit/ButtomElem";
 import AdminCollapseElem from "components/uiKit/AdminCollapse";
 import axios from "axios";
+import { useCheckRole } from "components/hooks/useCheckRole";
 
 function ProjectPersonsPage(): JSX.Element {
   const { TextArea } = Input;
@@ -21,6 +22,8 @@ function ProjectPersonsPage(): JSX.Element {
     }));
     setProjectPersons(newResponse);
   };
+
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
   useEffect(() => {
     getProjectPersonsData();

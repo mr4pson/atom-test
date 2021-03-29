@@ -27,8 +27,8 @@ export function getRoutes(): TypeRoute[] {
       exact: true,
     },
     {
-      type: AdminsPage.NEWS_EDIT,
-      path: paths[AdminsPage.NEWS_EDIT],
+      type: AdminsPage.NEWS_EDIT_ROUTE,
+      path: paths[AdminsPage.NEWS_EDIT_ROUTE],
       component: <CreateNews />,
     },
     {
@@ -90,7 +90,7 @@ export function getRoutes(): TypeRoute[] {
     },
     {
       type: AdminsPage.EDIT_PARTNER,
-      path: paths[AdminsPage.EDIT_PARTNER],
+      path: paths[AdminsPage.EDIT_PARTNER_ROUTE],
       component: <AddPartnerPage />,
     },
     {

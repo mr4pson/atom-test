@@ -5,12 +5,13 @@ import { buttonElemType } from "components/uiKit/ButtomElem/types";
 import ButtonElem from "components/uiKit/ButtomElem";
 import AdminCollapseElem from "components/uiKit/AdminCollapse";
 import axios from "axios";
+import { useCheckRole } from "components/hooks/useCheckRole";
 
 function MenuPage(): JSX.Element {
   const { TextArea } = Input;
 
   const [menuElems, setMenuElems] = useState<any[]>([]);
-
+  
   const getMenuPageData = async () => {
     const menuElemsResponse = await axios.get<any[]>(
       "/mocks/getMenuPageData.json"
@@ -21,6 +22,8 @@ function MenuPage(): JSX.Element {
     }));
     setMenuElems(newResponse);
   };
+
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
   useEffect(() => {
     getMenuPageData();

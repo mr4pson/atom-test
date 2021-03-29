@@ -280,3 +280,30 @@ body {
 }
 
 /* Attachment modal */
+
+
+/* Pagination */
+.ant-pagination-item-link {
+	border-radius: 35px !important;
+	border: none !important;
+}
+
+.ant-pagination-item a{
+	color: #A5A5A5 !important;
+}
+
+.ant-pagination-item-active a {
+	font-weight: bold !important;
+	color: #0085F8 !important;
+}
+
+.ant-pagination-item-active, .ant-pagination-item {
+	border: none;
+	background: none;
+	font-size: 16px;
+}
+
+.anticon svg {
+	color: #8D9FBB;
+}
+/* Pagination */

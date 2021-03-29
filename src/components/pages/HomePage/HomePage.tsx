@@ -1,5 +1,6 @@
 import { Col, Form, FormInstance, Input, Row } from 'antd';
 import classNames from 'classnames';
+import { getUserInfo } from 'components/common/commonHelper';
 import DictationTimer from 'components/modules/DictationTimer';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
@@ -34,6 +35,8 @@ function HomePage(): JSX.Element {
         });
     };
 
+    const userInfo = getUserInfo();
+
     const supporterRows = cutArrayByThree(supporters);
     const formRef = useRef<FormInstance>(null);
     
@@ -55,7 +58,7 @@ function HomePage(): JSX.Element {
     return (
         <div className={styles["home-page"]}>
             <div className="container">
-                <Navigation navigationType={NavigationType.HEADER} />
+                <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER} />
                 <div className={styles['main-section']}>
                     <div className="left-bar">
                         <div className={styles['main-section__title']}>Атомный диктант</div>

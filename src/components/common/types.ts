@@ -8,6 +8,7 @@ export type TypeUserInfo = {
   email: string;
   role: string;
   expire: number;
+  fullName: string;
 }
 
 export enum userType {

@@ -1,31 +1,25 @@
+import classNames from "classnames";
+import { TypeUserInfo } from "components/common/types";
+import AuthButton from "components/modules/AuthButton";
 import { memo } from "react";
+import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import { Page, paths } from "routes/constants";
 import {
-  headerLinks,
-  footerLinks,
-  NavigationType,
-  navigationTranslations,
+  footerLinks, headerLinks,
+  navigationTranslations, NavigationType
 } from "./constants";
 import styles from "./Navigation.module.scss";
 import { TypeLink } from "./types";
-import classNames from "classnames";
-import Icon from "components/uiKit/Icon";
-import { arrowUpIcon, logoutIcon, userInfoIcon } from "icons";
-import { useHistory, useLocation } from "react-router";
-import { Page, paths } from "routes/constants";
 
 type Props = {
   navigationType: NavigationType;
+  userInfo?: TypeUserInfo;
 };
 
 function Navigation(props: Props): JSX.Element {
   let links: TypeLink[] = [];
-  let history = useHistory();
   let location = useLocation();
-
-  function logout(): void {
-    history.push("/login");
-  }
 
   function getNavigationClassName(): string {
     return classNames({
@@ -39,59 +33,7 @@ function Navigation(props: Props): JSX.Element {
     });
   }
 
-  function renderUserInfoIcon(): JSX.Element {
-    if (props.navigationType === NavigationType.HEADER) {
-      if (
-        location.pathname === paths[Page.PRIVATE_OFFICE] ||
-        location.pathname.includes(paths[Page.ADMIN])
-      ) {
-        return (
-          <Icon
-            className={styles["nav-bar-header__logout-icon"]}
-            path={logoutIcon.path}
-            viewBox={logoutIcon.viewBox}
-            title="AtomTest"
-          />
-        );
-      }
-      return (
-        <Icon
-          className={styles["nav-bar-header__user-info-icon"]}
-          path={userInfoIcon.path}
-          viewBox={userInfoIcon.viewBox}
-          title="AtomTest"
-        />
-      );
-    }
-    return (
-      <Icon
-        className={styles["nav-bar-footer__icon"]}
-        path={arrowUpIcon.path}
-        viewBox={arrowUpIcon.viewBox}
-        title="AtomTest"
-      />
-    );
-  }
-
-  function renderPrivateOfficeLink(): JSX.Element | null {
-    if (
-      props.navigationType === NavigationType.HEADER &&
-      location.pathname !== paths[Page.LOGIN] &&
-      location.pathname !== paths[Page.SIGN_UP] &&
-      location.pathname !== paths[Page.FORGOT_PASSWORD] &&
-      location.pathname !== paths[Page.PRIVATE_OFFICE]
-    ) {
-      return (
-        <Link
-          to={paths[Page.PRIVATE_OFFICE]}
-          className={styles["user-info__private-office"]}
-        >
-          {navigationTranslations.privateOffice}
-        </Link>
-      );
-    }
-    return null;
-  }
+  //TODO: remove in future
   function renderAdminPageLink(): JSX.Element | null {
     if (
       props.navigationType === NavigationType.HEADER &&
@@ -128,18 +70,15 @@ function Navigation(props: Props): JSX.Element {
         <ul className={getNavigationClassName()}>
           {!location.pathname.includes(paths[Page.ADMIN])
             ? links.map((link: TypeLink) => (
-                <li key={link.path}>
-                  <Link to={link.path}>{link.name}</Link>
-                </li>
-              ))
+              <li key={link.path}>
+                <Link to={link.path}>{link.name}</Link>
+              </li>
+            ))
             : null}
         </ul>
         <div className={styles["user-info"]}>
-          <button onClick={logout} className={styles["user-info__icon"]}>
-            {renderUserInfoIcon()}
-          </button>
-          {renderPrivateOfficeLink()}
-          {renderAdminPageLink()}
+          <AuthButton userInfo={props.userInfo!} navigationType={props.navigationType} />
+          {/* {renderAdminPageLink()} */}
         </div>
       </div>
     </div>

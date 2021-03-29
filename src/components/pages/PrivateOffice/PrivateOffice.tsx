@@ -90,7 +90,7 @@ function PrivateOffice(props): JSX.Element {
     }
 
     useEffect(() => {
-        if (userInfo.role === userType.ADMIN) {
+        if (userInfo?.role === userType.ADMIN) {
             history.push(paths[Page.ADMIN]);
             openNotification('error', 'У вас нет доступа к Личному кабинету, т.к. вы администратор!');
         }

@@ -1,0 +1,123 @@
+.contact-us {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 150%;
+  margin-top: 125px;
+  color: #4B4B4B;
+  font-family: AGOpus, sans-serif;
+  font-size: 16px;
+  padding-bottom: 100px;
+  &__title {
+    font-size: 56px;
+    font-weight: normal;
+    margin-bottom: 30px;
+    font-family: Nexa Script Light;
+    font-weight: bold;
+    text-align: center;
+    line-height: 56px;
+  }
+  &__body {
+    margin-top: 65px;
+    display: flex;
+  }
+  &__footer {
+    position: absolute;
+    bottom: -65px;
+    left: 20px;
+  }
+  &__image {
+    width: 600px;
+    height: 470px;
+    background-image: url(../../../assets/images/home-page/contact-us.png);
+    background-position-x: -70px;
+    background-size: cover;
+    margin-right: 57px;
+    position: relative;
+  }
+  &__right-bar {
+    width: 570px;
+    padding-top: 70px;
+    margin-right: 57px;
+  }
+  &__share-in {
+    position: absolute;
+    top: 50px;
+    left: 62px;
+  }
+}
+
+.share-in {
+  &__title {
+    font-weight: bold;
+    font-size: 18px;
+    color: #4B4B4B;
+  }
+  &__links {
+    margin-top: 10px;
+    display: flex;
+  }
+  &__link {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+    cursor: pointer;
+    &:nth-child(1) {
+      background-image: url(../../../assets/images/home-page/vk.png);
+    }
+    &:nth-child(2) {
+      background-image: url(../../../assets/images/home-page/ok.png);
+    }
+    &:nth-child(3) {
+      background-image: url(../../../assets/images/home-page/fb.png);
+    }
+    &:nth-child(4) {
+      background-image: url(../../../assets/images/home-page/insta.png);
+    }
+    &:nth-child(5) {
+      background-image: url(../../../assets/images/home-page/tg.png);
+    }
+  }
+}
+
+.contact-us-form {
+  &__top {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  &__controlls {
+    display: flex;
+    align-items: center;
+  }
+  &__info {
+    font-size: 15px;
+    line-height: 18px;
+    color: #999999;
+  }
+  &__input {
+    width: 270px;
+    height: 46px;
+    border-radius: 30px;
+    border-color: #0085F8;
+    outline: none;
+    font-size: 16px;
+    color: #4DAAFA !important;
+    padding: 10px 20px;
+    input {
+      color: #4DAAFA;
+    }
+    &::placeholder {
+      color: #4DAAFA;
+    }
+  }
+  textarea {
+    width: 100%;
+    min-height: 202px!important;
+    max-height: 202px!important;
+  }
+  .ant-form-item {
+    margin-bottom: 22px;
+  }
+}

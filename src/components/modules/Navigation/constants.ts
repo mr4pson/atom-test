@@ -1,8 +1,9 @@
+import { Page, paths } from "routes/constants";
 import { TypeLink } from "./types";
 
 export const navigationTranslations = {
     aboutProject: 'О проекте',
-    news: 'Новости',
+    pages: 'Страницы',
     projectParticipants: 'Лица проекта',
     organisators: 'Организаторы',
     infoPartners: 'Информационные партнеры',
@@ -13,7 +14,7 @@ export const navigationTranslations = {
 
 export const navigationPaths = {
     ABOUT: 'about',
-    NEWS : 'news',
+    Pages : paths[Page.PAGES],
     PROJECT_PARTICIPANTS: 'project-participants',
     ORGANIZATORS: 'organizators',
     INFO_PARTNERS: 'info-partners',
@@ -31,8 +32,8 @@ export const headerLinks: TypeLink[] = [
       path: navigationPaths.ABOUT,
   },
   {
-      name: navigationTranslations.news,
-      path: navigationPaths.NEWS,
+      name: navigationTranslations.pages,
+      path: navigationPaths.Pages,
   },
   {
       name: navigationTranslations.projectParticipants,

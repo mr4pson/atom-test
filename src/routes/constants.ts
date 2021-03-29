@@ -8,6 +8,9 @@ export enum Page {
   USER_TEST_ROUTE = 'USER_TEST_ROUTE',
   USER_TEST_COMPLETE = 'USER_TEST_COMPLETE',
   ADMIN = 'ADMIN',
+  PAGES = 'PAGES',
+  PAGE = 'PAGE',
+  PAGE_ROUTE = 'PAGE_ROUTE',
 }
 
 export const paths = {
@@ -20,4 +23,7 @@ export const paths = {
   [Page.USER_TEST_COMPLETE]: '/user-test/complete',
   [Page.USER_TEST_ROUTE]: '/user-test/:questionNumber',
   [Page.ADMIN]: '/admin',
+  [Page.PAGES]: '/pages',
+  [Page.PAGE]: '/page',
+  [Page.PAGE_ROUTE]: '/page/:id',
 }

@@ -1,6 +1,7 @@
 import { Col, Form, FormInstance, Input, Row } from 'antd';
 import classNames from 'classnames';
 import { getUserInfo } from 'components/common/commonHelper';
+import ContactUs from 'components/modules/ContactUs';
 import DictationTimer from 'components/modules/DictationTimer';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
@@ -205,68 +206,7 @@ function HomePage(): JSX.Element {
                         ))}
                     </div>
                 </div>
-                <div className={styles['contact-us']}>
-                    <div className={styles['contact-us__title']}>
-                        {ReactHtmlParser(homePage.contactUs.title)}
-                    </div>
-                    <div className={styles['contact-us__body']}>
-                        <div className="contact-us__left-bar">
-                            <div className={styles['contact-us__image']}>
-                                <div className={styles['contact-us__footer']}>
-                                    <ContactUsFooter/>
-                                    <div className={classNames(styles['contact-us__share-in'], styles['share-in'])}>
-                                        <div className={styles['share-in__title']}>{ReactHtmlParser(homePage.contactUs.body.shareTo)}</div>
-                                        <div className={styles['share-in__links']}>
-                                            <div className={styles['share-in__link']}></div>
-                                            <div className={styles['share-in__link']}></div>
-                                            <div className={styles['share-in__link']}></div>
-                                            <div className={styles['share-in__link']}></div>
-                                            <div className={styles['share-in__link']}></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={classNames(styles['contact-us__right-bar'], styles['contact-us-form'])}>
-                            <Form
-                                name="basic"
-                                initialValues={{}}
-                                onFinish={onSubmit}
-                                ref={formRef}
-                            >
-                                <div className={styles['contact-us-form__top']}>
-                                    <Form.Item
-                                        name="name"
-                                        rules={[{ required: true, message: 'Please input your login!' }]}
-                                    >
-                                        <Input className={styles['contact-us-form__input']} placeholder='Ваше имя' />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name="email"
-                                        rules={[{ required: true, message: 'Please input your login!' }]}
-                                    >
-                                        <Input className={styles['contact-us-form__input']} placeholder='Email*' />
-                                    </Form.Item>
-                                </div>
-                                <Form.Item
-                                    name="message"
-                                    rules={[{ required: true, message: 'Please input your login!' }]}
-                                >
-                                    <TextArea
-                                        className={styles['contact-us-form__input']}
-                                        required={true}
-                                        placeholder="Сообщение"
-                                        autoSize={{ minRows: 3, maxRows: 5 }}
-                                    />
-                                </Form.Item>
-                                <div className={styles['contact-us-form__controlls']}>
-                                    <ButtonElem htmlType={htmlType.SUBMIT} type={buttonElemType.Primary}>{ReactHtmlParser(homePage.contactUs.body.button.sendBtn)}</ButtonElem>
-                                    <div className={styles['contact-us-form__info']}>{ReactHtmlParser(homePage.contactUs.body.sendActionInfo)}</div>
-                                </div>
-                            </Form>
-                        </div>
-                    </div>
-                </div>
+                <ContactUs />
                 <Navigation navigationType={NavigationType.FOOTER} />
             </div>
         </div>

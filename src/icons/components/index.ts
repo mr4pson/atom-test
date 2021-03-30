@@ -1,1 +1,2 @@
-export { default } from './ManFrameIcon';
+export { ManFrameIcon } from './ManFrameIcon';
+export { WomanFrameIcon } from './WomanFrameIcon';

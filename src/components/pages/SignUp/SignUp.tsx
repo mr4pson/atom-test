@@ -1,66 +1,81 @@
-import { memo, useRef } from 'react';
+import { memo, useRef, useState } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from '../LoginPage/LoginPage.module.scss';
-import { Form, Input, Button, Select, notification, FormInstance } from 'antd';
+import { Form, Input, Button, Select, FormInstance } from 'antd';
 import { useHistory } from 'react-router';
 import { Page, paths } from 'routes/constants';
 import { Link } from "react-router-dom";
-import { cityItems, formItemRulse, inititalFormValue, phoneNumberMask } from './constants';
-import { TypeSelectOption } from 'components/common/types';
+import { cityItems, formItemRulse, inititalFormValue, phoneNumberMask, sexItems } from './constants';
+import classNames from 'classnames';
 import MaskedInput from 'antd-mask-input'
+import { englishLimiter } from 'components/common/constants';
+import { openNotification } from 'components/common/commonHelper';
+import { useSignUp } from './useSignUp';
 // import { loginPage } from 'i18n'
 
 function SignUp(): JSX.Element {
     const formRef = useRef<FormInstance>(null);
     const history = useHistory();
     const [form] = Form.useForm();
+    const [hasRusLetters, setHasRusLetters] = useState<string>('');
 
     const { Option } = Select;
 
-    const close = () => {
-        console.log(
-          'Notification was closed. Either the close button was clicked or duration time elapsed.',
-        );
-    };
+    const { loading, status, regUser } = useSignUp();
 
-    const openNotification = () => {
-        const key = `open${Date.now()}`;
-        function onBackToLogin(): void {
-          notification.close(key);
-          history.push(paths[Page.LOGIN]);
+    // const openNotification = () => {
+    //     const key = `open${Date.now()}`;
+    //     function onBackToLogin(): void {
+    //         notification.close(key);
+    //         history.push(paths[Page.LOGIN]);
+    //     }
+
+    //     const btn = (
+    //         <Button className={styles['login-page__notification-btn']} type="primary" size="small" onClick={onBackToLogin}>
+    //             К логину
+    //         </Button>
+    //     );
+    //     notification.open({
+    //         message: 'Вы были успешно зарегистрированны',
+    //         // description:
+    //         //   'A function will be be called after the notification is closed (automatically after the "duration" time of manually).',
+    //         btn,
+    //         key,
+    //         onClose: close,
+    //     });
+    // };
+
+    async function onSubmit(): Promise<void> {
+        const userFormData = formRef.current?.getFieldsValue();
+
+        if (hasRusLetters) {
+            openNotification('error', 'Логин содержит русские символы!');
+        } else {
+            await regUser(userFormData);
+            if (status && (status !== 200 && status !== 201)) {
+                openNotification('error', 'Внутрення ошибка сервера');
+            }
+            form.resetFields();
+            openNotification('success', 'Вы были успешно зарегистрированны');
+            setTimeout(() => {
+                history.push(paths[Page.LOGIN]);
+            }, 2000)
         }
-  
-        const btn = (
-          <Button className={styles['login-page__notification-btn']} type="primary" size="small" onClick={onBackToLogin}>
-            К логину
-          </Button>
-        );
-        notification.open({
-          message: 'Вы были успешно зарегистрированны',
-          // description:
-          //   'A function will be be called after the notification is closed (automatically after the "duration" time of manually).',
-          btn,
-          key,
-          onClose: close,
-        });
     };
 
-    function onSubmit (values: any): void {
-        // console.log('Success:', values);
-        console.log(formRef.current?.getFieldsValue());
-        openNotification();
-        form.resetFields();
-    };
-
-    function handleChange(value) {
-        console.log(`selected ${value}`);
-    };
+    function handleLoginChange(event): void {
+        if (englishLimiter.test(event.target.value)) {
+            setHasRusLetters('');
+        } else {
+            setHasRusLetters(event.target.value);
+        }
+    }
 
     return (
         <>
             <div className='container'>
-                <Navigation navigationType={NavigationType.HEADER}/>
+                <Navigation navigationType={NavigationType.HEADER} />
                 <Form
                     form={form}
                     name="signUpForm"
@@ -69,7 +84,12 @@ function SignUp(): JSX.Element {
                     className={styles['login-page']}
                     ref={formRef}
                 >
-                    <span className={styles['login-page__title']}>Регистрация</span>
+                    <span className={classNames(
+                        styles['login-page__title'],
+                        styles['login-page__sign-up-title']
+                    )}>
+                        Регистрация
+                    </span>
                     <Form.Item
                         name="fullName"
                         rules={[formItemRulse[0]]}
@@ -80,47 +100,79 @@ function SignUp(): JSX.Element {
                         name="email"
                         rules={[formItemRulse[1]]}
                     >
-                        <Input className={styles['login-page__input']} placeholder='Email*' />
+                        <Input type="email" className={styles['login-page__input']} placeholder='Email*' />
                     </Form.Item>
                     <Form.Item
-                        name="phoneNumber"
+                        name="phone"
                         rules={[formItemRulse[2]]}
                     >
-                        <MaskedInput 
+                        <MaskedInput
                             className={styles['login-page__input']}
                             mask={phoneNumberMask}
                         />
                     </Form.Item>
-                    <Form.Item
-                        name="city"
-                    >
-                        <Select 
-                            placeholder='Город' 
-                            className={styles['login-page__select']} 
-                            onChange={handleChange}
+                    <Form.Item name="city">
+                        <Select
+                            placeholder='Город'
+                            className={styles['login-page__select']}
                         >
                             {
-                                cityItems.map((item: TypeSelectOption) => (
+                                cityItems.map((item) => (
                                     <Option key={item.value} value={item.value}>{item.text}</Option>
                                 ))
                             }
                         </Select>
                     </Form.Item>
+                    <Form.Item name="sex">
+                        <Select
+                            placeholder='Пол'
+                            className={styles['login-page__select']}
+                        >
+                            {
+                                sexItems.map((item) => (
+                                    <Option key={item.value} value={item.value}>{item.text}</Option>
+                                ))
+                            }
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        name="username"
+                        rules={[formItemRulse[3]]}
+                    >
+                        <Input
+                            className={styles['login-page__input']}
+                            onKeyUp={handleLoginChange}
+                            placeholder='Логин'
+                        />
+                    </Form.Item>
+                    <Form.Item
+                        name="password"
+                        rules={[formItemRulse[4]]}
+                    >
+                        <Input.Password className={styles['login-page__input']} placeholder='Пароль' />
+                    </Form.Item>
                     <Form.Item>
-                        <Button 
+                        <Button
                             className={styles['login-page__button']}
                             type="primary"
                             htmlType="submit"
+                            loading={loading}
                         >
                             Зарегистрироваться
                         </Button>
                     </Form.Item>
                     <div className={styles['login-page__sign-up-btn-info']}>Нажимая кнопку “Зарегистрироваться” Вы соглашаетесь на обработку Ваших данных</div>
-                    <Link to={paths[Page.LOGIN]} className={styles['login-page__already-have']}>
+                    <Link
+                        to={paths[Page.LOGIN]}
+                        className={classNames(
+                            styles['login-page__already-have'],
+                            styles['login-page__sign-up-already-have'],
+                        )}
+                    >
                         У меня уже есть аккаунт
                     </Link>
                 </Form>
-                <Navigation navigationType={NavigationType.FOOTER}/>
+                <Navigation navigationType={NavigationType.FOOTER} />
             </div>
         </>
     );

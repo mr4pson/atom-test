@@ -18,7 +18,7 @@ function PageItem(props: Props) {
     <div className={styles['page-item__description']}>{props.description}</div> 
     <div className={styles['page-item__footer']}>
       <span className={styles['page-item__creation-date']}>{props.createdAt}</span>
-      <Link to={paths[Page.PAGE_ROUTE]} className={styles['page-item__link']}>Читать полностью</Link>
+      <Link to={`${paths[Page.PAGE]}/${props.id}`} className={styles['page-item__link']}>Читать полностью</Link>
     </div>
   </div>
 }

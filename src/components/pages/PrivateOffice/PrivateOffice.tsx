@@ -2,10 +2,9 @@ import { memo, useEffect, useRef, useState } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from './PrivateOffice.module.scss';
-import { Form, Input, Select, notification } from 'antd';
+import { Form, Input, Select, notification, Row, Col } from 'antd';
 import classNames from 'classnames';
-import ManFrameIcon from 'icons/components';
-import { Row, Col } from 'antd';
+import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
 import { inititalFormState, phoneNumberMask, sexItems } from './constants';
 import { TypeSelectOption, userType } from 'components/common/types';
 import MaskedInput from 'antd-mask-input';
@@ -45,7 +44,7 @@ function PrivateOffice(props): JSX.Element {
     const [sex, setSex] = useState<any>(inititalFormState.sex);
     const [phoneNumber, setPhoneNumber] = useState<string>(inititalFormState.phoneNumber);
     const [email, setEmail] = useState<string>(inititalFormState.email);
-    
+
     const [avatar, setAvatar] = useState<any>(null);
     const [isUploading, setIsUploading] = useState<boolean>(false);
 
@@ -58,7 +57,7 @@ function PrivateOffice(props): JSX.Element {
         findSexItemText();
     };
 
-    function onSubmit (): void {
+    function onSubmit(): void {
         console.log(formRef.current.getFieldValue());
     };
 
@@ -99,7 +98,7 @@ function PrivateOffice(props): JSX.Element {
     return (
         <>
             <div className='container'>
-                <Navigation navigationType={NavigationType.HEADER}/>
+                <Navigation navigationType={NavigationType.HEADER} />
                 <Form
                     name="basic"
                     onFinish={onSubmit}
@@ -109,12 +108,12 @@ function PrivateOffice(props): JSX.Element {
                 >
                     <div className={styles['private-office__user-info']}>
                         <div className={classNames(
-                                styles['private-office__photo'],
-                                styles['user-photo'],
-                            )}
+                            styles['private-office__photo'],
+                            styles['user-photo'],
+                        )}
                         >
                             <div className={styles['user-photo__img']}>
-                                <ManFrameIcon />
+                                {sex === 'male' ? <ManFrameIcon /> : <WomanFrameIcon />}
                                 <img src={avatar?.length ? avatar[0].secure_url : ''} alt='' />
                             </div>
                             <label className={styles['user-photo__action-name']}>
@@ -130,29 +129,29 @@ function PrivateOffice(props): JSX.Element {
                             >
                                 {
                                     boolFullName === false ?
-                                    <div
-                                        className={styles['user-info__full-name']}
-                                    >
-                                        <span>{fullName}</span>
-                                        <Icon
-                                            className={styles['user-info__edit-icon']}
-                                            path={editIcon.path}
-                                            viewBox={editIcon.viewBox}
-                                            title="AtomTest"
-                                            onClick={() => setBoolFullName(true)}
-                                        />
-                                    </div>
-                                    : <div className={styles['input-wrapper']}>
-                                        <Input
-                                            className={styles['user-info__input']}
-                                            placeholder='Логин'
-                                            onBlur={() => setBoolFullName(false)}
-                                            onChange={(e) => setFullName(e.target.value)}
-                                            onPressEnter={() => setBoolFullName(false)}
-                                            value={fullName}
-                                            autoFocus
-                                        />
-                                    </div>
+                                        <div
+                                            className={styles['user-info__full-name']}
+                                        >
+                                            <span>{fullName}</span>
+                                            <Icon
+                                                className={styles['user-info__edit-icon']}
+                                                path={editIcon.path}
+                                                viewBox={editIcon.viewBox}
+                                                title="AtomTest"
+                                                onClick={() => setBoolFullName(true)}
+                                            />
+                                        </div>
+                                        : <div className={styles['input-wrapper']}>
+                                            <Input
+                                                className={styles['user-info__input']}
+                                                placeholder='Логин'
+                                                onBlur={() => setBoolFullName(false)}
+                                                onChange={(e) => setFullName(e.target.value)}
+                                                onPressEnter={() => setBoolFullName(false)}
+                                                value={fullName}
+                                                autoFocus
+                                            />
+                                        </div>
                                 }
                             </Form.Item>
                             <div className={styles['user-info__divider']} />
@@ -165,36 +164,36 @@ function PrivateOffice(props): JSX.Element {
                                     <Col span={3} className={styles['user-info__column-name']}>Город:</Col>
                                     {
                                         boolCity === false ?
-                                        <Col 
-                                            span={12}
-                                            className={styles['user-info__column-value']}
-                                        >
-                                            <span>{city}</span>
-                                            <Icon
-                                                className={styles['user-info__edit-icon']}
-                                                path={editIcon.path}
-                                                viewBox={editIcon.viewBox}
-                                                title="AtomTest"
+                                            <Col
+                                                span={12}
+                                                className={styles['user-info__column-value']}
+                                            >
+                                                <span>{city}</span>
+                                                <Icon
+                                                    className={styles['user-info__edit-icon']}
+                                                    path={editIcon.path}
+                                                    viewBox={editIcon.viewBox}
+                                                    title="AtomTest"
+                                                    onClick={() => setBoolCity(true)}
+                                                />
+                                            </Col>
+                                            : <Col
+                                                span={12}
+                                                className={styles['user-info__column-value']}
                                                 onClick={() => setBoolCity(true)}
-                                            />
-                                        </Col>
-                                        : <Col 
-                                            span={12}
-                                            className={styles['user-info__column-value']}
-                                            onClick={() => setBoolCity(true)}
-                                        >
-                                            <Input
-                                                className={styles['user-info__input']}
-                                                placeholder='Логин'
-                                                onBlur={() => setBoolCity(false)}
-                                                onChange={(e) => {
-                                                    setCity(e.target.value)
-                                                }}
-                                                onPressEnter={() => setBoolCity(false)}
-                                                value={city}
-                                                autoFocus
-                                            />
-                                        </Col>
+                                            >
+                                                <Input
+                                                    className={styles['user-info__input']}
+                                                    placeholder='Логин'
+                                                    onBlur={() => setBoolCity(false)}
+                                                    onChange={(e) => {
+                                                        setCity(e.target.value)
+                                                    }}
+                                                    onPressEnter={() => setBoolCity(false)}
+                                                    value={city}
+                                                    autoFocus
+                                                />
+                                            </Col>
                                     }
                                 </Row>
                             </Form.Item>
@@ -207,40 +206,40 @@ function PrivateOffice(props): JSX.Element {
                                     <Col span={3} className={styles['user-info__column-name']}>Пол:</Col>
                                     {
                                         boolSex === false ?
-                                        <Col 
-                                            span={12}
-                                            className={styles['user-info__column-value']}
-                                        >
-                                            <span>{findSexItemText()}</span>
-                                            <Icon
-                                                className={styles['user-info__edit-icon']}
-                                                path={editIcon.path}
-                                                viewBox={editIcon.viewBox}
-                                                title="AtomTest"
-                                                onClick={() => setBoolSex(true)}
-                                            />
-                                        </Col>
-                                        : <Col 
-                                            span={12}
-                                            className={styles['user-info__column-value']}
-                                        >
-                                            <Select 
-                                                placeholder='Пол' 
-                                                className={styles['user-info__input']} 
-                                                onChange={handleChange}
-                                                value={sex}
+                                            <Col
+                                                span={12}
+                                                className={styles['user-info__column-value']}
                                             >
-                                                {
-                                                    sexItems.map((item: TypeSelectOption) => (
-                                                        <Option key={item?.value} 
-                                                            value={item?.value}
-                                                        >
-                                                            {item?.text}
-                                                        </Option>
-                                                    ))
-                                                }
-                                            </Select>
-                                        </Col>
+                                                <span>{findSexItemText()}</span>
+                                                <Icon
+                                                    className={styles['user-info__edit-icon']}
+                                                    path={editIcon.path}
+                                                    viewBox={editIcon.viewBox}
+                                                    title="AtomTest"
+                                                    onClick={() => setBoolSex(true)}
+                                                />
+                                            </Col>
+                                            : <Col
+                                                span={12}
+                                                className={styles['user-info__column-value']}
+                                            >
+                                                <Select
+                                                    placeholder='Пол'
+                                                    className={styles['user-info__input']}
+                                                    onChange={handleChange}
+                                                    value={sex}
+                                                >
+                                                    {
+                                                        sexItems.map((item: TypeSelectOption) => (
+                                                            <Option key={item?.value}
+                                                                value={item?.value}
+                                                            >
+                                                                {item?.text}
+                                                            </Option>
+                                                        ))
+                                                    }
+                                                </Select>
+                                            </Col>
                                     }
                                 </Row>
                             </Form.Item>
@@ -253,37 +252,37 @@ function PrivateOffice(props): JSX.Element {
                                     <Col span={3} className={styles['user-info__column-name']}>Телефон:</Col>
                                     {
                                         boolPhoneNumber === false ?
-                                        <Col 
-                                            span={12}
-                                            className={styles['user-info__column-value']}
-                                        >
-                                            <span>{phoneNumber}</span>
-                                            <Icon
-                                                className={styles['user-info__edit-icon']}
-                                                path={editIcon.path}
-                                                viewBox={editIcon.viewBox}
-                                                title="AtomTest"
+                                            <Col
+                                                span={12}
+                                                className={styles['user-info__column-value']}
+                                            >
+                                                <span>{phoneNumber}</span>
+                                                <Icon
+                                                    className={styles['user-info__edit-icon']}
+                                                    path={editIcon.path}
+                                                    viewBox={editIcon.viewBox}
+                                                    title="AtomTest"
+                                                    onClick={() => setBoolPhoneNumber(true)}
+                                                />
+                                            </Col>
+                                            : <Col
+                                                span={12}
+                                                className={styles['user-info__column-value']}
                                                 onClick={() => setBoolPhoneNumber(true)}
-                                            />
-                                        </Col>
-                                        : <Col
-                                            span={12}
-                                            className={styles['user-info__column-value']}
-                                            onClick={() => setBoolPhoneNumber(true)}
-                                        >
-                                            <MaskedInput 
-                                                className={styles['user-info__input']}
-                                                mask={phoneNumberMask}
-                                                placeholder='Телефон'
-                                                onBlur={() => setBoolPhoneNumber(false)}
-                                                onChange={(e) => {
-                                                    setPhoneNumber(e.target.value)
-                                                }}
-                                                onPressEnter={() => setBoolPhoneNumber(false)}
-                                                value={phoneNumber}
-                                                autoFocus
-                                            />
-                                        </Col>
+                                            >
+                                                <MaskedInput
+                                                    className={styles['user-info__input']}
+                                                    mask={phoneNumberMask}
+                                                    placeholder='Телефон'
+                                                    onBlur={() => setBoolPhoneNumber(false)}
+                                                    onChange={(e) => {
+                                                        setPhoneNumber(e.target.value)
+                                                    }}
+                                                    onPressEnter={() => setBoolPhoneNumber(false)}
+                                                    value={phoneNumber}
+                                                    autoFocus
+                                                />
+                                            </Col>
                                     }
                                 </Row>
                             </Form.Item>
@@ -296,37 +295,37 @@ function PrivateOffice(props): JSX.Element {
                                     <Col span={3} className={styles['user-info__column-name']}>Email:</Col>
                                     {
                                         boolEmail === false ?
-                                        <Col
-                                            span={12}
-                                            className={styles['user-info__column-value']}
-                                        >
-                                            <span>{email}</span>
-                                            <Icon
-                                                className={styles['user-info__edit-icon']}
-                                                path={editIcon.path}
-                                                viewBox={editIcon.viewBox}
-                                                title="AtomTest"
+                                            <Col
+                                                span={12}
+                                                className={styles['user-info__column-value']}
+                                            >
+                                                <span>{email}</span>
+                                                <Icon
+                                                    className={styles['user-info__edit-icon']}
+                                                    path={editIcon.path}
+                                                    viewBox={editIcon.viewBox}
+                                                    title="AtomTest"
+                                                    onClick={() => setBoolEmail(true)}
+                                                />
+                                            </Col>
+                                            : <Col
+                                                span={12}
+                                                className={styles['user-info__column-value']}
                                                 onClick={() => setBoolEmail(true)}
-                                            />
-                                        </Col>
-                                        : <Col
-                                            span={12}
-                                            className={styles['user-info__column-value']}
-                                            onClick={() => setBoolEmail(true)}
-                                        >
-                                            <Input
-                                                type="email"
-                                                className={styles['user-info__input']}
-                                                placeholder='Логин'
-                                                onBlur={() => setBoolEmail(false)}
-                                                onChange={(e) => {
-                                                    setEmail(e.target.value)
-                                                }}
-                                                onPressEnter={() => setBoolEmail(false)}
-                                                value={email}
-                                                autoFocus
-                                            />
-                                        </Col>
+                                            >
+                                                <Input
+                                                    type="email"
+                                                    className={styles['user-info__input']}
+                                                    placeholder='Логин'
+                                                    onBlur={() => setBoolEmail(false)}
+                                                    onChange={(e) => {
+                                                        setEmail(e.target.value)
+                                                    }}
+                                                    onPressEnter={() => setBoolEmail(false)}
+                                                    value={email}
+                                                    autoFocus
+                                                />
+                                            </Col>
                                     }
                                 </Row>
                             </Form.Item>
@@ -363,7 +362,7 @@ function PrivateOffice(props): JSX.Element {
                         <button className={styles['diploma-info__download']}>Скачать диплом</button>
                     </div>
                 </Form>
-                <Navigation navigationType={NavigationType.FOOTER}/>
+                <Navigation navigationType={NavigationType.FOOTER} />
             </div>
         </>
     );
@@ -375,5 +374,5 @@ const mapStateToProps = (state: any) => {
     }
 }
 
-export default connect(mapStateToProps, 
+export default connect(mapStateToProps,
     { setJwtPairToState })(memo(PrivateOffice));

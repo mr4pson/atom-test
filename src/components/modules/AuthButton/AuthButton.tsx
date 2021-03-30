@@ -29,10 +29,10 @@ function AuthButton(props: Props): JSX.Element {
   function getAuthButtonClassNames(): string {
     return classNames(authBtnStyles['auth-button'], {
       [authBtnStyles['auth-button_justify-center']]: location.pathname === paths[Page.LOGIN]
-        || location.pathname === paths[Page.SIGN_UP] || location.pathname === paths[Page.FORGOT_PASSWORD],
-      [authBtnStyles['auth-button_justify-end']]: location.pathname.includes('admin')
-        || location.pathname === paths[Page.PRIVATE_OFFICE]
+        || location.pathname === paths[Page.SIGN_UP] || location.pathname === paths[Page.FORGOT_PASSWORD]
         || (location.pathname === paths[Page.HOME] && !getJwtPair()),
+      [authBtnStyles['auth-button_justify-end']]: location.pathname.includes('admin')
+        || location.pathname === paths[Page.PRIVATE_OFFICE],
     })
   }
 
@@ -53,7 +53,6 @@ function AuthButton(props: Props): JSX.Element {
       }
     });
   }, []);
-
 
   function renderUserInfoIcon(): JSX.Element {
     if (props.navigationType === NavigationType.HEADER) {

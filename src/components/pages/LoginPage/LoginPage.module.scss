@@ -10,6 +10,10 @@
     margin-bottom: 39px;
   }
 
+  &__sign-up-title {
+    margin-top: 30px;
+  }
+
   &__input, &__button {
     width: 500px;
     height: 60px;
@@ -89,6 +93,10 @@
 
   &__already-have {
     color: #0085F8;
+  }
+
+  &__sign-up-already-have {
+    margin-bottom: 20px;
   }
 
   &__sign-up-btn-info {

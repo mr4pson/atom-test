@@ -177,7 +177,7 @@ function AddPartnerPage(): JSX.Element {
             </div>
           </div>
         </Form>
-      ) : <Loader />}
+      ) : <Loader className={'admin-loader'} />}
     </>
   );
 }

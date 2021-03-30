@@ -10,6 +10,7 @@ import UserTest from "components/pages/UserTest";
 import UserTestComplete from "components/pages/UserTestComplete";
 import PagesPage from "components/pages/PagesPage";
 import ChosenPage from "components/pages/ChosenPage";
+import ParticipantInfoPage from "components/pages/ParticipantInfoPage";
 
 export function getRoutes(): TypeRoute[] {
     return [
@@ -61,9 +62,14 @@ export function getRoutes(): TypeRoute[] {
             exact: true,
         },
         {
-            type: Page.PAGE_ROUTE,
+            type: Page.PAGE,
             path: paths[Page.PAGE_ROUTE],
             component: <ChosenPage />,
+        },
+        {
+            type: Page.PARTICIPANT_INFO,
+            path: paths[Page.PARTICIPANT_INFO_ROUTE],
+            component: <ParticipantInfoPage />,
         },
     ]
 }

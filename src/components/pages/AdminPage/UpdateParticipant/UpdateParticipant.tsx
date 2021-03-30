@@ -50,11 +50,11 @@ function UpdateParticipant(props: any): JSX.Element {
   //   setData(response.data);
   // }
 
+  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
+
   // useEffect(() => {
   //   getParticipantPageData();
   // }, []);
-
-  useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
   return (
     <>

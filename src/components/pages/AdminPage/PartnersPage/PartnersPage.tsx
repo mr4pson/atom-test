@@ -159,6 +159,7 @@ function PartnersPage(props: Props): JSX.Element {
             ))}
           </>
           <AdminModal
+            className={'delete-modal'}
             title={`Удаление "${chosenPartner}"`}
             isModalVisible={isModalVisible}
             loading={loading}
@@ -167,7 +168,7 @@ function PartnersPage(props: Props): JSX.Element {
           >
             <span>Вы действительно хотите удалить партнера "{chosenPartner}"?</span>
           </AdminModal>
-        </div> : <Loader />
+        </div> : <Loader className={'admin-loader'} />
       }
     </>
   );

@@ -4,26 +4,33 @@ import AdminModal from 'components/pages/AdminPage/AdminModal';
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import Icon from 'components/uiKit/Icon';
-import { deleteIcon, editIcon, searchIcon, unVisibleIcon, visibleIcon } from 'icons';
+import { deleteIcon, searchIcon, visibleIcon } from 'icons';
 import { memo, useRef, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { AdminsPage, paths } from 'components/pages/AdminPage/routes/constants';
+import { AdminsPage, paths as adminPaths } from 'components/pages/AdminPage/routes/constants';
+import { Page, paths } from 'routes/constants';
 import { participantList } from './constants';
 import styles from './Participants.module.scss';
-import axios from 'axios';
 import { TypeParticipantsData } from './types';
 import { useCheckRole } from 'components/hooks/useCheckRole';
+import { useUpdateParticipants } from './useUpdateParticipants';
+import { connect } from "react-redux";
+import { setCurrentIdToState } from 'redux/reducers/Participants.reducer';
 
-function Participants(): JSX.Element {
+type Props = {
+  currentId: string;
+  setCurrentIdToState: (id: string | number | undefined) => void;
+};
+
+function Participants(props: Props): JSX.Element {
     const history = useHistory();
 
     const formRef = useRef<FormInstance>(null);
     const { Option } = Select;
-    const [participants, setParticipants] = useState<string>(participantList[0].value);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [chosenParticipant, setChosenParticipant] = useState<string>('');
-    const [data, setData] = useState<any[]>([]);
+
+    const { loading, participants, getParticipants, deleteParticipants } = useUpdateParticipants();
 
     const inititalFormState = {
       participants: 'new',
@@ -33,13 +40,13 @@ function Participants(): JSX.Element {
     const columns = [
       {
         title: 'Имя',
-        dataIndex: 'name',
-        key: 'name',
+        dataIndex: 'fullName',
+        key: 'fullName',
       },
       {
         title: 'Дата регистрации',
-        dataIndex: 'registrationDate',
-        key: 'registrationDate',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
       },
       {
         title: 'Город',
@@ -48,8 +55,8 @@ function Participants(): JSX.Element {
       },
       {
         title: 'Номер',
-        dataIndex: 'number',
-        key: 'number',
+        dataIndex: 'phone',
+        key: 'phone',
       },
       {
         title: 'Редактирование',
@@ -63,27 +70,12 @@ function Participants(): JSX.Element {
               onClick={() => showModal(itemData)}
               title="AtomTest"
             />
-            {
-              itemData.visible 
-                ? <Icon
-                className={styles['admin-table__icon']}
-                path={visibleIcon.path}
-                viewBox={visibleIcon.viewBox}
-                title="AtomTest"
-                onClick={() => handleVisibleChange(itemData)}
-              />  : <Icon
-                className={styles['admin-table__icon']}
-                path={unVisibleIcon.path}
-                viewBox={unVisibleIcon.viewBox}
-                title="AtomTest"
-                onClick={() => handleVisibleChange(itemData)}
-              />
-              }
             <Icon
               className={styles['admin-table__icon']}
-              path={editIcon.path}
-              viewBox={editIcon.viewBox}
-              title="EditParticipant"
+              path={visibleIcon.path}
+              viewBox={visibleIcon.viewBox}
+              title="AtomTest"
+              onClick={() => onShowParticipant(itemData)}
             />
           </Space>
         ),
@@ -91,7 +83,7 @@ function Participants(): JSX.Element {
     ];
 
     function handleSelectChange(value: string): void {
-      setParticipants(value);
+      // setParticipants(value);
       onSubmit();
     }
 
@@ -106,17 +98,15 @@ function Participants(): JSX.Element {
     }
 
     const showModal = (itemData: any) => {
-      setChosenParticipant(itemData.name);
+      setChosenParticipant(itemData.fullName);
+      props.setCurrentIdToState(itemData.id);
       setIsModalVisible(true);
-      console.log(itemData.id);
     };
   
-    const handleDelete = () => {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-        setIsModalVisible(false);
-      }, 2000);
+    const handleDelete = async (): Promise<void> => {
+      await deleteParticipants(props.currentId);
+      await getParticipants();
+      setIsModalVisible(false);
     };
   
     const handleCancel = () => {
@@ -124,42 +114,24 @@ function Participants(): JSX.Element {
     };
 
     const handleCreateParticipant = () => {
-      // Add when mock up will finished
-      history.push(paths[AdminsPage.ADD_PARTICIPANT])
+      history.push(adminPaths[AdminsPage.ADD_PARTICIPANT]);
+    }
+
+    function onShowParticipant(itemData: TypeParticipantsData): void {
+      history.push(`${paths[Page.PARTICIPANT_INFO]}/${itemData.id}`);
     }
 
     function onSubmit (): void {
-      // console.log('Success:', values);
       console.log(formRef.current?.getFieldsValue());
     };
-
-    async function getParticipantsData() {
-      const response = await axios.get<TypeParticipantsData[]>('/mocks/getParticipantsData.json');
-      const responseWithKey = response.data.map((item, index) => (
-        {
-          ...item,
-          key: index,
-        }
-      ))
-      setData(responseWithKey);
-    }
-
-    function handleVisibleChange(itemData: any): void {
-      setData((prevState) => {
-        const data = [...prevState];
-        const dataItem = data.find((item) => item.id === itemData.id);
-        dataItem.visible = !dataItem.visible;
-        return data;
-      })
-    }
 
     useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
     useEffect(() => {
-      getParticipantsData();
+      getParticipants();
     }, [])
 
-    console.log(data);
+    console.log(props.currentId);
 
     return (
       <div className={styles['participants-page']}>
@@ -179,7 +151,7 @@ function Participants(): JSX.Element {
                     styles["tool-bar__select"]
                   )}
                   onChange={handleSelectChange}
-                  value={participants}
+                  // value={participants![0]}
                 >
                   {participantList.map((item) => (
                     <Option key={item?.id} value={item?.value}>
@@ -210,24 +182,27 @@ function Participants(): JSX.Element {
                 />
               </Form.Item>
             </div>
-            <ButtonElem
+            {/* <ButtonElem
               type={buttonElemType.Primary}
               htmlType="button"
               className={styles["tool-bar__button"]}
               onClick={handleCreateParticipant}
             >
               Добавить участника
-            </ButtonElem>
+            </ButtonElem> */}
+            <div />
           </div>
           <Table
               rowClassName={styles["admin-table__row"]}
               className={styles["admin-table"]}
               columns={columns}
-              dataSource={data}
+              dataSource={participants!}
               pagination={false}
+              loading={loading}
             />
         </Form>
         <AdminModal
+          className={'delete-modal'}
           title={`Удаление участника "${chosenParticipant}"`}
           isModalVisible={isModalVisible}
           loading={loading}
@@ -240,4 +215,10 @@ function Participants(): JSX.Element {
     );
 }
 
-export default memo(Participants);
+const mapStateToProps = (state: any) => {
+  return {
+    currentId: state.participants?.currentId,
+  }
+}
+
+export default connect(mapStateToProps, { setCurrentIdToState })(memo(Participants));

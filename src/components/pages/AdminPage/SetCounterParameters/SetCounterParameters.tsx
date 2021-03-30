@@ -199,7 +199,7 @@ function SetCounterParameters(): JSX.Element {
             </ButtonElem>
           </div>
         </Form>}
-      </div> : <Loader />}
+      </div> : <Loader className={'admin-loader'} />}
     </>
   );
 }

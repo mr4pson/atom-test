@@ -11,6 +11,8 @@ export enum Page {
   PAGES = 'PAGES',
   PAGE = 'PAGE',
   PAGE_ROUTE = 'PAGE_ROUTE',
+  PARTICIPANT_INFO = 'PARTICIPANT_INFO',
+  PARTICIPANT_INFO_ROUTE = 'PARTICIPANT_INFO_ROUTE',
 }
 
 export const paths = {
@@ -26,4 +28,6 @@ export const paths = {
   [Page.PAGES]: '/pages',
   [Page.PAGE]: '/page',
   [Page.PAGE_ROUTE]: '/page/:id',
+  [Page.PARTICIPANT_INFO]: '/participant-info',
+  [Page.PARTICIPANT_INFO_ROUTE]: '/participant-info/:id',
 }

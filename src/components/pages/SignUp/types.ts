@@ -6,6 +6,15 @@ export type TypeItemRule = {
 export type TypeFormState = {
   fullName: string;
   email: string;
-  phoneNumber: string;
+  phone: string;
   city: string;
+  sex: string;
+  username: string;
+  password: string;
+}
+
+export type TypeUseSignUpResult = {
+  loading: boolean;
+  status: number | null;
+  regUser: (formData: any) => Promise<any>;
 }

@@ -148,7 +148,7 @@ function FaqPage(): JSX.Element {
                 )
                 )}
             </div>
-        </div> : <Loader />}
+        </div> : <Loader className={'admin-loader'} />}
         </>
     );
 }

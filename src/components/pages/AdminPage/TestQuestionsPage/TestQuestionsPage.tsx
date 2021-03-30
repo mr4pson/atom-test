@@ -337,7 +337,7 @@ function TestQuestionsPage(): JSX.Element {
                         <ButtonElem onClick={handleUploadButtonClick}>Загрузить изображение</ButtonElem>
                     </AdminModal>}
                 </div>
-                : <Loader />
+                : <Loader className={'admin-loader'} />
             }
         </>
     );

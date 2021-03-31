@@ -1,13 +1,13 @@
 import { TypeAction } from "components/uiKit/AdminCollapse/types"
 
 export type TypeSubCategoryNews = {
-  id: string;
+  id?: string;
   title: string;
   actions: TypeAction[];
 }
 
 export type TypeSubCategory = {
-  id: string;
+  id?: string;
   title: string;
   url: string;
   isEditing: boolean;

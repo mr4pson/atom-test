@@ -44,10 +44,11 @@ function MenuPage(): JSX.Element {
       {
         id: "visible",
         icon: (menu && !menu?.visible) ? <InvisibleIcon /> : <VisibleIcon />,
-        callback: async (action: TypeAction, config: TypeCollapseConfig) => {
+        callback: async (action: TypeAction, config: any) => {
           const payload = {
             title: config?.title,
             visible: !config?.visible,
+            subcategories: config.subcategories,
             editable: config?.editable,
             deletable: config?.deletable,
           }
@@ -90,6 +91,7 @@ function MenuPage(): JSX.Element {
                 editable: config.editable,
                 deletable: config.deletable,
                 url: '',
+                subcategories: [],
                 visible: config.visible,
               }
               const menuResponse = await axios.post<TypeMenu>('/api/menus', payload, options);
@@ -170,7 +172,7 @@ function MenuPage(): JSX.Element {
               className={styles["menu-page__create-btn"]}
               onClick={handleCreate}
             >
-              Добавить меню
+              Добавить категорию
             </ButtonElem>
           </div>
           <div className={styles["menu-page__items"]}>

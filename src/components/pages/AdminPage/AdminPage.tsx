@@ -42,7 +42,7 @@ function AdminPage(): JSX.Element {
     },
     {
       key: paths[AdminsPage.MENU],
-      title: "Добавить/изменить меню",
+      title: "Добавить/изменить категорию",
       icon: (
         <Icon
           className={styles["menu__icon"]}

@@ -13,6 +13,7 @@ import { ReactComponent as DoneIcon } from '../../../../assets/images/admin/done
 import { ReactComponent as ChevronSvg } from "../../../../assets/images/admin/chevron.svg";
 import { TypeSubCategory } from "./types";
 import ButtonElem from 'components/uiKit/ButtomElem';
+import { buttonElemType } from "components/uiKit/ButtomElem/types";
 
 const { TextArea } = Input;
 
@@ -38,11 +39,14 @@ function MenuDetailPage(): JSX.Element {
           } else {
             action.icon = <EditIcon />;
             Object.assign(config, formValues);
-            console.log('create');
+            console.log('update');
               const payload = {
                 _id: config.id,
                 title: config.title,
                 url: config.url,
+                subcategories: config.subcategories
+                  .filter((subcategory) => subcategory.id)
+                  .map((subcategory) => subcategory.id),
                 editable: config.editable,
                 deletable: config.deletable,
                 visible: config.visible,
@@ -66,6 +70,11 @@ function MenuDetailPage(): JSX.Element {
       isEditing: false,
       collapseOn: 'edit',
       actions: getActions(),
+      subcategories: response.data.subcategories?.map((subcategory) => ({
+        ...subcategory,
+        collapseOn: 'edit',
+        actions: getSubCategoryAction(),
+      })),
     });
   }
 
@@ -77,34 +86,56 @@ function MenuDetailPage(): JSX.Element {
           <span className={'title'}>Произвольная ссылка</span>
           <ChevronSvg className={'svg'} />
         </div>,
-        callback: async () => {}
+        callback: async (action: TypeAction, config: TypeCollapseConfig) => {
+          config.isEditing = !config.isEditing;
+
+        }
       }
     ];
   }
 
-  const [subCategories, setSubCategories] = useState<TypeSubCategory[]>([
-    {
-      id: '1',
-      title: 'Test sub',
-      url: 'link',
-      isEditing: false,
-      collapseOn: 'edit',
-      openInNewTab: false,
-      news: [
-        {
-          id: '1',
-          title: 'Новость 1',
-          actions: [],
-        }
-      ],
-      actions: getSubCategoryAction(),
+  const onSubCategorySubmit = async (formValues, curSubCategory: TypeSubCategory) => {
+    const newSubcategory = menuElem?.subcategories?.find((subcategory) => subcategory.id === curSubCategory.id) as TypeSubCategory;
+    newSubcategory.isEditing = false;
+    Object.assign(newSubcategory, formValues);
+    console.log(newSubcategory);
+    if (newSubcategory.id) {
+      console.log('update');
+      const payload = {
+        title: newSubcategory.title,
+        url: newSubcategory.url,
+        news: [],
+        menu: menuElem?.id,
+      };  
+      await axios.post<TypeSubCategory>('/api/subcategories/' + newSubcategory.id, payload, options);
+    } else {
+      console.log('create');
+      const payload = {
+        title: newSubcategory.title,
+        url: newSubcategory.url,
+        news: [],
+        menu: menuElem?.id,
+      };  
+      await axios.post<TypeSubCategory>('/api/subcategories', payload, options);
     }
-  ]);
-
-  const onSubmit = (formValues, subCategory) => {
-    Object.assign(subCategory, formValues);
-    console.log(subCategory);
+    setMenuElem(menuElem);
   }
+
+  const handleCreate = () => {
+    setMenuElem({
+      ...menuElem,
+      subcategories: menuElem?.subcategories?.concat([{
+        title: '',
+        url: '',
+        openInNewTab: false,
+        collapseOn: 'edit',
+        isEditing: true,
+        news: [],
+        actions: getSubCategoryAction(),
+    }]),
+    } as TypeMenu);
+  }
+
   useEffect(() => {
     getMenu();
   }, []);
@@ -112,6 +143,16 @@ function MenuDetailPage(): JSX.Element {
     <>
       {
         menuElem ? <div className={styles["menu-detail-page"]}>
+          <div className={styles["menu-detail-page__create-wrap"]}>
+            <ButtonElem
+              type={buttonElemType.Primary}
+              htmlType="button"
+              className={styles["menu-detail-page__create-btn"]}
+              onClick={handleCreate}
+            >
+              Добавить подкатегорию
+            </ButtonElem>
+          </div>
           <AdminCollapseElem
             className={'menu-elem-collapse'}
             config={menuElem as TypeCollapseConfig}
@@ -124,10 +165,10 @@ function MenuDetailPage(): JSX.Element {
             Расположите элементы в желаемом порядке путём перетаскивания. Можно также щёлкнуть на стрелку справа от пункта меню,<br/> чтобы открыть дополнительные настройки.
           </div>
           <div className={styles['menu-detail-page__sub-categories']}>
-            {subCategories.map((subCategory, index) => (
+            {menuElem?.subcategories?.map((subCategory, index) => (
               <div className={styles['sub-category']}>
                 <AdminCollapseElem
-                  onSubmit={(e) => onSubmit.call(MenuDetailPage, e, subCategory)}
+                  onSubmit={(e) => onSubCategorySubmit.call(MenuDetailPage, e, subCategory)}
                   key={index}
                   className={'menu-sub-category-collapse'}
                   config={subCategory as TypeCollapseConfig}

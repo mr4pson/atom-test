@@ -3,7 +3,7 @@ import moment from "moment";
 import { useState } from "react";
 import { getJwtPair } from "components/pages/LoginPage/helpers";
 import { TypeUseGetParticipantResult } from "./types";
-import { TypeParticipant } from "../PrivateOffice/types";
+import { TypeParticipant } from "./types";
 
 export function useGetParticipant(): TypeUseGetParticipantResult {
   const [loading, setLoading] = useState<boolean>(false);
@@ -36,9 +36,33 @@ export function useGetParticipant(): TypeUseGetParticipantResult {
     }
   }
 
+  async function updateUser(formData: any, id: string): Promise<any> {
+    setLoading(true);
+    const options = {
+      headers: {
+          'Authorization': `Bearer ${curJwtPair}`,
+          'withCredentials': true
+      },
+    }
+    try {
+      const { data: axiosData } = await axios.put<any>(
+        `/api/users/${id}`, { ...formData },
+        options,
+      );
+      console.log(axiosData);
+      return {};
+    } catch ({ response }) {
+      console.log(response);
+      return { error: response };
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return {
     loading,
     currentParticipant,
     getCurrentParticipant,
+    updateUser,
   }
 }

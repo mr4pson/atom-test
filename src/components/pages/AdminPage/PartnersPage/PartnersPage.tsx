@@ -147,7 +147,7 @@ function PartnersPage(props: Props): JSX.Element {
               onClick={handleAddPartner}
             >
               Добавить партнера
-        </ButtonElem>
+            </ButtonElem>
           </div>
           <>
             {data?.map((partner, index) => (

@@ -24,40 +24,18 @@ function SignUp(): JSX.Element {
 
     const { loading, status, regUser } = useSignUp();
 
-    // const openNotification = () => {
-    //     const key = `open${Date.now()}`;
-    //     function onBackToLogin(): void {
-    //         notification.close(key);
-    //         history.push(paths[Page.LOGIN]);
-    //     }
-
-    //     const btn = (
-    //         <Button className={styles['login-page__notification-btn']} type="primary" size="small" onClick={onBackToLogin}>
-    //             К логину
-    //         </Button>
-    //     );
-    //     notification.open({
-    //         message: 'Вы были успешно зарегистрированны',
-    //         // description:
-    //         //   'A function will be be called after the notification is closed (automatically after the "duration" time of manually).',
-    //         btn,
-    //         key,
-    //         onClose: close,
-    //     });
-    // };
-
     async function onSubmit(): Promise<void> {
         const userFormData = formRef.current?.getFieldsValue();
 
         if (hasRusLetters) {
             openNotification('error', 'Логин содержит русские символы!');
         } else {
-            await regUser(userFormData);
+            await regUser({...userFormData, avatar: ''});
             if (status && (status !== 200 && status !== 201)) {
                 openNotification('error', 'Внутрення ошибка сервера');
             }
             form.resetFields();
-            openNotification('success', 'Вы были успешно зарегистрированны');
+            openNotification('success', 'Вы были успешно зарегистрированны, редирект на авторизацию.');
             setTimeout(() => {
                 history.push(paths[Page.LOGIN]);
             }, 2000)

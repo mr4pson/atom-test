@@ -4,6 +4,9 @@ export function getShortFullName(fullName: string) {
   }
   const words = fullName.split(' ');
   words[1] = words[1][0] + '.';
-
-  return words.join(' ');
+  if (words.length === 2) {
+    return words.join(' ');
+  };
+  const wordsWithoutLast = words.splice(0, 2);
+  return wordsWithoutLast.join(' ');
 }

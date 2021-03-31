@@ -10,6 +10,7 @@ export function getUserInfo(): TypeUserInfo | null {
   }
   const jwtInfo = extractHS256Token(currentJwt, 'rzxlszyykpbgqcflzxsqcysyhljt');
   const userInfo = {
+    id: jwtInfo.sub,
     username: jwtInfo.upn,
     email: jwtInfo.email,
     role: jwtInfo.roles[0],

@@ -12,7 +12,7 @@ import { ReactComponent as FacebookIcon } from './../../../assets/images/faceboo
 import { ReactComponent as InstagramIcon } from './../../../assets/images/instagram.svg';
 import { ReactComponent as TelegramIcon } from './../../../assets/images/telegram.svg';
 import { getUserInfo } from "components/common/commonHelper";
-import { useGetParticipant } from "./useGetParticipant";
+import { useGetParticipant } from "../PrivateOffice/useGetParticipant";
 import Loader from 'components/uiKit/Loader';
 import { useParams } from "react-router";
 

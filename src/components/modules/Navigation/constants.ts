@@ -17,7 +17,7 @@ export const navigationPaths = {
     Pages : paths[Page.PAGES],
     PROJECT_PARTICIPANTS: 'project-participants',
     ORGANIZATORS: 'organizators',
-    INFO_PARTNERS: 'info-partners',
+    INFO_PARTNERS: paths[Page.OUR_PARTNERS],
     PRIVACY_POLICY: 'privacy-policy',
 }
 

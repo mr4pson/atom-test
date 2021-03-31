@@ -6,3 +6,10 @@ export type TypeParticipant = {
   phone: string;
   email: string;
 }
+
+export type TypeUseGetParticipantResult = {
+  loading: boolean;
+  currentParticipant: TypeParticipant | null;
+  getCurrentParticipant: (id: string) => Promise<any>;
+  updateUser: (formData: any, id: string) => Promise<any>;
+}

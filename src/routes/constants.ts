@@ -13,14 +13,17 @@ export enum Page {
   PAGE_ROUTE = 'PAGE_ROUTE',
   PARTICIPANT_INFO = 'PARTICIPANT_INFO',
   PARTICIPANT_INFO_ROUTE = 'PARTICIPANT_INFO_ROUTE',
+  OUR_PARTNERS = 'OUR_PARTNERS',
 }
 
 export const paths = {
   [Page.LOGIN]: '/login',
-  [Page.HOME]: '/',
-  [Page.PRIVATE_OFFICE]: '/private-office',
   [Page.SIGN_UP]: '/sign-up',
   [Page.FORGOT_PASSWORD]: '/forgot-password',
+  [Page.HOME]: '/',
+  [Page.PRIVATE_OFFICE]: '/private-office',
+  [Page.PARTICIPANT_INFO]: '/participant-info',
+  [Page.PARTICIPANT_INFO_ROUTE]: '/participant-info/:id',
   [Page.USER_TEST]: '/user-test',
   [Page.USER_TEST_COMPLETE]: '/user-test/complete',
   [Page.USER_TEST_ROUTE]: '/user-test/:questionNumber',
@@ -28,6 +31,5 @@ export const paths = {
   [Page.PAGES]: '/pages',
   [Page.PAGE]: '/page',
   [Page.PAGE_ROUTE]: '/page/:id',
-  [Page.PARTICIPANT_INFO]: '/participant-info',
-  [Page.PARTICIPANT_INFO_ROUTE]: '/participant-info/:id',
+  [Page.OUR_PARTNERS]: '/our-partners',
 }

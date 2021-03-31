@@ -2,10 +2,10 @@ import { memo, useEffect, useRef, useState } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from './PrivateOffice.module.scss';
-import { Form, Input, Select, notification, Row, Col } from 'antd';
+import { Form, Input, Select, Row, Col } from 'antd';
 import classNames from 'classnames';
 import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
-import { inititalFormState, phoneNumberMask, sexItems } from './constants';
+import { phoneNumberMask, sexItems } from './constants';
 import { TypeSelectOption, userType } from 'components/common/types';
 import MaskedInput from 'antd-mask-input';
 import Icon from 'components/uiKit/Icon';
@@ -21,358 +21,408 @@ import { ReactComponent as TelegramIcon } from './../../../assets/images/telegra
 import { getUserInfo, openNotification } from 'components/common/commonHelper';
 import { useHistory } from 'react-router';
 import { Page, paths } from 'routes/constants';
-
-
+import { useGetParticipant } from './useGetParticipant';
+import Loader from 'components/uiKit/Loader';
+import { buttonElemType } from 'components/uiKit/ButtomElem/types';
+import ButtonElem from "components/uiKit/ButtomElem";
 // import { loginPage } from 'i18n'
 
 function PrivateOffice(props): JSX.Element {
-    const formRef = useRef<any>(null);
+  const { loading, currentParticipant, getCurrentParticipant, updateUser } = useGetParticipant();
 
-    const { Option } = Select;
+  const inititalFormState = {
+    fullName: '',
+    city: '',
+    sex: '',
+    phoneNumber: '',
+    email: '',
+  }
 
-    // const [boolFormState, setBoolFormState] = useState<any>(initialBoolFormValue);
-    const [boolFullName, setBoolFullName] = useState<boolean>(false);
-    const [boolCity, setBoolCity] = useState<boolean>(false);
-    const [boolSex, setBoolSex] = useState<boolean>(false);
-    const [boolPhoneNumber, setBoolPhoneNumber] = useState<boolean>(false);
-    const [boolEmail, setBoolEmail] = useState<boolean>(false);
+  const formRef = useRef<any>(null);
 
+  const { Option } = Select;
 
-    // const [formState, setFormState] = useState<any>(inititalFormState);
-    const [fullName, setFullName] = useState<string>(inititalFormState.fullName);
-    const [city, setCity] = useState<string>(inititalFormState.city);
-    const [sex, setSex] = useState<any>(inititalFormState.sex);
-    const [phoneNumber, setPhoneNumber] = useState<string>(inititalFormState.phoneNumber);
-    const [email, setEmail] = useState<string>(inititalFormState.email);
+  const [boolFullName, setBoolFullName] = useState<boolean>(false);
+  const [boolCity, setBoolCity] = useState<boolean>(false);
+  const [boolSex, setBoolSex] = useState<boolean>(false);
+  const [boolPhoneNumber, setBoolPhoneNumber] = useState<boolean>(false);
+  const [boolEmail, setBoolEmail] = useState<boolean>(false);
 
-    const [avatar, setAvatar] = useState<any>(null);
-    const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [fullName, setFullName] = useState<string>('');
+  const [city, setCity] = useState<string>('');
+  const [sex, setSex] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
 
-    const userInfo = getUserInfo();
-    const history = useHistory();
+  const [avatar, setAvatar] = useState<any>(null);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
-    function handleChange(e) {
-        setSex(e);
-        setBoolSex(false);
-        findSexItemText();
-    };
+  const userInfo = getUserInfo();
+  const history = useHistory();
 
-    function onSubmit(): void {
-        console.log(formRef.current.getFieldValue());
-    };
+  function handleChange(e) {
+    setSex(e);
+    handleUpdateUser(setBoolSex, false);
+    findSexItemText();
+  };
 
-    function findSexItemText() {
-        const sexObject = sexItems.find((elem: any) => {
-            if (elem.value === sex) {
-                return elem
-            }
-        }) as TypeSelectOption;
-        return sexObject.text;
-    };
+  function findSexItemText() {
+    const sexObject = sexItems.find((elem: any) => {
+      if (elem.value === sex) {
+        return elem
+      }
+    }) as TypeSelectOption;
+    return sexObject?.text;
+  };
 
-    function uploadAvatar(e: any): any {
-        const files = Array.from(e.target.files);
-        setIsUploading(true);
+  function uploadAvatar(e: any): any {
+    const files = Array.from(e.target.files);
+    setIsUploading(true);
 
-        const formData = new FormData()
-        files.forEach((file: any, i: any) => {
-            formData.append(i, file)
-        })
+    const formData = new FormData()
+    files.forEach((file: any, i: any) => {
+      formData.append(i, file)
+    })
 
-        setAvatar(files);
+    setAvatar(files);
 
-        console.log(files);
-        console.log(avatar)
+    console.log(files);
+    console.log(avatar)
 
-        //promise
-        setIsUploading(false);
+    //promise
+    setIsUploading(false);
+  }
+
+  function onRedirectToTestPage(): void {
+    history.push(`${paths[Page.USER_TEST]}/${1}`);
+  }
+
+  async function handleUpdateUser(
+    setBool: (arg: boolean) => void, 
+    value: boolean,
+  ): Promise<void> {
+    const formData = {
+      fullName: fullName,
+      city: city,
+      sex: sex,
+      phone: phoneNumber,
+      email: email,
     }
+    await updateUser(formData, userInfo?.id!);
+    setBool(value);
+  }
 
-    useEffect(() => {
-        if (userInfo?.role === userType.ADMIN) {
-            history.push(paths[Page.ADMIN]);
-            openNotification('error', 'У вас нет доступа к Личному кабинету, т.к. вы администратор!');
-        }
-    }, []);
+  useEffect(() => {
+    if (userInfo?.role === userType.ADMIN) {
+      history.push(paths[Page.ADMIN]);
+      openNotification('error', 'У вас нет доступа к Личному кабинету т.к. вы администратор!');
+    }
+    (async () => {
+      await getCurrentParticipant(userInfo?.id!);
+    })();
+  }, []);
 
-    return (
-        <>
-            <div className='container'>
-                <Navigation navigationType={NavigationType.HEADER} />
-                <Form
-                    name="basic"
-                    onFinish={onSubmit}
-                    className={styles['private-office']}
-                    ref={formRef}
-                    initialValues={inititalFormState}
+  useEffect(() => {
+    setFullName(currentParticipant?.fullName!);
+    setCity(currentParticipant?.city!);
+    setSex(currentParticipant?.sex!);
+    setPhoneNumber(currentParticipant?.phone!);
+    setEmail(currentParticipant?.email!);
+  }, [currentParticipant]);
+
+  return (
+    <>
+      {
+        !loading ?
+          <div className='container'>
+            <Navigation navigationType={NavigationType.HEADER} />
+            <Form
+              name="basic"
+              className={styles['private-office']}
+              ref={formRef}
+              initialValues={inititalFormState}
+            >
+              <div className={styles['private-office__user-info']}>
+                <div className={classNames(
+                  styles['private-office__photo'],
+                  styles['user-photo'],
+                )}
                 >
-                    <div className={styles['private-office__user-info']}>
-                        <div className={classNames(
-                            styles['private-office__photo'],
-                            styles['user-photo'],
-                        )}
+                  <div className={styles['user-photo__img']}>
+                    {sex === 'male' ? <ManFrameIcon /> : <WomanFrameIcon />}
+                    <img src={avatar?.length ? avatar[0].secure_url : ''} alt='' />
+                  </div>
+                  <label className={styles['user-photo__action-name']}>
+                    Загрузить фото
+                    <input
+                      className={styles['user-photo__file-input']}
+                      id='multi'
+                      name="Загрузить фото"
+                      onChange={uploadAvatar}
+                      type='file'
+                    />
+                  </label>
+                </div>
+                <div className={styles['user-info']}>
+                  <Form.Item
+                    name="fullName"
+                    rules={[{ required: true, message: 'Пожалуйста, заполните Ф.И.О.!' }]}
+                    className={styles['row-item__full-name']}
+                  >
+                    {
+                      boolFullName === false ?
+                        <div
+                          className={styles['user-info__full-name']}
                         >
-                            <div className={styles['user-photo__img']}>
-                                {sex === 'male' ? <ManFrameIcon /> : <WomanFrameIcon />}
-                                <img src={avatar?.length ? avatar[0].secure_url : ''} alt='' />
-                            </div>
-                            <label className={styles['user-photo__action-name']}>
-                                Загрузить фото
-                                <input className={styles['user-photo__file-input']} name="Загрузить фото" type='file' id='multi' onChange={uploadAvatar} />
-                            </label>
+                          <span>{fullName}</span>
+                          <Icon
+                            className={styles['user-info__edit-icon']}
+                            path={editIcon.path}
+                            viewBox={editIcon.viewBox}
+                            title="AtomTest"
+                            onClick={() => setBoolFullName(true)}
+                          />
                         </div>
-                        <div className={styles['user-info']}>
-                            <Form.Item
-                                name="fullName"
-                                rules={[{ required: true, message: 'Пожалуйста, заполните Ф.И.О.!' }]}
-                                className={styles['row-item__full-name']}
-                            >
-                                {
-                                    boolFullName === false ?
-                                        <div
-                                            className={styles['user-info__full-name']}
-                                        >
-                                            <span>{fullName}</span>
-                                            <Icon
-                                                className={styles['user-info__edit-icon']}
-                                                path={editIcon.path}
-                                                viewBox={editIcon.viewBox}
-                                                title="AtomTest"
-                                                onClick={() => setBoolFullName(true)}
-                                            />
-                                        </div>
-                                        : <div className={styles['input-wrapper']}>
-                                            <Input
-                                                className={styles['user-info__input']}
-                                                placeholder='Логин'
-                                                onBlur={() => setBoolFullName(false)}
-                                                onChange={(e) => setFullName(e.target.value)}
-                                                onPressEnter={() => setBoolFullName(false)}
-                                                value={fullName}
-                                                autoFocus
-                                            />
-                                        </div>
-                                }
-                            </Form.Item>
-                            <div className={styles['user-info__divider']} />
-                            <Form.Item
-                                name="city"
-                                rules={[{ required: true, message: 'Пожалуйста, введите название города!' }]}
-                                className={styles['row-item']}
-                            >
-                                <Row className={styles['user-info__row']}>
-                                    <Col span={3} className={styles['user-info__column-name']}>Город:</Col>
-                                    {
-                                        boolCity === false ?
-                                            <Col
-                                                span={12}
-                                                className={styles['user-info__column-value']}
-                                            >
-                                                <span>{city}</span>
-                                                <Icon
-                                                    className={styles['user-info__edit-icon']}
-                                                    path={editIcon.path}
-                                                    viewBox={editIcon.viewBox}
-                                                    title="AtomTest"
-                                                    onClick={() => setBoolCity(true)}
-                                                />
-                                            </Col>
-                                            : <Col
-                                                span={12}
-                                                className={styles['user-info__column-value']}
-                                                onClick={() => setBoolCity(true)}
-                                            >
-                                                <Input
-                                                    className={styles['user-info__input']}
-                                                    placeholder='Логин'
-                                                    onBlur={() => setBoolCity(false)}
-                                                    onChange={(e) => {
-                                                        setCity(e.target.value)
-                                                    }}
-                                                    onPressEnter={() => setBoolCity(false)}
-                                                    value={city}
-                                                    autoFocus
-                                                />
-                                            </Col>
-                                    }
-                                </Row>
-                            </Form.Item>
-                            <Form.Item
-                                name="sex"
-                                rules={[{ required: true, message: 'Пожалуйста, введите название города!' }]}
-                                className={styles['row-item']}
-                            >
-                                <Row className={styles['user-info__row']}>
-                                    <Col span={3} className={styles['user-info__column-name']}>Пол:</Col>
-                                    {
-                                        boolSex === false ?
-                                            <Col
-                                                span={12}
-                                                className={styles['user-info__column-value']}
-                                            >
-                                                <span>{findSexItemText()}</span>
-                                                <Icon
-                                                    className={styles['user-info__edit-icon']}
-                                                    path={editIcon.path}
-                                                    viewBox={editIcon.viewBox}
-                                                    title="AtomTest"
-                                                    onClick={() => setBoolSex(true)}
-                                                />
-                                            </Col>
-                                            : <Col
-                                                span={12}
-                                                className={styles['user-info__column-value']}
-                                            >
-                                                <Select
-                                                    placeholder='Пол'
-                                                    className={styles['user-info__input']}
-                                                    onChange={handleChange}
-                                                    value={sex}
-                                                >
-                                                    {
-                                                        sexItems.map((item: TypeSelectOption) => (
-                                                            <Option key={item?.value}
-                                                                value={item?.value}
-                                                            >
-                                                                {item?.text}
-                                                            </Option>
-                                                        ))
-                                                    }
-                                                </Select>
-                                            </Col>
-                                    }
-                                </Row>
-                            </Form.Item>
-                            <Form.Item
-                                name="city"
-                                rules={[{ required: true, message: 'Пожалуйста, введите название города!' }]}
-                                className={styles['row-item']}
-                            >
-                                <Row className={styles['user-info__row']}>
-                                    <Col span={3} className={styles['user-info__column-name']}>Телефон:</Col>
-                                    {
-                                        boolPhoneNumber === false ?
-                                            <Col
-                                                span={12}
-                                                className={styles['user-info__column-value']}
-                                            >
-                                                <span>{phoneNumber}</span>
-                                                <Icon
-                                                    className={styles['user-info__edit-icon']}
-                                                    path={editIcon.path}
-                                                    viewBox={editIcon.viewBox}
-                                                    title="AtomTest"
-                                                    onClick={() => setBoolPhoneNumber(true)}
-                                                />
-                                            </Col>
-                                            : <Col
-                                                span={12}
-                                                className={styles['user-info__column-value']}
-                                                onClick={() => setBoolPhoneNumber(true)}
-                                            >
-                                                <MaskedInput
-                                                    className={styles['user-info__input']}
-                                                    mask={phoneNumberMask}
-                                                    placeholder='Телефон'
-                                                    onBlur={() => setBoolPhoneNumber(false)}
-                                                    onChange={(e) => {
-                                                        setPhoneNumber(e.target.value)
-                                                    }}
-                                                    onPressEnter={() => setBoolPhoneNumber(false)}
-                                                    value={phoneNumber}
-                                                    autoFocus
-                                                />
-                                            </Col>
-                                    }
-                                </Row>
-                            </Form.Item>
-                            <Form.Item
-                                name="email"
-                                rules={[{ required: true, message: 'Пожалуйста, введите email!' }]}
-                                className={styles['row-item']}
-                            >
-                                <Row className={styles['user-info__row']}>
-                                    <Col span={3} className={styles['user-info__column-name']}>Email:</Col>
-                                    {
-                                        boolEmail === false ?
-                                            <Col
-                                                span={12}
-                                                className={styles['user-info__column-value']}
-                                            >
-                                                <span>{email}</span>
-                                                <Icon
-                                                    className={styles['user-info__edit-icon']}
-                                                    path={editIcon.path}
-                                                    viewBox={editIcon.viewBox}
-                                                    title="AtomTest"
-                                                    onClick={() => setBoolEmail(true)}
-                                                />
-                                            </Col>
-                                            : <Col
-                                                span={12}
-                                                className={styles['user-info__column-value']}
-                                                onClick={() => setBoolEmail(true)}
-                                            >
-                                                <Input
-                                                    type="email"
-                                                    className={styles['user-info__input']}
-                                                    placeholder='Логин'
-                                                    onBlur={() => setBoolEmail(false)}
-                                                    onChange={(e) => {
-                                                        setEmail(e.target.value)
-                                                    }}
-                                                    onPressEnter={() => setBoolEmail(false)}
-                                                    value={email}
-                                                    autoFocus
-                                                />
-                                            </Col>
-                                    }
-                                </Row>
-                            </Form.Item>
+                        : <div className={styles['input-wrapper']}>
+                          <Input
+                            className={styles['user-info__input']}
+                            placeholder='Логин'
+                            onBlur={() => handleUpdateUser(setBoolFullName, false)}
+                            onChange={(e) => setFullName(e.target.value)}
+                            onPressEnter={() => handleUpdateUser(setBoolFullName, false)}
+                            value={fullName}
+                            autoFocus
+                          />
                         </div>
+                    }
+                  </Form.Item>
+                  <div className={styles['user-info__divider']} />
+                  <Form.Item
+                    name="city"
+                    rules={[{ required: true, message: 'Пожалуйста, введите название города!' }]}
+                    className={styles['row-item']}
+                  >
+                    <Row className={styles['user-info__row']}>
+                      <Col span={3} className={styles['user-info__column-name']}>Город:</Col>
+                      {
+                        boolCity === false ?
+                          <Col
+                            span={12}
+                            className={styles['user-info__column-value']}
+                          >
+                            <span>{city}</span>
+                            <Icon
+                              className={styles['user-info__edit-icon']}
+                              path={editIcon.path}
+                              viewBox={editIcon.viewBox}
+                              title="AtomTest"
+                              onClick={() => setBoolCity(true)}
+                            />
+                          </Col>
+                          : <Col
+                            span={12}
+                            className={styles['user-info__column-value']}
+                            onClick={() => setBoolCity(true)}
+                          >
+                            <Input
+                              className={styles['user-info__input']}
+                              placeholder='Логин'
+                              onBlur={() => handleUpdateUser(setBoolCity, false)}
+                              onChange={(e) => {
+                                setCity(e.target.value)
+                              }}
+                              onPressEnter={() => handleUpdateUser(setBoolCity, false)}
+                              value={city}
+                              autoFocus
+                            />
+                          </Col>
+                      }
+                    </Row>
+                  </Form.Item>
+                  <Form.Item
+                    name="sex"
+                    rules={[{ required: true, message: 'Пожалуйста, выберите пол!' }]}
+                    className={styles['row-item']}
+                  >
+                    <Row className={styles['user-info__row']}>
+                      <Col span={3} className={styles['user-info__column-name']}>Пол:</Col>
+                      {
+                        boolSex === false ?
+                          <Col
+                            span={12}
+                            className={styles['user-info__column-value']}
+                          >
+                            <span>{findSexItemText()}</span>
+                            <Icon
+                              className={styles['user-info__edit-icon']}
+                              path={editIcon.path}
+                              viewBox={editIcon.viewBox}
+                              title="AtomTest"
+                              onClick={() => setBoolSex(true)}
+                            />
+                          </Col>
+                          : <Col
+                            span={12}
+                            className={styles['user-info__column-value']}
+                          >
+                            <Select
+                              autoFocus
+                              placeholder='Пол'
+                              className={styles['user-info__input']}
+                              onChange={handleChange}
+                              onBlur={() => handleUpdateUser(setBoolSex, false)}
+                              value={sex}
+                            >
+                              {
+                                sexItems.map((item: TypeSelectOption) => (
+                                  <Option key={item?.value}
+                                    value={item?.value}
+                                  >
+                                    {item?.text}
+                                  </Option>
+                                ))
+                              }
+                            </Select>
+                          </Col>
+                      }
+                    </Row>
+                  </Form.Item>
+                  <Form.Item
+                    name="phone"
+                    rules={[{ required: true, message: 'Пожалуйста, введите телефон!' }]}
+                    className={classNames(styles['row-item'], styles['row-item__phone'])}
+                  >
+                    <Row className={styles['user-info__row']}>
+                      <Col span={3} className={styles['user-info__column-name']}>Телефон:</Col>
+                      {
+                        boolPhoneNumber === false ?
+                          <Col
+                            span={12}
+                            className={styles['user-info__column-value']}
+                          >
+                            <span>{phoneNumber}</span>
+                            <Icon
+                              className={styles['user-info__edit-icon']}
+                              path={editIcon.path}
+                              viewBox={editIcon.viewBox}
+                              title="AtomTest"
+                              onClick={() => setBoolPhoneNumber(true)}
+                            />
+                          </Col>
+                          : <Col
+                            span={12}
+                            className={styles['user-info__column-value']}
+                            onClick={() => setBoolPhoneNumber(true)}
+                          >
+                            <MaskedInput
+                              className={styles['user-info__input']}
+                              mask={phoneNumberMask}
+                              placeholder='Телефон'
+                              onBlur={() => handleUpdateUser(setBoolPhoneNumber, false)}
+                              onChange={(e) => setPhoneNumber(e.target.value)}
+                              onPressEnter={() => handleUpdateUser(setBoolPhoneNumber, false)}
+                              value={phoneNumber}
+                              autoFocus
+                            />
+                          </Col>
+                      }
+                    </Row>
+                  </Form.Item>
+                  <Form.Item
+                    name="email"
+                    rules={[{ required: true, message: 'Пожалуйста, введите email!' }]}
+                    className={styles['row-item']}
+                  >
+                    <Row className={styles['user-info__row']}>
+                      <Col span={3} className={styles['user-info__column-name']}>Email:</Col>
+                      {
+                        boolEmail === false ?
+                          <Col
+                            span={12}
+                            className={styles['user-info__column-value']}
+                          >
+                            <span>{email}</span>
+                            <Icon
+                              className={styles['user-info__edit-icon']}
+                              path={editIcon.path}
+                              viewBox={editIcon.viewBox}
+                              title="AtomTest"
+                              onClick={() => setBoolEmail(true)}
+                            />
+                          </Col>
+                          : <Col
+                            span={12}
+                            className={styles['user-info__column-value']}
+                            onClick={() => setBoolEmail(true)}
+                          >
+                            <Input
+                              type="email"
+                              className={styles['user-info__input']}
+                              placeholder='Логин'
+                              onBlur={() => handleUpdateUser(setBoolEmail, false)}
+                              onChange={(e) => setEmail(e.target.value)}
+                              onPressEnter={() => handleUpdateUser(setBoolEmail, false)}
+                              value={email}
+                              autoFocus
+                            />
+                          </Col>
+                      }
+                    </Row>
+                    <ButtonElem
+                      type={buttonElemType.Primary}
+                      htmlType="button"
+                      className={styles["user-info__redirect-btn"]}
+                      onClick={onRedirectToTestPage}
+                    >
+                      Начать тест
+                    </ButtonElem>
+                  </Form.Item>
+                </div>
+              </div>
+              <div className={styles['diploma-info']}>
+                <div className={styles['diploma-info__title']}>Диплом</div>
+                <div className={styles['diploma-info__frame']}>
+                  <div className={styles['diploma-info__image']}>
+                    <span className={styles['diploma-info__name']}>Диплом</span>
+                  </div>
+                  <div className={classNames(styles['diploma-info__share-in'], styles['share-in'])}>
+                    <ShareIn />
+                    <span className={styles['share-in__title']}>Поделиться в:</span>
+                    <div className={styles['share-in__icons']}>
+                      <a rel="noreferrer" target="_blank" href="https://vk.com/">
+                        <VkIcon className={styles['share-in__icon']} />
+                      </a>
+                      <a rel="noreferrer" target="_blank" href="https://ok.ru/">
+                        <OdnoklassikiIcon className={styles['share-in__icon']} />
+                      </a>
+                      <a rel="noreferrer" target="_blank" href="https://facebook.com/">
+                        <FacebookIcon className={styles['share-in__icon']} />
+                      </a>
+                      <a rel="noreferrer" target="_blank" href="https://www.instagram.com/">
+                        <InstagramIcon className={styles['share-in__icon']} />
+                      </a>
+                      <a rel="noreferrer" target="_blank" href="https://web.telegram.org/">
+                        <TelegramIcon className={styles['share-in__icon']} />
+                      </a>
                     </div>
-                    <div className={styles['diploma-info']}>
-                        <div className={styles['diploma-info__title']}>Диплом</div>
-                        <div className={styles['diploma-info__frame']}>
-                            <div className={styles['diploma-info__image']}>
-                                <span className={styles['diploma-info__name']}>Диплом</span>
-                            </div>
-                            <div className={classNames(styles['diploma-info__share-in'], styles['share-in'])}>
-                                <ShareIn />
-                                <span className={styles['share-in__title']}>Поделиться в:</span>
-                                <div className={styles['share-in__icons']}>
-                                    <a rel="noreferrer" target="_blank" href="https://vk.com/">
-                                        <VkIcon className={styles['share-in__icon']} />
-                                    </a>
-                                    <a rel="noreferrer" target="_blank" href="https://ok.ru/">
-                                        <OdnoklassikiIcon className={styles['share-in__icon']} />
-                                    </a>
-                                    <a rel="noreferrer" target="_blank" href="https://facebook.com/">
-                                        <FacebookIcon className={styles['share-in__icon']} />
-                                    </a>
-                                    <a rel="noreferrer" target="_blank" href="https://www.instagram.com/">
-                                        <InstagramIcon className={styles['share-in__icon']} />
-                                    </a>
-                                    <a rel="noreferrer" target="_blank" href="https://web.telegram.org/">
-                                        <TelegramIcon className={styles['share-in__icon']} />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <button className={styles['diploma-info__download']}>Скачать диплом</button>
-                    </div>
-                </Form>
-                <Navigation navigationType={NavigationType.FOOTER} />
-            </div>
-        </>
-    );
+                  </div>
+                </div>
+                <button type="button" className={styles['diploma-info__download']}>Скачать диплом</button>
+              </div>
+            </Form>
+            <Navigation navigationType={NavigationType.FOOTER} />
+          </div>
+          : <Loader className={'default-loader'} />
+      }
+    </>
+  );
 }
 
 const mapStateToProps = (state: any) => {
-    return {
-        jwtPair: state.auth?.jwtPair,
-    }
+  return {
+    jwtPair: state.auth?.jwtPair,
+  }
 }
 
 export default connect(mapStateToProps,
-    { setJwtPairToState })(memo(PrivateOffice));
+  { setJwtPairToState })(memo(PrivateOffice));

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { getUserInfo } from 'components/common/commonHelper';
 import ContactUs from 'components/modules/ContactUs';
 import DictationTimer from 'components/modules/DictationTimer';
+import FrequentlyAskedQuestions from 'components/modules/FrequentlyAskedQuestions';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import ButtonElem from 'components/uiKit/ButtomElem';
@@ -196,16 +197,7 @@ function HomePage(): JSX.Element {
                         </div>
                     </div>
                 </div>
-                <div className={styles['q-and-a']}>
-                    <div className={styles['q-and-a__title']}>
-                        {ReactHtmlParser(homePage.frequentlyAskedQuestions.title)}
-                    </div>
-                    <div className={styles['q-and-a__body']}>
-                        {questions.map((question, index) => (
-                            <CollapseElem key={index} title={question.title}>{question.description as string}</CollapseElem>
-                        ))}
-                    </div>
-                </div>
+                <FrequentlyAskedQuestions questions={questions} />
                 <ContactUs />
                 <Navigation navigationType={NavigationType.FOOTER} />
             </div>

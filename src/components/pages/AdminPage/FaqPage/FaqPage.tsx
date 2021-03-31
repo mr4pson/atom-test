@@ -52,7 +52,7 @@ function FaqPage(): JSX.Element {
             {
                 id: 'edit',
                 icon: !isEditing ? <EditIcon /> : <DoneIcon />,
-                callback: (action: TypeAction, config: TypeCollapseConfig, formValues: Object) => {
+                callback: async (action: TypeAction, config: TypeCollapseConfig, formValues: Object) => {
                     config.isEditing = !config.isEditing;
 
                     if (config.isEditing) {
@@ -61,22 +61,22 @@ function FaqPage(): JSX.Element {
                         action.icon = <EditIcon />;
                         Object.assign(config, formValues);
                         if (config.id) {
-                            axios.put(
+                            await axios.put(
                                 '/api/faqs/' + config.id, 
-                                { description: config.body, title: config.title }, 
+                                { description: config.description, title: config.title }, 
                                 options
-                            ).then(() => {
-                                console.log('Updated');
-                            });
+                            );
+                            
+                            console.log('Updated');
                         } else {
-                            axios.post(
+                            const response = await axios.post(
                                 '/api/faqs', 
                                 { description: config.description, title: config.title }, 
                                 options
-                            ).then((response) => {
-                                console.log('Created', response.data);
-                                config.id = response.data._id;
-                            });
+                            );
+
+                            console.log('Created', response.data);
+                            config.id = response.data._id;
                         }
                     }
                 },

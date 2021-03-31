@@ -24,6 +24,7 @@ export function useRemoveNews(): any {
       const transformedNews = axiosData.map((item: TypeNewsPageData) => {
         return {
           ...item,
+          subcategory: item.subcategory.title,
           createdAt: moment(item.createdAt).format('DD.MM.YYYY'),
         }
       })

@@ -14,6 +14,7 @@ import { useCreateNews } from "./useUpdateNews";
 import Loader from 'components/uiKit/Loader';
 import { useParams } from "react-router";
 import { useCheckRole } from "components/hooks/useCheckRole";
+import axios from "axios";
 
 function CreateNews(): JSX.Element {
   const location = useLocation();
@@ -21,12 +22,12 @@ function CreateNews(): JSX.Element {
   const [isChoosenFileChecked, setIsChoosenFileChecked] = useState<boolean>(
     false
   );
-  const { loading, createNews, currentNews, getCurrentNews, updateNews } = useCreateNews();
+  const { loading, createNews, currentNews, getCurrentNews, updateNews, getSubcategories, subcategories } = useCreateNews();
   const { id } = useParams() as any;
 
   const inititalFormState = {
     name: "",
-    heading: "",
+    subcategory: "",
     status: "drafts",
     description: "",
     uploadFile: null,
@@ -39,7 +40,7 @@ function CreateNews(): JSX.Element {
   async function handleSave(): Promise<void> {
     const formFieldsValue = formRef.current?.getFieldsValue();
 
-    if (formFieldsValue.name && formFieldsValue.uploadFile && formFieldsValue.heading) {
+    if (formFieldsValue.name && formFieldsValue.uploadFile && formFieldsValue.subcategory) {
       setIsChoosenFileChecked(false);
       await updateNews({ ...formFieldsValue }, id)
       history.push(paths[AdminsPage.NEWS]);
@@ -51,7 +52,7 @@ function CreateNews(): JSX.Element {
   async function onSubmit(): Promise<void> {
     const formFieldsValue = formRef.current?.getFieldsValue();
 
-    if (formFieldsValue.name && formFieldsValue.uploadFile && formFieldsValue.heading) {
+    if (formFieldsValue.name && formFieldsValue.uploadFile && formFieldsValue.subcategory) {
       if (id) {
         await updateNews({ ...formFieldsValue }, id);
       } else {
@@ -63,17 +64,21 @@ function CreateNews(): JSX.Element {
     }
   }
 
-  function uploadMediaFile(e): void {
-    console.log(formRef.current?.getFieldsValue());
-    const files = Array.from(e.target.files);
+  const uploadFiles = async (files: FileList ) => {
     const formData = new FormData();
-
-    files.forEach((file: any, i: any) => {
-      formData.append(i, file);
+    formData.append("files", files[0]);
+    return await axios.post('/api/attachments/addAttachments', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
     });
+  }
+
+  async function uploadMediaFile(event) {
+    const uploadFileResponse = await uploadFiles(event.currentTarget.files as FileList);
 
     formRef.current?.setFieldsValue({
-      uploadFile: formData,
+      uploadFile: uploadFileResponse.data[0].fileName,
     });
     setIsChoosenFileChecked(false);
   }
@@ -84,9 +89,8 @@ function CreateNews(): JSX.Element {
     if (id) {
       getCurrentNews(id);
     }
+    getSubcategories();
   }, []);
-
-  console.log(id);
 
   return (
     <>
@@ -132,15 +136,22 @@ function CreateNews(): JSX.Element {
                   },
                 ]}
                 className={styles["form-item"]}
-                name="heading"
+                name="subcategory"
               >
-                <Input
-                  className={styles["main-data-header__input"]}
-                  placeholder="Введите название рубрики"
-                  type="search"
-                  value={currentNews?.heading}
+                <Select
+                  className={classNames(
+                    "subcategory__select",
+                    styles["subcategory__select"]
+                  )}
+                  placeholder={'Выберите рубрику'}
                   disabled={loading}
-                />
+                >
+                  {subcategories.map((subcategory, index) => (
+                    <Option key={index} value={subcategory?.id as string}>
+                      {subcategory?.title}
+                    </Option>
+                  ))}
+                </Select>
               </Form.Item>
               <Form.Item className={styles["form-item"]} name="uploadFile">
                 <label className={classNames(styles["main-data-header__upload-file"], {

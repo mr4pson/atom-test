@@ -1,3 +1,5 @@
+import { TypeSubCategory } from "../MenuDetailPage/types";
+
 export type TypeNewsPageData = {
   id: string;
   name: string;
@@ -5,6 +7,7 @@ export type TypeNewsPageData = {
   description: string;
   status: string;
   uploadFile: any;
+  subcategory: TypeSubCategory,
   createdAt: string;
 }
 

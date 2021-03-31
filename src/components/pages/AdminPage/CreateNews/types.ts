@@ -1,3 +1,4 @@
+import { TypeSubCategory } from "../MenuDetailPage/types"
 import { TypeNewsPageData } from "../NewsPage/types"
 
 export type TypeCreateNewsPageData = {
@@ -16,4 +17,6 @@ export type TypeUseUpdateNewsResult = {
   currentNews: TypeNewsPageData | null;
   getCurrentNews: (id: string) => Promise<any>;
   updateNews: (formData: any, id: string) => Promise<any>;
+  getSubcategories: () => Promise<any>;
+  subcategories: TypeSubCategory[];
 }

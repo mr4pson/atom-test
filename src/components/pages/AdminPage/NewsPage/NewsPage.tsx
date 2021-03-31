@@ -48,8 +48,8 @@ function NewsPage(props: {
     },
     {
       title: 'Рубрика',
-      dataIndex: 'heading',
-      key: 'heading',
+      dataIndex: 'subcategory',
+      key: 'subcategory',
     },
     {
       title: 'Редактирование',

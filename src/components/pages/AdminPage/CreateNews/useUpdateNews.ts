@@ -4,11 +4,13 @@ import { useState } from "react";
 import { TypeNewsPageData } from "../NewsPage/types";
 import { getJwtPair } from "components/pages/LoginPage/helpers";
 import { TypeUseUpdateNewsResult } from "./types";
+import { TypeSubCategory } from "../MenuDetailPage/types";
 
 export function useCreateNews(): TypeUseUpdateNewsResult {
   const [loading, setLoading] = useState<boolean>(false);
   const curJwtPair: string = getJwtPair();
   const [currentNews, setCurrentNews] = useState<TypeNewsPageData | null>(null);
+  const [subcategories, setSubcategories] = useState<TypeSubCategory[]>([]);
 
   async function getCurrentNews(id: string): Promise<any> {
     setLoading(true);
@@ -24,9 +26,33 @@ export function useCreateNews(): TypeUseUpdateNewsResult {
       );
       const transformedNews = {
           ...axiosData,
+          subcategory: axiosData.subcategory._id,
           createdAt: moment(axiosData.createdAt).format('DD.MM.YYYY'),
         }
       setCurrentNews(transformedNews)
+      return {};
+    } catch ({ response }) {
+      console.log(response);
+      return { error: response };
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function getSubcategories(): Promise<any> {
+    setLoading(true);
+    const options = {
+      headers: {
+          'Authorization': `Bearer ${curJwtPair}`,
+          'withCredentials': true
+      },
+    }
+    try {
+      const { data: subcategories } = await axios.get<TypeSubCategory[]>(
+        `/api/subcategories`, options,
+      );
+
+      setSubcategories(subcategories)
       return {};
     } catch ({ response }) {
       console.log(response);
@@ -88,5 +114,7 @@ export function useCreateNews(): TypeUseUpdateNewsResult {
     getCurrentNews,
     createNews,
     updateNews,
+    getSubcategories,
+    subcategories
   }
 }

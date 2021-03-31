@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-function ManFrameIcon(): JSX.Element {
+export function ManFrameIcon(): JSX.Element {
   return <svg width="227" height="226" viewBox="0 0 227 226" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#clip0)">
     <path d="M120.359 69.7818L106.03 116.591L101.827 127.482C101.827 127.482 107.941 135.315 122.461 138.372C132.396 140.474 139.083 140.665 143.478 140.283C147.108 139.901 151.502 139.136 149.209 132.449C145.961 122.514 147.108 116.209 147.108 116.209L152.266 88.1235L120.359 69.7818Z" fill="#EA9D7D"/>
@@ -150,5 +150,3 @@ function ManFrameIcon(): JSX.Element {
     </defs>
   </svg>
 }
-
-export default memo(ManFrameIcon);

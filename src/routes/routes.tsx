@@ -10,6 +10,8 @@ import UserTest from "components/pages/UserTest";
 import UserTestComplete from "components/pages/UserTestComplete";
 import PagesPage from "components/pages/PagesPage";
 import ChosenPage from "components/pages/ChosenPage";
+import ParticipantInfoPage from "components/pages/ParticipantInfoPage";
+import OurPartnersPage from "components/pages/OurPartnersPage";
 
 export function getRoutes(): TypeRoute[] {
     return [
@@ -40,6 +42,11 @@ export function getRoutes(): TypeRoute[] {
             component: <PrivateOffice />
         },
         {
+            type: Page.PARTICIPANT_INFO,
+            path: paths[Page.PARTICIPANT_INFO_ROUTE],
+            component: <ParticipantInfoPage />,
+        },
+        {
             type: Page.USER_TEST_COMPLETE,
             path: paths[Page.USER_TEST_COMPLETE],
             component: <UserTestComplete />
@@ -61,9 +68,14 @@ export function getRoutes(): TypeRoute[] {
             exact: true,
         },
         {
-            type: Page.PAGE_ROUTE,
+            type: Page.PAGE,
             path: paths[Page.PAGE_ROUTE],
             component: <ChosenPage />,
+        },
+        {
+            type: Page.OUR_PARTNERS,
+            path: paths[Page.OUR_PARTNERS],
+            component: <OurPartnersPage />,
         },
     ]
 }

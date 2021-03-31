@@ -4,6 +4,7 @@ export type TypeSelectOption = {
 };
 
 export type TypeUserInfo = {
+  id: string;
   username: string;
   email: string;
   role: string;

@@ -1,0 +1,33 @@
+.our-partners-page {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &__title {
+    font-size: 60px;
+    margin-bottom: 50px;
+    font-family: Nexa Script Light;
+    font-weight: normal;
+    text-align: center;
+    background: linear-gradient(11deg, rgba(0, 24, 240, 1) 33%, rgba(0, 224, 255, 1) 87%, #8AA9D6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #0B2349;
+  }
+
+  &__newspaper {
+    -webkit-text-fill-color: initial;
+    color: #4B4B4B;
+    margin-bottom: 90px;
+  }
+
+  &__items-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+}

@@ -10,6 +10,7 @@ import TestQuestionsPage from "components/pages/AdminPage/TestQuestionsPage";
 import PartnersPage from "components/pages/AdminPage/PartnersPage";
 import AddPartnerPage from "components/pages/AdminPage/AddPartnerPage";
 import MenuPage from "components/pages/AdminPage/MenuPage";
+import MenuDetailPage from "components/pages/AdminPage/MenuDetailPage";
 import ProjectPersonsPage from "components/pages/AdminPage/ProjectPersonsPage";
 import UpdateParticipant from "components/pages/AdminPage/UpdateParticipant";
 
@@ -35,6 +36,12 @@ export function getRoutes(): TypeRoute[] {
       type: AdminsPage.MENU,
       path: paths[AdminsPage.MENU],
       component: <MenuPage />,
+      exact: true,
+    },
+    {
+      type: AdminsPage.MENU_ROUTE,
+      path: paths[AdminsPage.MENU_ROUTE],
+      component: <MenuDetailPage />,
     },
     {
       type: AdminsPage.PARTICIPANTS,

@@ -6,8 +6,10 @@ import { Form, FormInstance } from 'antd';
 import { Input } from 'antd';
 
 export type Props = {
+    className?: string;
     config: TypeCollapseConfig;
-    children: any;
+    children?: any;
+    onSubmit?: (e) => void;
 }
 
 function AdminCollapseElem(props: Props): JSX.Element {
@@ -21,6 +23,7 @@ function AdminCollapseElem(props: Props): JSX.Element {
     const changeButtonCollapse = () => {
         setCollapsed(!collapsed);
     }
+
 
     const onActionClick = (action: TypeAction) => {
         if (action.id === props.config.collapseOn) {
@@ -48,14 +51,22 @@ function AdminCollapseElem(props: Props): JSX.Element {
         }
     });
 
+    const onSubmit = (e) => {
+        if (props.onSubmit) {
+            props.onSubmit(e);
+            changeButtonCollapse();
+        }
+    }
+
     return (
         <div 
             ref={componentRef}
-            className={classNames(styles['admin-collapse-elem'], {
-                [styles['admin-collapse-elem--collapsed']]: collapsed,
+            className={classNames(props.className, styles['admin-collapse-elem'], {
+                [styles['admin-collapse-elem--collapsed']]: collapsed && props.config.collapseOn,
             })}
         >
             <Form
+                onFinish={onSubmit}
                 initialValues={props.config}
                 className="admin-collapse-elem-form"
                 ref={formRef}
@@ -72,9 +83,10 @@ function AdminCollapseElem(props: Props): JSX.Element {
                             </Form.Item>
                         }
                     </div>
-                    <div className={styles['admin-collapse-elem__actions']}>
+                    <div className={classNames('admin-collapse-elem-actions', styles['admin-collapse-elem__actions'])}>
                         {props.config.actions.map((action, index) => (
                             <button 
+                                type={'button'}
                                 key={index}
                                 className={styles['admin-collapse-elem__action-btn']}
                                 onClick={() => onActionClick(action)}

@@ -7,7 +7,7 @@ export type TypeAction = {
 }
 
 export type TypeCollapseConfig = {
-    id?: number;
+    id?: number | string;
     title: string;
     data?: any;
     actions: TypeAction[];
@@ -17,4 +17,6 @@ export type TypeCollapseConfig = {
     collapseOn?: string;
     options?: TypeTestQuestionOption[];
     visible?: boolean;
+    editable?: boolean;
+    deletable?: boolean;
 }

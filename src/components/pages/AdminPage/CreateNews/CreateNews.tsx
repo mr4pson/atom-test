@@ -76,13 +76,6 @@ function CreateNews(): JSX.Element {
 
   async function uploadMediaFile(event) {
     const uploadFileResponse = await uploadFiles(event.currentTarget.files as FileList);
-    // console.log(formRef.current?.getFieldsValue());
-    // const files = Array.from(e.target.files);
-    // const formData = new FormData();
-
-    // files.forEach((file: any, i: any) => {
-    //   formData.append(i, file);
-    // });
 
     formRef.current?.setFieldsValue({
       uploadFile: uploadFileResponse.data[0].fileName,
@@ -98,8 +91,6 @@ function CreateNews(): JSX.Element {
     }
     getSubcategories();
   }, []);
-
-  console.log(subcategories);
 
   return (
     <>

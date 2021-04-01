@@ -55,7 +55,7 @@ body {
   border: none;
 }
 
-.ant-select-selection-item {
+#signUpForm .ant-select-selection-item {
   padding-left: 25px !important;
   color: #0085F8;
 }
@@ -346,4 +346,16 @@ body {
 	height: 34px;
 	padding: 0px 32px;
 	margin-right: 0;
+}
+
+.subcategory__select {
+	margin-bottom: 20px;
+}
+
+.subcategory__select .ant-select-selector {
+	height: 38px!important;
+}
+
+.subcategory__select .ant-select-selection-placeholder, .subcategory__select .ant-select-selection-item {
+	margin-top: 4px;
 }

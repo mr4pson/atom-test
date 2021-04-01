@@ -62,7 +62,9 @@ function Navigation(props: Props): JSX.Element {
   }
 
   return (
-    <div className={styles["header"]}>
+    <div className={classNames(styles["header"], {
+      [styles["header-footer"]]: props.navigationType === NavigationType.FOOTER
+    })}>
       <div className={styles["container"]}>
         <Link to={paths[Page.HOME]}>
           <div className={styles["header__logo"]} />

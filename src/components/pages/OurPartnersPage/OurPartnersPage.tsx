@@ -5,18 +5,22 @@ import { getUserInfo } from "components/common/commonHelper";
 import { NavigationType } from "components/modules/Navigation/constants";
 import ContactUs from "components/modules/ContactUs";
 import OurPartnersItem from "./OurPartnersPageItem";
-import { newspaperItems, partnersItems } from "./constants";
+import { newspaperItems } from "./constants";
 import classNames from 'classnames';
 import FrequentlyAskedQuestions from "components/modules/FrequentlyAskedQuestions";
 import { useHomePage } from "../HomePage/useHomePage";
 import Loader from 'components/uiKit/Loader';
+import { useRemovePartner } from "../AdminPage/PartnersPage/useRemovePartner";
 
 function OurPartnersPage() {
-  const userInfo = getUserInfo(); 
+  const userInfo = getUserInfo();
   const { questions, getFaqQuestions } = useHomePage();
+  const { loading, getPartners, partners } = useRemovePartner();
 
   useEffect(() => {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
     getFaqQuestions();
+    getPartners();
   }, []);
 
   return <>
@@ -28,9 +32,10 @@ function OurPartnersPage() {
         </div>
         <div className={styles['our-partners-page__items-wrapper']}>
           {
-            partnersItems.map((item) => {
-              return <OurPartnersItem {...item} />
-            })
+            !loading ?
+              partners.map((item) => {
+                return <OurPartnersItem {...item} />
+              }) : <Loader className={'partners-loader'} />
           }
         </div>
         <div className={classNames(

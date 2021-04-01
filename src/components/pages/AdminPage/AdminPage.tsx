@@ -101,21 +101,6 @@ function AdminPage(): JSX.Element {
       },
     },
     {
-      key: paths[AdminsPage.PROJECT_PERSONS],
-      title: "Добавить лиц проекта",
-      icon: (
-        <Icon
-          className={styles["menu__icon"]}
-          path={userPlusIcon.path}
-          viewBox={userPlusIcon.viewBox}
-          title="AtomTest"
-        />
-      ),
-      onClick: () => {
-        history.push(paths[AdminsPage.PROJECT_PERSONS]);
-      },
-    },
-    {
       key: paths[AdminsPage.COUNTER],
       title: "Задать параметры счетчика",
       icon: (

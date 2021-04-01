@@ -16,6 +16,10 @@ $blue-100: #4daafa;
   display: flex;
   align-items: center;
 
+  &_justify-start {
+    justify-content: flex-start;
+  }
+
   &_justify-center {
     justify-content: center;
   }

@@ -49,6 +49,7 @@ function HomePage(): JSX.Element {
     }
 
     useEffect(() => {
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
         Promise.all([
             getFaqQuestions(),
             getCounterParameters(),

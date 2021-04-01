@@ -11,6 +11,7 @@ export type TypePartner = {
   description?: string;
   uploadFile?: string;
   link: string;
+  massMedia: string;
 }
 
 export type TypeUseUpdatePartnerResult = {
@@ -19,4 +20,11 @@ export type TypeUseUpdatePartnerResult = {
   currentPartner: TypePartner | null;
   getCurrentPartner: (id: string) => Promise<any>;
   updatePartner: (formData: any, id: string) => Promise<any>;
+}
+
+export type TypeUseRemovePartnerResult = {
+  loading: boolean;
+  getPartners: () => Promise<any>;
+  partners: any[];
+  deletePartner: (id: string) => Promise<any>;
 }

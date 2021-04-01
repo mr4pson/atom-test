@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import Navigation from 'components/modules/Navigation';
 import styles from './PagesPage.module.scss';
 import { getUserInfo } from "components/common/commonHelper";
@@ -10,6 +10,10 @@ import { Pagination } from 'antd';
 
 function PagesPage() {
   const userInfo = getUserInfo();
+
+  useEffect(() => {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }, []);
 
   return <>
     <div className="container">

@@ -28,6 +28,7 @@ function AddPartnerPage(): JSX.Element {
   const inititalFormState = {
     title: "",
     link: "",
+    massMedia: "",
     uploadFile: null,
     description: "",
   };
@@ -37,6 +38,7 @@ function AddPartnerPage(): JSX.Element {
     if (
       formFieldsValue.title &&
       formFieldsValue.link &&
+      formFieldsValue.massMedia &&
       formFieldsValue.uploadFile
     ) {
       if (id) {
@@ -130,6 +132,24 @@ function AddPartnerPage(): JSX.Element {
                   placeholder="Ссылка на партнёра"
                   type="url"
                   value={currentPartner?.link}
+                  disabled={loadingUpdate}
+                />
+              </Form.Item>
+              <Form.Item
+                rules={[
+                  {
+                    required: true,
+                    message: "Пожалуйста, введите тип СМИ !",
+                  },
+                ]}
+                className={styles["form-item"]}
+                name="massMedia"
+              >
+                <Input
+                  className={styles["page-content__input"]}
+                  placeholder="Введите тип СМИ"
+                  type="text"
+                  value={currentPartner?.massMedia}
                   disabled={loadingUpdate}
                 />
               </Form.Item>

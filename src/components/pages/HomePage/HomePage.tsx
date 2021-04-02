@@ -75,7 +75,7 @@ function HomePage(): JSX.Element {
                         {counterParameters?.data && <DictationTimer dictantDateString={counterParameters?.data as string} />}
                     </div>
                 </div>
-                <div className={styles['about-project']}>
+                <div id="about" className={styles['about-project']}>
                     <div className={styles['about-project__title']}>
                         {ReactHtmlParser(homePage.aboutProject.title)}
                     </div>
@@ -107,7 +107,7 @@ function HomePage(): JSX.Element {
                         <span>{ReactHtmlParser(homePage.aboutProject.footer)}</span>
                     </div>
                 </div>
-                <div className={styles['organizators']}>
+                <div id="organizators" className={styles['organizators']}>
                     <div className={styles['organizators__title']}>
                         {ReactHtmlParser(homePage.organizators.title)}
                     </div>

@@ -2,14 +2,15 @@ import axios from "axios";
 import { getJwtPair } from "components/pages/LoginPage/helpers";
 import { useState } from "react";
 import moment from "moment";
-import { TypePartner } from "./types";
+import { TypePartner, TypeUseRemovePartner } from "./types";
 
-export function useRemovePartner(): any {
+export function useRemovePartner(): TypeUseRemovePartner {
   const [loading, setLoading] = useState<boolean>(false);
-  const [partners, setPartners] = useState<any[]>([]);
+  const [partners, setPartners] = useState<TypePartner[]>([]);
+  const [magazines, setMagazines] = useState<TypePartner[]>([]);
   const curJwtPair: string = getJwtPair();
 
-  async function getPartners(): Promise<any> {
+  async function getPartners(): Promise<TypePartner[] | Object> {
     setLoading(true);
     const options = {
       headers: {
@@ -18,7 +19,7 @@ export function useRemovePartner(): any {
       },
     }
     try {
-      const { data: axiosData } = await axios.get<any>(
+      const { data: axiosData } = await axios.get<TypePartner[]>(
         `/api/partners/`, options,
       );
       const transformedNews = axiosData.map((item: TypePartner) => {
@@ -37,7 +38,7 @@ export function useRemovePartner(): any {
     }
   }
     
-  async function deletePartner(id: string): Promise<any> {
+  async function deletePartner(id: string): Promise<TypePartner[] | Object> {
     setLoading(true);
     const options = {
       headers: {
@@ -59,10 +60,34 @@ export function useRemovePartner(): any {
     }
   }
 
+  async function getMagazines(id: string): Promise<TypePartner[] | Object> {
+    setLoading(true);
+    const options = {
+      headers: {
+          'Authorization': `Bearer ${curJwtPair}`,
+          'withCredentials': true
+      },
+    }
+    try {
+      const { data: partnersData } = await axios.get<TypePartner[]>(
+        `/api/partners/byOrganizationType/${id}`, options,
+      );
+      setMagazines(partnersData)
+      return [];
+    } catch ({ response }) {
+      // console.log(response);
+      return { error: response };
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return {
     loading,
     getPartners,
     partners,
-    deletePartner
+    deletePartner,
+    magazines,
+    getMagazines
   }
 }

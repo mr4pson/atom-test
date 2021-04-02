@@ -5,23 +5,38 @@ import { getUserInfo } from "components/common/commonHelper";
 import { NavigationType } from "components/modules/Navigation/constants";
 import ContactUs from "components/modules/ContactUs";
 import OurPartnersItem from "./OurPartnersPageItem";
-import { newspaperItems } from "./constants";
 import classNames from 'classnames';
 import FrequentlyAskedQuestions from "components/modules/FrequentlyAskedQuestions";
 import { useHomePage } from "../HomePage/useHomePage";
 import Loader from 'components/uiKit/Loader';
 import { useRemovePartner } from "../AdminPage/PartnersPage/useRemovePartner";
+import { useGetOrganizationTypes } from "../AdminPage/AddPartnerPage/useGetOrganizationTypes";
 
 function OurPartnersPage() {
   const userInfo = getUserInfo();
   const { questions, getFaqQuestions } = useHomePage();
-  const { loading, getPartners, partners } = useRemovePartner();
+  const { loading, getPartners, partners, getMagazines, magazines } = useRemovePartner();
+  const { organizationTypes, getOrganizationTypes } = useGetOrganizationTypes();
 
   useEffect(() => {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
-    getFaqQuestions();
-    getPartners();
+    (async () => {
+      await Promise.all([
+        getFaqQuestions(),
+        getPartners(),
+        getOrganizationTypes(),
+      ])
+    })();
   }, []);
+
+  useEffect(() => {
+    const magazineObject = organizationTypes.find(
+      organizationType => organizationType.title === 'Газета'
+    );
+    if (magazineObject) {
+      getMagazines(magazineObject?.id);
+    }
+  }, [organizationTypes])
 
   return <>
     <div className="container">
@@ -34,7 +49,13 @@ function OurPartnersPage() {
           {
             !loading ?
               partners.map((item) => {
-                return <OurPartnersItem {...item} />
+                return <OurPartnersItem
+                id={item?.id!}
+                title={item.title}
+                link={item.link}
+                organizationType={item.organizationType}
+                uploadFile={item?.uploadFile!}
+              />
               }) : <Loader className={'partners-loader'} />
           }
         </div>
@@ -45,8 +66,14 @@ function OurPartnersPage() {
         </div>
         <div className={styles['our-partners-page__items-wrapper']}>
           {
-            newspaperItems.map((item) => {
-              return <OurPartnersItem {...item} />
+            magazines.map((item) => {
+              return <OurPartnersItem
+              id={item?.id!}
+              title={item.title}
+              link={item.link}
+              organizationType={item.organizationType}
+              uploadFile={item?.uploadFile!}
+            />
             })
           }
         </div>

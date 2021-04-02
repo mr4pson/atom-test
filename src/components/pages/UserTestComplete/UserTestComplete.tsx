@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getUserInfo } from 'components/common/commonHelper';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import { userTestComplete } from 'i18n/userTestComplete';
@@ -15,6 +16,8 @@ type UserTestCompleteProps = {
 
 function UserTest(props: UserTestCompleteProps): JSX.Element {
     const [questionsNumber, setQuestionsNumber] = useState<number>();
+
+    const userInfo = getUserInfo();
 
     const curJwtPair: string = getJwtPair();
     const options = {
@@ -39,7 +42,7 @@ function UserTest(props: UserTestCompleteProps): JSX.Element {
     return(
         <div className={styles['user-test-complete']}>
             <div className="container">
-                <Navigation navigationType={NavigationType.HEADER}/>
+                <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER}/>
                 <div className={styles['user-test-complete__body']}>
                     <h1 className={styles['user-test-complete__title']}>{!props.isTimerFinished ? 
                         userTestComplete.successfulTitle :

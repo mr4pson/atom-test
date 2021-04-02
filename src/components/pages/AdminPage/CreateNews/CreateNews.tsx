@@ -14,7 +14,7 @@ import { useCreateNews } from "./useUpdateNews";
 import Loader from 'components/uiKit/Loader';
 import { useParams } from "react-router";
 import { useCheckRole } from "components/hooks/useCheckRole";
-import axios from "axios";
+import { useUploadFile } from "components/hooks/useUploadFile";
 
 function CreateNews(): JSX.Element {
   const location = useLocation();
@@ -36,6 +36,8 @@ function CreateNews(): JSX.Element {
   const { Option } = Select;
 
   const formRef = useRef<FormInstance>(null);
+
+  const { uploadMediaFile } = useUploadFile(formRef, setIsChoosenFileChecked);
 
   async function handleSave(): Promise<void> {
     const formFieldsValue = formRef.current?.getFieldsValue();
@@ -62,25 +64,6 @@ function CreateNews(): JSX.Element {
       history.push(paths[AdminsPage.NEWS]);
       console.log(formRef.current?.getFieldsValue());
     }
-  }
-
-  const uploadFiles = async (files: FileList ) => {
-    const formData = new FormData();
-    formData.append("files", files[0]);
-    return await axios.post('/api/attachments/addAttachments', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    });
-  }
-
-  async function uploadMediaFile(event) {
-    const uploadFileResponse = await uploadFiles(event.currentTarget.files as FileList);
-
-    formRef.current?.setFieldsValue({
-      uploadFile: uploadFileResponse.data[0].fileName,
-    });
-    setIsChoosenFileChecked(false);
   }
 
   useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');

@@ -1,4 +1,4 @@
-import { Form, FormInstance, Input } from "antd";
+import { Form, FormInstance, Input, Select } from "antd";
 import ButtonElem from "components/uiKit/ButtomElem";
 import { buttonElemType, htmlType } from "components/uiKit/ButtomElem/types";
 import { memo, useRef, useState, useEffect } from "react";
@@ -13,6 +13,8 @@ import classNames from 'classnames';
 import { useUpdatePartner } from "./useUpdatePartner";
 import Loader from 'components/uiKit/Loader';
 import { useCheckRole } from "components/hooks/useCheckRole";
+import { useGetOrganizationTypes } from "./useGetOrganizationTypes";
+import { useUploadFile } from "components/hooks/useUploadFile";
 
 function AddPartnerPage(): JSX.Element {
   const formRef = useRef<FormInstance>(null);
@@ -24,13 +26,16 @@ function AddPartnerPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
 
   const { loadingUpdate, addPartner, currentPartner, getCurrentPartner, updatePartner } = useUpdatePartner();
+  const { loading, getOrganizationTypes, organizationTypes } = useGetOrganizationTypes();
+  const { uploadMediaFile } = useUploadFile(formRef, setIsChoosenFileChecked );
+
+  const { Option } = Select;
 
   const inititalFormState = {
-    title: "",
-    link: "",
-    massMedia: "",
+    title: '',
+    link: '',
     uploadFile: null,
-    description: "",
+    description: '',
   };
   const formFieldsValue = formRef.current?.getFieldsValue();
 
@@ -38,7 +43,7 @@ function AddPartnerPage(): JSX.Element {
     if (
       formFieldsValue.title &&
       formFieldsValue.link &&
-      formFieldsValue.massMedia &&
+      formFieldsValue.organizationType &&
       formFieldsValue.uploadFile
     ) {
       if (id) {
@@ -51,32 +56,20 @@ function AddPartnerPage(): JSX.Element {
     }
   }
 
-  function uploadMediaFile(e): void {
-    console.log(formRef.current?.getFieldsValue());
-    const files = Array.from(e.target.files);
-    const formData = new FormData();
-
-    files.forEach((file: any, i: any) => {
-      formData.append(i, file);
-    });
-
-    formRef.current?.setFieldsValue({
-      uploadFile: formData,
-    });
-    setIsChoosenFileChecked(false);
-  }
-
   useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
   useEffect(() => {
     if (id) {
       getCurrentPartner(id);
     }
+    getOrganizationTypes();
   }, []);
+
+  console.log(organizationTypes);
 
   return (
     <>
-      {(id ? currentPartner : true) ? (
+      {(id ? currentPartner : true) && organizationTypes.length ? (
         <Form
           className={styles["add-partner-page"]}
           name="basic"
@@ -139,19 +132,22 @@ function AddPartnerPage(): JSX.Element {
                 rules={[
                   {
                     required: true,
-                    message: "Пожалуйста, введите тип СМИ !",
+                    message: "Пожалуйста, выберите тип организации !",
                   },
                 ]}
                 className={styles["form-item"]}
-                name="massMedia"
+                name="organizationType"
               >
-                <Input
+                <Select
                   className={styles["page-content__input"]}
-                  placeholder="Введите тип СМИ"
-                  type="text"
-                  value={currentPartner?.massMedia}
-                  disabled={loadingUpdate}
-                />
+                  placeholder='Тип организации'
+                >
+                  {
+                    organizationTypes.map((item) => (
+                      <Option key={item.id} value={item.id}>{item.title}</Option>
+                    ))
+                  }
+                </Select>
               </Form.Item>
               <Form.Item className={styles["form-item"]} name="uploadFile">
                 <label className={classNames(styles["page-content__upload-file"], {
@@ -188,7 +184,7 @@ function AddPartnerPage(): JSX.Element {
                 <TextRedactor
                   initialValue={
                     location.pathname === paths[AdminsPage.ADD_PARTNER]
-                      ? inititalFormState.description
+                      ? inititalFormState?.description
                       : currentPartner?.description!
                   }
                   formRef={formRef}

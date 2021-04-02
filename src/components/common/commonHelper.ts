@@ -39,3 +39,8 @@ export const openNotification = (type: string, message: string) => {
 export const generateUiniqueId = () => {
   return Math.random().toString(16).slice(2);
 };
+
+
+export function getImageUrl(fileName: string): string {
+  return `/api/attachments/${fileName}`;
+}

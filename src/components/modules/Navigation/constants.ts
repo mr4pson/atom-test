@@ -12,9 +12,9 @@ export const navigationTranslations = {
 }
 
 export const navigationPaths = {
-    ABOUT: 'about',
+    ABOUT: '/#about',
     Pages : paths[Page.PAGES],
-    ORGANIZATORS: 'organizators',
+    ORGANIZATORS: '/#organizators',
     INFO_PARTNERS: paths[Page.OUR_PARTNERS],
     PRIVACY_POLICY: 'privacy-policy',
 }

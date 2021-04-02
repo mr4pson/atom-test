@@ -7,7 +7,7 @@ import { TypePartner, TypeUseUpdatePartnerResult } from "../PartnersPage/types";
 export function useUpdatePartner(): TypeUseUpdatePartnerResult {
   const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);
   const curJwtPair: string = getJwtPair();
-  const [currentPartner, setCurrentPartner] = useState<TypePartner | null>(null);
+  const [currentPartner, setCurrentPartner] = useState<any>(null);
 
   async function getCurrentPartner(id: string): Promise<any> {
     setLoadingUpdate(true);
@@ -18,14 +18,15 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
       },
     }
     try {
-      const { data: axiosData } = await axios.get<any>(
+      const { data: partnerData } = await axios.get<TypePartner>(
         `/api/partners/${id}`, options,
       );
       const transformedNews = {
-          ...axiosData,
-          createdAt: moment(axiosData.createdAt).format('DD.MM.YYYY'),
+          ...partnerData,
+          createdAt: moment(partnerData.createdAt).format('DD.MM.YYYY'),
+          organizationType: partnerData.organizationType?.id,
         }
-        setCurrentPartner(transformedNews)
+        setCurrentPartner(transformedNews);
       return {};
     } catch ({ response }) {
       console.log(response);

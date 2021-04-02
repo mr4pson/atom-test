@@ -1,5 +1,6 @@
 import { Checkbox, Col, Radio, Row } from 'antd';
 import classNames from 'classnames';
+import { getImageUrl } from 'components/common/commonHelper';
 import { QuestionType } from "components/pages/UserTest/types";
 import { memo } from "react";
 import styles from './UserTestOption.module.scss';
@@ -8,6 +9,7 @@ type Props = {
     type: QuestionType;
     value: string;
     children: string;
+    url?: string;
 }
 
 function UserTestOption(props: Props): JSX.Element {
@@ -20,6 +22,7 @@ function UserTestOption(props: Props): JSX.Element {
             ].includes(type),
         })
     }
+
     return (
         <div className={getNavigationClassName(props.type)}>
             {props.type === QuestionType.SINGLE && 
@@ -40,16 +43,15 @@ function UserTestOption(props: Props): JSX.Element {
                 <Radio className="user-test-option-multiple" value={props.value}>
                     <div
                         className={styles['user-test-option__image']} 
-                        style={{backgroundImage: 'url('+props.children+')'}}
+                        style={{backgroundImage: `url(${getImageUrl(props.url!)}`}}
                     ></div>
                 </Radio>
             }
-            
             {props.type === QuestionType.MULTIPLE_PICTURE && 
                 <Checkbox className="user-test-option-multiple" value={props.value}>
                     <div
                         className={styles['user-test-option__image']} 
-                        style={{backgroundImage: 'url('+props.children+')'}}
+                        style={{backgroundImage: `url(${getImageUrl(props.url!)}`}}
                     ></div>
                 </Checkbox>
             }

@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { TypeUserInfo } from "components/common/types";
 import AuthButton from "components/modules/AuthButton";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { Page, paths } from "routes/constants";
 import {
@@ -11,6 +11,7 @@ import {
 import styles from "./Navigation.module.scss";
 import { TypeLink } from "./types";
 import { HashLink as Link } from 'react-router-hash-link';
+import axios from "axios";
 
 type Props = {
   navigationType: NavigationType;
@@ -18,8 +19,18 @@ type Props = {
 };
 
 function Navigation(props: Props): JSX.Element {
-  let links: TypeLink[] = [];
+  // let links: TypeLink[] = [];
   let location = useLocation();
+  const [links, setLinks] = useState<TypeLink[]>([]);
+
+  const getMenus = async () => {
+    const responnse = await axios.get('/api/menus');
+    const links = responnse.data.map((menu) => ({
+      name: menu.title,
+      path: menu.url,
+    }));
+    setLinks(links);
+  }
 
   function getNavigationClassName(): string {
     return classNames({
@@ -32,6 +43,10 @@ function Navigation(props: Props): JSX.Element {
         props.navigationType === NavigationType.FOOTER,
     });
   }
+
+  useEffect(() => {
+    getMenus();
+  }, []);
 
   //TODO: remove in future
   function renderAdminPageLink(): JSX.Element | null {
@@ -56,34 +71,38 @@ function Navigation(props: Props): JSX.Element {
   }
 
   if (props.navigationType === NavigationType.HEADER) {
-    links = headerLinks;
-  } else {
-    links = footerLinks;
+  //   links = headerLinks;
+  // } else {
+  //   links = footerLinks;
   }
 
+  console.log(links);
+
   return (
-    <div className={classNames(styles["header"], {
-      [styles["header-footer"]]: props.navigationType === NavigationType.FOOTER
-    })}>
-      <div className={styles["container"]}>
-        <Link to={paths[Page.HOME]}>
-          <div className={styles["header__logo"]} />
-        </Link>
-        <ul className={getNavigationClassName()}>
-          {!location.pathname.includes(paths[Page.ADMIN])
-            ? links.map((link: TypeLink) => (
-              <li key={link.path}>
-                <Link to={link.path}>{link.name}</Link>
-              </li>
-            ))
-            : null}
-        </ul>
-        <div className={styles["user-info"]}>
-          <AuthButton userInfo={props.userInfo!} navigationType={props.navigationType} />
-          {/* {renderAdminPageLink()} */}
+    <>
+      {links.length && <div className={classNames(styles["header"], {
+        [styles["header-footer"]]: props.navigationType === NavigationType.FOOTER
+      })}>
+        <div className={styles["container"]}>
+          <Link to={paths[Page.HOME]}>
+            <div className={styles["header__logo"]} />
+          </Link>
+          <ul className={getNavigationClassName()}>
+            {!location.pathname.includes(paths[Page.ADMIN])
+              ? links.map((link: TypeLink) => (
+                <li key={link.path}>
+                  <Link to={link.path}>{link.name}</Link>
+                </li>
+              ))
+              : null}
+          </ul>
+          <div className={styles["user-info"]}>
+            <AuthButton userInfo={props.userInfo!} navigationType={props.navigationType} />
+            {/* {renderAdminPageLink()} */}
+          </div>
         </div>
-      </div>
-    </div>
+      </div>}
+    </>
   );
 }
 

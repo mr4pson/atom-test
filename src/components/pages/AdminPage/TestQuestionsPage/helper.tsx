@@ -12,193 +12,210 @@ import { TypeTestQuestion, TypeTestQuestionOption } from "./types";
 
 const curJwtPair: string = getJwtPair();
 const options = {
-    headers: {
-        'Authorization': `Bearer ${curJwtPair}`,
-        'withCredentials': true
-    },
+  headers: {
+    'Authorization': `Bearer ${curJwtPair}`,
+    'withCredentials': true
+  },
 }
 
 export const getQuestionActions = (
-    isEditing: boolean = false,
-    setTestQuestions: React.Dispatch<React.SetStateAction<TypeTestQuestion[]>>,
-    testQuestion: TypeTestQuestion | null,
-    setRerender: React.Dispatch<React.SetStateAction<boolean>>,
-    setCurrentTest: React.Dispatch<React.SetStateAction<any>>,
-    setCurrentTestOption: React.Dispatch<React.SetStateAction<any>>,
+  isEditing: boolean = false,
+  setTestQuestions: React.Dispatch<React.SetStateAction<TypeTestQuestion[]>>,
+  testQuestion: TypeTestQuestion | null,
+  setRerender: React.Dispatch<React.SetStateAction<boolean>>,
+  setCurrentTest: React.Dispatch<React.SetStateAction<any>>,
+  setCurrentTestOption: React.Dispatch<React.SetStateAction<any>>,
 ): TypeAction[] => {
-    return [
-        {
-            id: 'image',
-            icon: testQuestion?.image ? <Tooltip title={testQuestion?.image}>
-                <ImageIcon className="test-questions-option__action_active" />
-            </Tooltip> : <ImageIcon />,
-            callback: (action: TypeAction, config: TypeCollapseConfig) => {
-                setCurrentTest(config);
-            },
-        },
-        {
-            id: 'edit',
-            icon: !isEditing ? <EditIcon /> : <DoneIcon />,
-            callback: async (action: TypeAction, config: any, formValues: Object) => {
-                config.isEditing = !config.isEditing;
+  const actions: TypeAction[] = [];
 
-                if (config.isEditing) {
-                    action.icon = <DoneIcon />;
-                } else {
-                    action.icon = <EditIcon />;
-                    Object.assign(config, formValues);
-                    // TODO request to backend
-                    if (config.id) {
-                        const payload = {
-                            _id: config.id,
-                            options: config.options.map((option) => ({
-                                id: option._id,
-                                title: option.title,
-                                image: option.image,
-                                trueOption: option.trueOption,
-                            })),
-                            title: config.title,
-                            type: config.type,
-                            image: config.image,
-                        }
-                        await axios.put<TypeTestQuestion>('/api/questions/' + config.id, payload, options);
-                    } else {
-                        console.log('create');
-                        const payload = {
-                            options: config.options.map((option) => ({
-                                id: option._id,
-                                title: option.title,
-                                image: option.image,
-                                trueOption: option.trueOption,
-                            })),
-                            title: config.title,
-                            type: config.type,
-                            image: config.image,
-                        }
-                        const questionResponse = await axios.post<TypeTestQuestion[]>('/api/questions', payload, options);
+  if (testQuestion?.id) {
+    actions.push({
+      id: 'image',
+      icon: testQuestion?.image ? <Tooltip title={testQuestion?.image}>
+        <ImageIcon className="test-questions-option__action_active" />
+      </Tooltip> : <ImageIcon />,
+      callback: (action: TypeAction, config: TypeCollapseConfig) => {
+        setCurrentTest(config);
+      },
+    });
+  }
+  actions.push({
+    id: 'edit',
+    icon: !isEditing ? <EditIcon /> : <DoneIcon />,
+    callback: async (action: TypeAction, config: any, formValues: Object) => {
+      config.isEditing = !config.isEditing;
 
-                        const questions = questionResponse.data.map((question) => {
-                            question.actions = getQuestionActions(question.isEditing, setTestQuestions, question, setRerender, setCurrentTest, setCurrentTestOption);
-                            question.options = question.options.map((option) => (
-                                {
-                                    ...option,
-                                    actions: getQuestionOptionActions(option.isEditing, setTestQuestions, option, question, setRerender, setCurrentTestOption)
-                                }
-                            ));
-                            question.body = <div></div>;
-                            return question;
-                        });
+      if (config.isEditing) {
+        action.icon = <DoneIcon />;
+      } else {
+        action.icon = <EditIcon />;
+        Object.assign(config, formValues);
+        // TODO request to backend
+        if (config.id) {
+          const payload = {
+            _id: config.id,
+            options: config.options.map((option) => ({
+              id: option._id,
+              title: option.title,
+              image: option.image,
+              trueOption: option.trueOption,
+            })),
+            title: config.title,
+            type: config.type,
+            image: config.image,
+          }
+          await axios.put<TypeTestQuestion>('/api/questions/' + config.id, payload, options);
+        } else {
+          console.log('create');
+          const payload = {
+            options: config.options.map((option) => ({
+              id: option._id,
+              title: option.title,
+              image: option.image,
+              trueOption: option.trueOption,
+            })),
+            title: config.title,
+            type: config.type,
+            image: config.image,
+          }
+          const questionResponse = await axios.post<TypeTestQuestion[]>('/api/questions', payload, options);
 
-                        setTestQuestions(questions);
-                    }
-                }
-            },
-        },
-        {
-            id: 'Delete',
-            icon: <TrashIcon />,
-            callback: (action: TypeAction, config: TypeCollapseConfig) => {
-                if (!config.id) {
-                    return;
-                } 
-                if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
-                    // TODO request to backend
-                    axios.delete('/api/questions/' + config.id, options).then((response) => {
-                        setTestQuestions(response.data.map((question) => {
-                            question.actions = getQuestionActions(question.isEditing, setTestQuestions, question, setRerender, setCurrentTest, setCurrentTestOption);
-                            question.options = question.options.map((option) => (
-                                {
-                                    ...option,
-                                    actions: getQuestionOptionActions(option.isEditing, setTestQuestions, option, question, setRerender, setCurrentTestOption)
-                                }
-                            ));
-                            question.body = <div></div>;
-                            return question;
-                        }));
-                    });
-                }
-            },
+          const questions = questionResponse.data.map((question) => {
+            question.collapseOn = 'edit';
+            question.actions = getQuestionActions(question.isEditing, setTestQuestions, question, setRerender, setCurrentTest, setCurrentTestOption);
+            question.options = question.options.map((option) => (
+              {
+                ...option,
+                actions: getQuestionOptionActions(option.isEditing, setTestQuestions, option, question, setRerender, setCurrentTestOption)
+              }
+            ));
+            question.body = <div></div>;
+            return question;
+          });
+
+          setTestQuestions(questions);
         }
-    ]
+      }
+    },
+  });
+
+  if (testQuestion?.id) {
+    actions.push(
+      {
+        id: 'Delete',
+        icon: <TrashIcon />,
+        callback: (action: TypeAction, config: TypeCollapseConfig) => {
+          if (!config.id) {
+            return;
+          }
+          if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
+            // TODO request to backend
+            axios.delete('/api/questions/' + config.id, options).then((response) => {
+              setTestQuestions(response.data.map((question) => {
+                question.actions = getQuestionActions(question.isEditing, setTestQuestions, question, setRerender, setCurrentTest, setCurrentTestOption);
+                question.options = question.options.map((option) => (
+                  {
+                    ...option,
+                    actions: getQuestionOptionActions(option.isEditing, setTestQuestions, option, question, setRerender, setCurrentTestOption)
+                  }
+                ));
+                question.body = <div></div>;
+                return question;
+              }));
+            });
+          }
+        },
+      });
+  }
+
+  return actions;
 }
 
 export const getQuestionOptionActions = (
-    isEditing: boolean = false,
-    setTestQuestions: React.Dispatch<React.SetStateAction<TypeTestQuestion[]>>,
-    option: TypeTestQuestionOption | null,
-    question: TypeTestQuestion,
-    setRerender: React.Dispatch<React.SetStateAction<boolean>>,
-    setCurrentTestOption: React.Dispatch<React.SetStateAction<any>>,
+  isEditing: boolean = false,
+  setTestQuestions: React.Dispatch<React.SetStateAction<TypeTestQuestion[]>>,
+  option: TypeTestQuestionOption | null,
+  question: TypeTestQuestion,
+  setRerender: React.Dispatch<React.SetStateAction<boolean>>,
+  setCurrentTestOption: React.Dispatch<React.SetStateAction<any>>,
 ): TypeAction[] => {
-    return [
-        {
-            id: 'image',
-            icon: option?.image ? <Tooltip title={option?.image}>
-                <ImageIcon className="test-questions-option__action_active" />
-            </Tooltip> : <ImageIcon />,
-            callback: (action: TypeAction, config: TypeCollapseConfig) => {
-                setCurrentTestOption(config);
-            },
-        },
-        {
-            id: 'edit',
-            icon: !isEditing ? <EditIcon /> : <DoneIcon />,
-            callback: (action: TypeAction, config: TypeCollapseConfig, formValues: Object) => {
-                config.isEditing = !config.isEditing;
+  const actions: TypeAction[] = [];
 
-                if (config.isEditing) {
-                    action.icon = <DoneIcon />;
-                } else {
-                    action.icon = <EditIcon />;
-                    Object.assign(config, formValues);
-                    // TODO request to backend
-                    if (config.id) {
-                        console.log('update');
-                    } else {
-                        console.log('create');
-                        // TODO remove and replace with requested ID
-                        config.id = Math.round(Math.random() * 10000);
-                    }
-                }
-            },
-        },
-        {
-            id: 'makeTrue',
-            icon: option?.trueOption ? <TrueIcon className="test-questions-option__action_active" /> : <TrueIcon />,
-            callback: (action: TypeAction, config: any) => {
-                setTestQuestions((prevStateQuestions) => {
-                    const questions = [...prevStateQuestions];
-                    const curQuestion = questions.find(curQuestion => curQuestion.id === question.id) as TypeTestQuestion;
-                    const activeOption = curQuestion.options.find((option) => option.trueOption) as TypeTestQuestionOption;
-                    if (activeOption) {
-                        activeOption.trueOption = false;
-                    }
-                    action.icon = <TrueIcon className="test-questions-option__action_active" />;
-                    config.trueOption = true;
+  if (question.id) {
+    actions.push({
+      id: 'image',
+      icon: option?.image ? <Tooltip title={option?.image}>
+        <ImageIcon className="test-questions-option__action_active" />
+      </Tooltip> : <ImageIcon />,
+      callback: (action: TypeAction, config: TypeCollapseConfig) => {
+        setCurrentTestOption(config);
+      },
+    });
+  }
+  actions.push({
+    id: 'edit',
+    icon: !isEditing ? <EditIcon /> : <DoneIcon />,
+    callback: (action: TypeAction, config: TypeCollapseConfig, formValues: Object) => {
+      config.isEditing = !config.isEditing;
 
-                    return questions;
-                });
-                setRerender(true);
-            },
-        },
-        {
-            id: 'Delete',
-            icon: <TrashIcon />,
-            callback: (action: TypeAction, config: TypeCollapseConfig) => {
-                if (!config.id) {
-                    return;
-                }
-                if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
-                    // TODO request to backend
-                    setTestQuestions((prevStateQuestions) => {
-                        const questions = [...prevStateQuestions];
-                        const curQuestion = questions.find(curQuestion => curQuestion.id === question.id) as TypeTestQuestion;
-                        curQuestion.options = curQuestion.options.filter(option => option.id !== config.id);
-
-                        return questions;
-                    });
-                }
-            },
+      if (config.isEditing) {
+        action.icon = <DoneIcon />;
+      } else {
+        action.icon = <EditIcon />;
+        Object.assign(config, formValues);
+        // TODO request to backend
+        if (config.id) {
+          console.log('update');
+        } else {
+          console.log('create');
+          // TODO remove and replace with requested ID
+          config.id = Math.round(Math.random() * 10000);
         }
-    ]
+      }
+    },
+  });
+
+  actions.push({
+    id: 'makeTrue',
+    icon: option?.trueOption ? <TrueIcon className="test-questions-option__action_active" /> : <TrueIcon />,
+    callback: (action: TypeAction, config: any) => {
+      setTestQuestions((prevStateQuestions) => {
+        const questions = [...prevStateQuestions];
+        const curQuestion = questions.find(curQuestion => curQuestion.id === question.id) as TypeTestQuestion;
+        const activeOption = curQuestion.options.find((option) => option.trueOption) as TypeTestQuestionOption;
+        if (activeOption) {
+          activeOption.trueOption = false;
+        }
+        action.icon = <TrueIcon className="test-questions-option__action_active" />;
+        config.trueOption = true;
+
+        return questions;
+      });
+      setRerender(true);
+    },
+  });
+
+  if (question.id) {
+    actions.push({
+      id: 'Delete',
+      icon: <TrashIcon />,
+      callback: (action: TypeAction, config: TypeCollapseConfig) => {
+        if (!config.id) {
+          return;
+        }
+        if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
+          // TODO request to backend
+          setTestQuestions((prevStateQuestions) => {
+            const questions = [...prevStateQuestions];
+            const curQuestion = questions.find(curQuestion => curQuestion.id === question.id) as TypeTestQuestion;
+            curQuestion.options = curQuestion.options.filter(option => option.id !== config.id);
+
+            return questions;
+          });
+        }
+      },
+    });
+  }
+
+  return actions;
 }

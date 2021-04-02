@@ -2,6 +2,7 @@ import { Form, FormInstance } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import axios from 'axios';
 import classNames from 'classnames';
+import { getUserInfo } from 'components/common/commonHelper';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from "components/modules/Navigation/constants";
 import TestTimer from 'components/modules/TestTimer';
@@ -36,6 +37,8 @@ function UserTest(props: UserTestProps): JSX.Element {
             'withCredentials': true
         },
     }
+
+    const userInfo = getUserInfo();
 
     const getQuestions = async () => {
         const response = await axios.get<TypeUserTestQuestion[]>('/api/questions', options);
@@ -98,7 +101,7 @@ function UserTest(props: UserTestProps): JSX.Element {
     return (
         <div className={styles['user-test']}>
             {question && <div className="container">
-                <Navigation navigationType={NavigationType.HEADER}/>
+                <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER}/>
                 <div className={styles['user-test__body']}>
                     <div className={styles['user-test__left-col']}>
                         <Form

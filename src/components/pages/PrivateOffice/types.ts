@@ -5,6 +5,7 @@ export type TypeParticipant = {
   sex: string;
   phone: string;
   email: string;
+  avatar: string;
 }
 
 export type TypeUseGetParticipantResult = {

@@ -1,5 +1,6 @@
 import { Checkbox, Form, Radio } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import { getImageUrl } from 'components/common/commonHelper';
 import { QuestionType, TypeUserTestQuestion } from "components/pages/UserTest/types";
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType, htmlType } from "components/uiKit/ButtomElem/types";
@@ -15,16 +16,20 @@ type TypeUserTestQuestionProps = {
 }
 
 function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
+    const [rerender, setRerender] = useState<boolean>(false);
+
     const onCheckboxGroupChange = (value: CheckboxValueType[]) => {
         props.onCheckboxGroupChange(value);
     }
-    const [rerender, setRerender] = useState<boolean>(false);
-    useEffect(() => {
-        setRerender(true);
-    });
+
     const onNextClick = () => {
         setRerender(false);
     }
+
+    useEffect(() => {
+        setRerender(true);
+    });
+
     return (
         <>
             <div className={styles['user-test-question__title']}>{props.question.title}</div>
@@ -37,7 +42,7 @@ function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
                 <div className={styles['user-test-question__image-container']}>
                     <div
                         className={styles['user-test-question__image']}
-                        style={{backgroundImage: 'url('+props.question.image+')'}}
+                        style={{backgroundImage: `url(${getImageUrl(props.question.image)}`}}
                     ></div>
                 </div>
             }
@@ -53,6 +58,7 @@ function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
                                         key={index}
                                         type={props.question.type}
                                         value={option._id}
+                                        url={option.image}
                                     >{option.title}</UserTestOption>)
                                 )}
                             </div>
@@ -72,6 +78,7 @@ function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
                                         key={index}
                                         type={props.question.type}
                                         value={option._id}
+                                        url={option.image}
                                     >{option.title}</UserTestOption>)
                                 )}
                             </div>

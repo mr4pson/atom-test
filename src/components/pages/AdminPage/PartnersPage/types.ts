@@ -1,7 +1,7 @@
 import { TypeAction } from "components/uiKit/AdminCollapse/types";
 
 export type TypePartner = {
-  id?: number;
+  id?: string;
   title: string;
   body: string;
   data?: any;
@@ -12,6 +12,7 @@ export type TypePartner = {
   uploadFile?: string;
   link: string;
   massMedia: string;
+  organizationType: TypeOrganizationTypes;
 }
 
 export type TypeUseUpdatePartnerResult = {
@@ -27,4 +28,26 @@ export type TypeUseRemovePartnerResult = {
   getPartners: () => Promise<any>;
   partners: any[];
   deletePartner: (id: string) => Promise<any>;
+}
+
+export type TypeOrganizationTypes = {
+  createdAt: string;
+  id: string;
+  title: string;
+  updatedAt: string;
+}
+
+export type TypeUseGetOrganizationTypes = {
+  loading: boolean;
+  getOrganizationTypes: () => Promise<any>;
+  organizationTypes: TypeOrganizationTypes[];
+}
+
+export type TypeUseRemovePartner = {
+  loading: boolean;
+  getPartners: () => Promise<TypePartner[] | Object>;
+  partners: TypePartner[];
+  deletePartner: (id: string) => Promise<TypePartner[] | Object>;
+  magazines: TypePartner[];
+  getMagazines: (id: string) => Promise<TypePartner[] | Object>;
 }

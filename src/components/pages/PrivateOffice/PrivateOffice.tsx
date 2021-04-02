@@ -18,13 +18,14 @@ import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odn
 import { ReactComponent as FacebookIcon } from './../../../assets/images/facebook.svg';
 import { ReactComponent as InstagramIcon } from './../../../assets/images/instagram.svg';
 import { ReactComponent as TelegramIcon } from './../../../assets/images/telegram.svg';
-import { getUserInfo, openNotification } from 'components/common/commonHelper';
+import { getImageUrl, getUserInfo, openNotification } from 'components/common/commonHelper';
 import { useHistory } from 'react-router';
 import { Page, paths } from 'routes/constants';
 import { useGetParticipant } from './useGetParticipant';
 import Loader from 'components/uiKit/Loader';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import ButtonElem from "components/uiKit/ButtomElem";
+import { useUploadFile } from "components/hooks/useUploadFile";
 // import { loginPage } from 'i18n'
 
 function PrivateOffice(props): JSX.Element {
@@ -55,14 +56,14 @@ function PrivateOffice(props): JSX.Element {
   const [email, setEmail] = useState<string>('');
 
   const [avatar, setAvatar] = useState<any>(null);
-  const [isUploading, setIsUploading] = useState<boolean>(false);
+
+  const { uploadMediaFile } = useUploadFile(formRef, undefined, 'avatar');
 
   const userInfo = getUserInfo();
   const history = useHistory();
 
   function handleChange(e) {
     setSex(e);
-    handleUpdateUser(setBoolSex, false);
     findSexItemText();
   };
 
@@ -75,42 +76,33 @@ function PrivateOffice(props): JSX.Element {
     return sexObject?.text;
   };
 
-  function uploadAvatar(e: any): any {
-    const files = Array.from(e.target.files);
-    setIsUploading(true);
-
-    const formData = new FormData()
-    files.forEach((file: any, i: any) => {
-      formData.append(i, file)
-    })
-
-    setAvatar(files);
-
-    console.log(files);
-    console.log(avatar)
-
-    //promise
-    setIsUploading(false);
-  }
-
   function onRedirectToTestPage(): void {
     history.push(`${paths[Page.USER_TEST]}/${1}`);
   }
 
   async function handleUpdateUser(
-    setBool: (arg: boolean) => void, 
-    value: boolean,
+    setBool?: (arg: boolean) => void,
+    value?: boolean,
   ): Promise<void> {
-    const formData = {
+    const payload = {
       fullName: fullName,
       city: city,
       sex: sex,
       phone: phoneNumber,
       email: email,
+      avatar: avatar,
     }
-    await updateUser(formData, userInfo?.id!);
-    setBool(value);
+    await updateUser(payload, userInfo?.id!);
+    if (setBool) {
+      setBool(value!);
+    }
   }
+
+  async function handleFileChange(e): Promise<void> {
+    const fileName = await uploadMediaFile(e);
+    setAvatar(getImageUrl(fileName));
+  }
+
 
   useEffect(() => {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -129,7 +121,19 @@ function PrivateOffice(props): JSX.Element {
     setSex(currentParticipant?.sex!);
     setPhoneNumber(currentParticipant?.phone!);
     setEmail(currentParticipant?.email!);
+    setAvatar(currentParticipant?.avatar);
   }, [currentParticipant]);
+
+  useEffect(() => {
+    if (sex && currentParticipant?.sex !== sex) {
+      handleUpdateUser(setBoolSex, false);
+    }
+  }, [sex])
+
+  useEffect(() => {
+    if (avatar && currentParticipant?.avatar !== avatar)
+    handleUpdateUser();
+  }, [avatar])
 
   return (
     <>
@@ -149,9 +153,10 @@ function PrivateOffice(props): JSX.Element {
                   styles['user-photo'],
                 )}
                 >
-                  <div className={styles['user-photo__img']}>
-                    {sex === 'male' ? <ManFrameIcon /> : <WomanFrameIcon />}
-                    <img src={avatar?.length ? avatar[0].secure_url : ''} alt='' />
+                  <div className={styles['user-photo__img-container']}>
+                    {avatar ?
+                      <div className={styles['user-photo__img']} style={{ backgroundImage: `url(${avatar})` }} />
+                      : (sex === 'male' ? <ManFrameIcon /> : <WomanFrameIcon />)}
                   </div>
                   <label className={styles['user-photo__action-name']}>
                     Загрузить фото
@@ -159,7 +164,7 @@ function PrivateOffice(props): JSX.Element {
                       className={styles['user-photo__file-input']}
                       id='multi'
                       name="Загрузить фото"
-                      onChange={uploadAvatar}
+                      onChange={handleFileChange}
                       type='file'
                     />
                   </label>

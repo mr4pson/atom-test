@@ -3,7 +3,6 @@ import { TypeUserInfo } from "components/common/types";
 import AuthButton from "components/modules/AuthButton";
 import { memo } from "react";
 import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
 import { Page, paths } from "routes/constants";
 import {
   footerLinks, headerLinks,
@@ -11,6 +10,7 @@ import {
 } from "./constants";
 import styles from "./Navigation.module.scss";
 import { TypeLink } from "./types";
+import { HashLink as Link } from 'react-router-hash-link';
 
 type Props = {
   navigationType: NavigationType;

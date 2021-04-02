@@ -39,5 +39,4 @@ export const paths = {
   [AdminsPage.ADD_PARTNER]: '/admin/partners/create',
   [AdminsPage.EDIT_PARTNER]: '/admin/partners/edit',
   [AdminsPage.EDIT_PARTNER_ROUTE]: '/admin/partners/edit/:id',
-  [AdminsPage.PROJECT_PERSONS]: '/admin/project-persons',
 }

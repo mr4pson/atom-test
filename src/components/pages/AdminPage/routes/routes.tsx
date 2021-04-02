@@ -11,7 +11,6 @@ import PartnersPage from "components/pages/AdminPage/PartnersPage";
 import AddPartnerPage from "components/pages/AdminPage/AddPartnerPage";
 import MenuPage from "components/pages/AdminPage/MenuPage";
 import MenuDetailPage from "components/pages/AdminPage/MenuDetailPage";
-import ProjectPersonsPage from "components/pages/AdminPage/ProjectPersonsPage";
 import UpdateParticipant from "components/pages/AdminPage/UpdateParticipant";
 
 export function getRoutes(): TypeRoute[] {
@@ -99,11 +98,6 @@ export function getRoutes(): TypeRoute[] {
       type: AdminsPage.EDIT_PARTNER,
       path: paths[AdminsPage.EDIT_PARTNER_ROUTE],
       component: <AddPartnerPage />,
-    },
-    {
-      type: AdminsPage.PROJECT_PERSONS,
-      path: paths[AdminsPage.PROJECT_PERSONS],
-      component: <ProjectPersonsPage />,
     },
   ];
 }

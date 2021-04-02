@@ -5,7 +5,7 @@ import { memo, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { Page, paths } from "routes/constants";
 import {
-  footerLinks, headerLinks,
+  navigationPaths,
   navigationTranslations, NavigationType
 } from "./constants";
 import styles from "./Navigation.module.scss";
@@ -19,9 +19,16 @@ type Props = {
 };
 
 function Navigation(props: Props): JSX.Element {
-  // let links: TypeLink[] = [];
   let location = useLocation();
   const [links, setLinks] = useState<TypeLink[]>([]);
+
+  const additionalLinks: TypeLink[] = [];
+  if (props.navigationType === NavigationType.FOOTER) {
+    additionalLinks.push({
+      name: navigationTranslations.privacyPolicy,
+      path: navigationPaths.PRIVACY_POLICY,
+    });
+  }
 
   const getMenus = async () => {
     const responnse = await axios.get('/api/menus');
@@ -29,7 +36,7 @@ function Navigation(props: Props): JSX.Element {
       name: menu.title,
       path: menu.url,
     }));
-    setLinks(links);
+    setLinks(links.concat(additionalLinks));
   }
 
   function getNavigationClassName(): string {
@@ -69,14 +76,6 @@ function Navigation(props: Props): JSX.Element {
     }
     return null;
   }
-
-  if (props.navigationType === NavigationType.HEADER) {
-  //   links = headerLinks;
-  // } else {
-  //   links = footerLinks;
-  }
-
-  console.log(links);
 
   return (
     <>

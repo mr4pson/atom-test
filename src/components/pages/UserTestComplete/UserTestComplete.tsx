@@ -1,7 +1,4 @@
 import axios from 'axios';
-import { getUserInfo } from 'components/common/commonHelper';
-import Navigation from 'components/modules/Navigation';
-import { NavigationType } from 'components/modules/Navigation/constants';
 import { userTestComplete } from 'i18n/userTestComplete';
 import { memo, useEffect, useState } from 'react';
 import { connect } from "react-redux";
@@ -16,8 +13,6 @@ type UserTestCompleteProps = {
 
 function UserTest(props: UserTestCompleteProps): JSX.Element {
     const [questionsNumber, setQuestionsNumber] = useState<number>();
-
-    const userInfo = getUserInfo();
 
     const curJwtPair: string = getJwtPair();
     const options = {

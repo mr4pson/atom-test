@@ -1,11 +1,11 @@
 import { memo } from "react";
-import Navigation from 'components/modules/Navigation';
+import { useParams } from "react-router";
 import styles from './ChosenPage.module.scss';
-import { getUserInfo } from "components/common/commonHelper";
-import { NavigationType } from "components/modules/Navigation/constants";
 
 function ChosenPage() {
-  const userInfo = getUserInfo();
+
+  const { link } = useParams<{ link: string }>();
+  console.log(link);
 
   return <div className="container">
     <div className={styles["chosen-page"]}>

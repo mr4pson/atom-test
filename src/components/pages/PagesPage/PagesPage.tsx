@@ -1,15 +1,15 @@
-import { memo, useEffect } from "react";
-import Navigation from 'components/modules/Navigation';
-import styles from './PagesPage.module.scss';
-import { getUserInfo } from "components/common/commonHelper";
-import { NavigationType } from "components/modules/Navigation/constants";
-import ContactUs from "components/modules/ContactUs";
-import PageItem from './PageItem';
-import { pages } from "./constants";
 import { Pagination } from 'antd';
+import ContactUs from "components/modules/ContactUs";
+import { memo, useEffect } from "react";
+import { useParams } from 'react-router';
+import { pages } from "./constants";
+import PageItem from './PageItem';
+import styles from './PagesPage.module.scss';
 
 function PagesPage() {
-  const userInfo = getUserInfo();
+
+  const { categoryLink, subcategoryLink } = useParams<{ categoryLink: string, subcategoryLink: string }>();
+  console.log(categoryLink, subcategoryLink);
 
   useEffect(() => {
     document.body.scrollTop = document.documentElement.scrollTop = 0;

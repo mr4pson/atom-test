@@ -32,9 +32,13 @@ function Navigation(props: Props): JSX.Element {
 
   const getMenus = async () => {
     const responnse = await axios.get('/api/menus/get-visible-menus');
-    const links = responnse.data.map((menu) => ({
+    const links: TypeLink[] = responnse.data.map((menu) => ({
       name: menu.title,
       path: menu.url,
+      children: menu.subcategories.map((subcategory) => ({
+        name: subcategory.title,
+        path: subcategory.url,
+      })),
     }));
     setLinks(links.concat(additionalLinks));
   }
@@ -53,7 +57,7 @@ function Navigation(props: Props): JSX.Element {
 
   useEffect(() => {
     getMenus();
-  }, []);
+  }, [location]);
 
   return (
     <>
@@ -68,7 +72,16 @@ function Navigation(props: Props): JSX.Element {
             {!location.pathname.includes(paths[Page.ADMIN])
               ? links.map((link: TypeLink) => (
                 <li key={link.path}>
-                  <Link to={link.path}>{link.name}</Link>
+                  {!link.children?.length 
+                    ? <Link to={link.path}>{link.name}</Link> 
+                    : <div className={styles['link']}>
+                        <div>{link.name}</div>
+                        <ul className={styles['link__children']}>
+                          {link.children.map((childLink) => (<li className={styles['link__child']}>
+                            <Link to={link.path + childLink.path}>{childLink.name}</Link>
+                          </li>))}
+                        </ul>
+                      </div>}
                 </li>
               ))
               : null}

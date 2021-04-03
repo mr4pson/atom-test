@@ -140,7 +140,6 @@ function PrivateOffice(props): JSX.Element {
       {
         !loading ?
           <div className='container'>
-            <Navigation navigationType={NavigationType.HEADER} />
             <Form
               name="basic"
               className={styles['private-office']}
@@ -416,7 +415,6 @@ function PrivateOffice(props): JSX.Element {
                 <button type="button" className={styles['diploma-info__download']}>Скачать диплом</button>
               </div>
             </Form>
-            <Navigation navigationType={NavigationType.FOOTER} />
           </div>
           : <Loader className={'default-loader'} />
       }

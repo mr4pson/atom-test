@@ -42,7 +42,6 @@ function UserTest(props: UserTestCompleteProps): JSX.Element {
     return(
         <div className={styles['user-test-complete']}>
             <div className="container">
-                <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER}/>
                 <div className={styles['user-test-complete__body']}>
                     <h1 className={styles['user-test-complete__title']}>{!props.isTimerFinished ? 
                         userTestComplete.successfulTitle :
@@ -52,7 +51,6 @@ function UserTest(props: UserTestCompleteProps): JSX.Element {
                         {userTestComplete.questionsAnswered}: {answeredQuiestionsNumber} {userTestComplete.from} {quiestionsNumber}
                     </div>
                 </div>
-                <Navigation navigationType={NavigationType.FOOTER}/>
             </div>
         </div>
     );

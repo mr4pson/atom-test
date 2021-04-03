@@ -149,7 +149,6 @@ function AdminPage(): JSX.Element {
 
   return (
     <div className="container">
-      <Navigation navigationType={NavigationType.HEADER} />
       <div className={styles["admin-page"]}>
         <Menu
           className={classNames("menu", styles["menu"])}

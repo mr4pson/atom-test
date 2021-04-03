@@ -17,7 +17,6 @@ function PagesPage() {
 
   return <>
     <div className="container">
-      <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER} />
       <div className={styles["pages-page"]}>
         <div className={styles["pages-page__title"]}>
           Новости
@@ -36,7 +35,6 @@ function PagesPage() {
           pageSize={1}
         />
         <ContactUs />
-        <Navigation navigationType={NavigationType.FOOTER} />
       </div>
     </div>
   </>

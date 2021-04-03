@@ -31,7 +31,7 @@ function Navigation(props: Props): JSX.Element {
   }
 
   const getMenus = async () => {
-    const responnse = await axios.get('/api/menus');
+    const responnse = await axios.get('/api/menus/get-visible-menus');
     const links = responnse.data.map((menu) => ({
       name: menu.title,
       path: menu.url,
@@ -55,28 +55,6 @@ function Navigation(props: Props): JSX.Element {
     getMenus();
   }, []);
 
-  //TODO: remove in future
-  function renderAdminPageLink(): JSX.Element | null {
-    if (
-      props.navigationType === NavigationType.HEADER &&
-      location.pathname !== paths[Page.LOGIN] &&
-      location.pathname !== paths[Page.SIGN_UP] &&
-      location.pathname !== paths[Page.FORGOT_PASSWORD] &&
-      location.pathname !== paths[Page.ADMIN] &&
-      location.pathname !== `${paths[Page.ADMIN]}/news`
-    ) {
-      return (
-        <Link
-          to={paths[Page.ADMIN]}
-          className={styles["user-info__admin-page"]}
-        >
-          {navigationTranslations.adminPage}
-        </Link>
-      );
-    }
-    return null;
-  }
-
   return (
     <>
       {links.length && <div className={classNames(styles["header"], {
@@ -97,7 +75,6 @@ function Navigation(props: Props): JSX.Element {
           </ul>
           <div className={styles["user-info"]}>
             <AuthButton userInfo={props.userInfo!} navigationType={props.navigationType} />
-            {/* {renderAdminPageLink()} */}
           </div>
         </div>
       </div>}

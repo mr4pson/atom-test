@@ -101,7 +101,6 @@ function UserTest(props: UserTestProps): JSX.Element {
     return (
         <div className={styles['user-test']}>
             {question && <div className="container">
-                <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER}/>
                 <div className={styles['user-test__body']}>
                     <div className={styles['user-test__left-col']}>
                         <Form
@@ -135,7 +134,6 @@ function UserTest(props: UserTestProps): JSX.Element {
                         htmlType={htmlType.SUBMIT}
                     >{userTest.buttons.stopTest}</ButtonElem>
                 </div>
-                <Navigation navigationType={NavigationType.FOOTER}/>
             </div>}
         </div>
     );

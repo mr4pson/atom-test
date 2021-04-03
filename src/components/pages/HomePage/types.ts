@@ -1,12 +1,6 @@
 import { TypeFaqQuestion } from "../AdminPage/FaqPage/types";
 import { counterParametersType } from "../AdminPage/SetCounterParameters/types"
 
-export type TypeSupporter = {
-    fullName: string;
-    position: string;
-    avatar: string;
-}
-
 export type TypeQuestion = {
     title: string;
     answer: string;

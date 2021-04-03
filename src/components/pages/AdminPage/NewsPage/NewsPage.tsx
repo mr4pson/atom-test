@@ -128,6 +128,8 @@ function NewsPage(props: {
     })();
   }, []);
 
+  console.log(news);
+
   return (
     <div className={styles['news-page']}>
       <Form

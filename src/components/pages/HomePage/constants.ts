@@ -1,6 +1,6 @@
-import { TypeQuestion, TypeSupporter } from "./types";
+import { TypeQuestion } from "./types";
 
-export const supporters: TypeSupporter[] = [
+export const supporters: any[] = [
     {
         fullName: 'Рихтер Рем Аркадьевич',
         position: 'Глава города Удомельского<br/> городского округа',

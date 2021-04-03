@@ -1,4 +1,4 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import styles from './ParticipantInfoPage.module.scss';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
@@ -18,18 +18,26 @@ import { useParams } from "react-router";
 
 function ParticipantInfoPage(): JSX.Element {
   const { loading, currentParticipant, getCurrentParticipant } = useGetParticipant();
+  const [avatar, setAvatar] = useState<any>(null);
 
   const { id } = useParams<{ id: string }>();
 
   const userInfo = getUserInfo();
 
-  function getHumanFrameIcon(): JSX.Element | null {
-    if (currentParticipant?.sex === 'male') {
-      return <ManFrameIcon />;
-    } else if (currentParticipant?.sex === 'female') {
-      return <WomanFrameIcon />;
+  function getUserPhoto(): JSX.Element | null {
+    if (avatar) {
+      return <div
+        className={styles['user-photo__img']}
+        style={{ backgroundImage: `url(${avatar})` }}
+      />
     } else {
-      return null;
+      if (currentParticipant?.sex === 'male') {
+        return <ManFrameIcon />;
+      } else if (currentParticipant?.sex === 'female') {
+        return <WomanFrameIcon />;
+      } else {
+        return null;
+      }
     }
   }
 
@@ -37,7 +45,9 @@ function ParticipantInfoPage(): JSX.Element {
     getCurrentParticipant(id);
   }, [])
 
-  console.log(currentParticipant);
+  useEffect(() => {
+    setAvatar(currentParticipant?.avatar);
+  }, [currentParticipant])
 
   return <>
     <div className='container'>
@@ -50,9 +60,8 @@ function ParticipantInfoPage(): JSX.Element {
               styles['user-photo'],
             )}
             >
-              <div className={styles['user-photo__img']}>
-                {getHumanFrameIcon()}
-                {/* <img src={avatar?.length ? avatar[0].secure_url : ''} alt='' /> */}
+              <div className={styles['user-photo__img-container']}>
+                {getUserPhoto()}
               </div>
             </div>
             <div className={styles['user-info']}>

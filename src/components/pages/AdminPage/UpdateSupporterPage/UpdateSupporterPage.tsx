@@ -1,22 +1,20 @@
-import { Form, FormInstance, Input, Select } from "antd";
+import { Form, FormInstance, Input } from "antd";
 import ButtonElem from "components/uiKit/ButtomElem";
 import { buttonElemType, htmlType } from "components/uiKit/ButtomElem/types";
 import { memo, useRef, useState, useEffect } from "react";
-import styles from "./AddPartnerPage.module.scss";
+import styles from "./UpdateSupporterPage.module.scss";
 import Icon from "components/uiKit/Icon";
 import { imageAltIcon } from "icons";
-import TextRedactor from "components/uiKit/TextRedactor";
 import { useLocation } from "react-router-dom";
 import { AdminsPage, paths } from "../routes/constants";
 import { useHistory, useParams } from "react-router";
 import classNames from 'classnames';
-import { useUpdatePartner } from "./useUpdatePartner";
 import Loader from 'components/uiKit/Loader';
 import { useCheckRole } from "components/hooks/useCheckRole";
-import { useGetOrganizationTypes } from "./useGetOrganizationTypes";
 import { useUploadFile } from "components/hooks/useUploadFile";
+import { useUpdateSupporter } from "./useUpdateSupporter";
 
-function AddPartnerPage(): JSX.Element {
+function UpdateSupporterPage(): JSX.Element {
   const formRef = useRef<FormInstance>(null);
   const location = useLocation();
   const history = useHistory();
@@ -25,34 +23,32 @@ function AddPartnerPage(): JSX.Element {
   );
   const { id } = useParams<{ id: string }>();
 
-  const { loadingUpdate, addPartner, currentPartner, getCurrentPartner, updatePartner } = useUpdatePartner();
-  const { loading, getOrganizationTypes, organizationTypes } = useGetOrganizationTypes();
+  const { loadingUpdate, currentSupporter, addSupporter, getCurrentSupporter, updateSupporter } = useUpdateSupporter();
+
   const { uploadMediaFile } = useUploadFile(formRef, setIsChoosenFileChecked );
 
-  const { Option } = Select;
-
   const inititalFormState = {
-    title: '',
-    link: '',
+    fullName: '',
+    position: '',
     uploadFile: null,
-    description: '',
+    organization: '',
   };
+
   const formFieldsValue = formRef.current?.getFieldsValue();
 
   async function onSubmit(): Promise<void> {
     if (
-      formFieldsValue.title &&
-      formFieldsValue.link &&
-      formFieldsValue.organizationType &&
+      formFieldsValue.fullName &&
+      formFieldsValue.position &&
       formFieldsValue.uploadFile
     ) {
       if (id) {
-        await updatePartner({ ...formFieldsValue, visible: true }, id);
+        await updateSupporter({ ...formFieldsValue }, id);
       } else {
-        await addPartner({ ...formFieldsValue, visible: true });
+        await addSupporter({ ...formFieldsValue });
       }
       setIsChoosenFileChecked(false);
-      history.push(paths[AdminsPage.PARTNERS]);
+      history.push(paths[AdminsPage.SUPPORTERS]);
     }
   }
 
@@ -60,16 +56,13 @@ function AddPartnerPage(): JSX.Element {
 
   useEffect(() => {
     if (id) {
-      getCurrentPartner(id);
+      getCurrentSupporter(id);
     }
-    getOrganizationTypes();
   }, []);
-
-  console.log(organizationTypes);
 
   return (
     <>
-      {(id ? currentPartner : true) && organizationTypes.length ? (
+      {(id ? currentSupporter : true) ? (
         <Form
           className={styles["add-partner-page"]}
           name="basic"
@@ -78,14 +71,14 @@ function AddPartnerPage(): JSX.Element {
           initialValues={
             location.pathname === paths[AdminsPage.ADD_PARTNER]
               ? inititalFormState
-              : currentPartner!
+              : currentSupporter!
           }
         >
           <ButtonElem
             type={buttonElemType.Primary}
             htmlType={htmlType.SUBMIT}
             className={styles["add-partner-page__button-add"]}
-            loading={loadingUpdate && loading}
+            loading={loadingUpdate}
             onClick={() => setIsChoosenFileChecked(true)}
           >
             {id ? 'Изменить партнёра' : 'Добавить партнёра'}
@@ -93,65 +86,62 @@ function AddPartnerPage(): JSX.Element {
           <div className={styles["page-content"]}>
             <div className={styles["page-content__header"]}>
               <div className={styles["page-content__title"]}>
-                Наименование партнёра
+                Ф.И.О. спонсора
               </div>
               <Form.Item
                 rules={[
                   {
                     required: true,
-                    message: "Пожалуйста, введите наименование !",
+                    message: "Пожалуйста, введите Ф.И.О.!",
                   },
                 ]}
                 className={styles["form-item"]}
-                name="title"
+                name="fullName"
               >
                 <Input
                   className={styles["page-content__input"]}
-                  placeholder="Введите название партнёра"
+                  placeholder="Введите Ф.И.О. спонсора"
                   type="text"
-                  value={currentPartner?.title}
-                  disabled={loadingUpdate && loading}
+                  value={currentSupporter?.fullName}
+                  disabled={loadingUpdate}
                 />
               </Form.Item>
+              <div className={styles["page-content__title"]}>
+                Должность
+              </div>
               <Form.Item
                 rules={[
-                  { required: true, message: "Пожалуйста, введите ссылку !" },
+                  { required: true, message: "Пожалуйста, введите должность!" },
                 ]}
                 className={styles["form-item"]}
-                name="link"
+                name="position"
               >
                 <Input
                   className={styles["page-content__input"]}
-                  placeholder="Ссылка на партнёра"
-                  type="url"
-                  value={currentPartner?.link}
-                  disabled={loadingUpdate && loading}
+                  placeholder="Введите должность спонсора"
+                  type="text"
+                  value={currentSupporter?.position}
+                  disabled={loadingUpdate}
                 />
               </Form.Item>
+              <div className={styles["page-content__title"]}>
+                Организация
+              </div>
               <Form.Item
-                rules={[
-                  {
-                    required: true,
-                    message: "Пожалуйста, выберите тип организации !",
-                  },
-                ]}
                 className={styles["form-item"]}
-                name="organizationType"
+                name="organization"
               >
-                <Select
+                <Input
                   className={styles["page-content__input"]}
-                  placeholder='Тип организации'
-                >
-                  {
-                    organizationTypes.map((item) => (
-                      <Option key={item.id} value={item.id}>{item.title}</Option>
-                    ))
-                  }
-                </Select>
+                  placeholder="Введите наименование организации спонсора"
+                  type="text"
+                  value={currentSupporter?.organization}
+                  disabled={loadingUpdate}
+                />
               </Form.Item>
               <Form.Item className={styles["form-item"]} name="uploadFile">
                 <label className={classNames(styles["page-content__upload-file"], {
-                  [styles['page-content__upload-file_disabled']]: loadingUpdate && loading
+                  [styles['page-content__upload-file_disabled']]: loadingUpdate
                 })}>
                   <Icon
                     className={styles["page-content__button-icon"]}
@@ -165,7 +155,7 @@ function AddPartnerPage(): JSX.Element {
                     type="file"
                     id="multi"
                     onChange={uploadMediaFile}
-                    disabled={loadingUpdate && loading}
+                    disabled={loadingUpdate}
                   />
                 </label>
               </Form.Item>
@@ -176,21 +166,6 @@ function AddPartnerPage(): JSX.Element {
                   </span>
                 )}
             </div>
-            <div className={styles["page-content-description"]}>
-              <div className={styles["page-content__title"]}>
-                Описание партнёра (если нужно)
-              </div>
-              <Form.Item className={styles["form-item"]} name="description">
-                <TextRedactor
-                  initialValue={
-                    location.pathname === paths[AdminsPage.ADD_PARTNER]
-                      ? inititalFormState?.description
-                      : currentPartner?.description!
-                  }
-                  formRef={formRef}
-                />
-              </Form.Item>
-            </div>
           </div>
         </Form>
       ) : <Loader className={'admin-loader'} />}
@@ -198,4 +173,4 @@ function AddPartnerPage(): JSX.Element {
   );
 }
 
-export default memo(AddPartnerPage);
+export default memo(UpdateSupporterPage);

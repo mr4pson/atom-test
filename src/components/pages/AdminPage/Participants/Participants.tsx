@@ -1,13 +1,10 @@
 import { Form, FormInstance, Input, Select, Space, Table } from 'antd';
 import classNames from 'classnames';
 import AdminModal from 'components/pages/AdminPage/AdminModal';
-import ButtonElem from 'components/uiKit/ButtomElem';
-import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import Icon from 'components/uiKit/Icon';
 import { deleteIcon, searchIcon, visibleIcon } from 'icons';
 import { memo, useRef, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { AdminsPage, paths as adminPaths } from 'components/pages/AdminPage/routes/constants';
 import { Page, paths } from 'routes/constants';
 import { participantList } from './constants';
 import styles from './Participants.module.scss';
@@ -15,7 +12,7 @@ import { TypeParticipantsData } from './types';
 import { useCheckRole } from 'components/hooks/useCheckRole';
 import { useUpdateParticipants } from './useUpdateParticipants';
 import { connect } from "react-redux";
-import { setCurrentIdToState } from 'redux/reducers/Participants.reducer';
+import { setCurrentIdToState } from 'redux/reducers/AdminPages.reducer';
 
 type Props = {
   currentId: string;
@@ -113,9 +110,9 @@ function Participants(props: Props): JSX.Element {
       setIsModalVisible(false);
     };
 
-    const handleCreateParticipant = () => {
-      history.push(adminPaths[AdminsPage.ADD_PARTICIPANT]);
-    }
+    // const handleCreateParticipant = () => {
+    //   history.push(adminPaths[AdminsPage.ADD_PARTICIPANT]);
+    // }
 
     function onShowParticipant(itemData: TypeParticipantsData): void {
       history.push(`${paths[Page.PARTICIPANT_INFO]}/${itemData.id}`);
@@ -217,7 +214,7 @@ function Participants(props: Props): JSX.Element {
 
 const mapStateToProps = (state: any) => {
   return {
-    currentId: state.participants?.currentId,
+    currentId: state.adminPages?.currentId,
   }
 }
 

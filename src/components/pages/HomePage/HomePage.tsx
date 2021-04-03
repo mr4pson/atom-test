@@ -1,4 +1,4 @@
-import { Col, Form, FormInstance, Input, Row } from 'antd';
+import { Col, FormInstance, Input, Row } from 'antd';
 import classNames from 'classnames';
 import { getUserInfo } from 'components/common/commonHelper';
 import ContactUs from 'components/modules/ContactUs';
@@ -7,12 +7,10 @@ import FrequentlyAskedQuestions from 'components/modules/FrequentlyAskedQuestion
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import ButtonElem from 'components/uiKit/ButtomElem';
-import { buttonElemType, htmlType } from 'components/uiKit/ButtomElem/types';
-import CollapseElem from 'components/uiKit/CollapseElem/CollapseElem';
+import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import { homePage } from 'i18n';
 import { memo, useEffect, useRef } from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import { ReactComponent as ContactUsFooter } from './../../../assets/images/home-page/contact-us-footer.svg';
 import { ReactComponent as Ellipse1 } from './../../../assets/images/home-page/ellipse1.svg';
 import { ReactComponent as Ellipse2 } from './../../../assets/images/home-page/ellipse2.svg';
 import { ReactComponent as Ellipse3 } from './../../../assets/images/home-page/ellipse3.svg';
@@ -26,7 +24,7 @@ import styles from './HomePage.module.scss';
 import { TypeSupporter } from './types';
 import { useHomePage } from './useHomePage';
 
-const { TextArea } = Input;
+// const { TextArea } = Input;
 
 function HomePage(): JSX.Element {
     const getSupporterClasses = (index): string => {
@@ -40,13 +38,13 @@ function HomePage(): JSX.Element {
     const userInfo = getUserInfo();
 
     const supporterRows = cutArrayByThree(supporters);
-    const formRef = useRef<FormInstance>(null);
+    // const formRef = useRef<FormInstance>(null);
     
     const { questions, counterParameters, getFaqQuestions, getCounterParameters } = useHomePage();
 
-    const onSubmit = (e) => {
-        console.log(e);
-    }
+    // const onSubmit = (e) => {
+    //     console.log(e);
+    // }
 
     useEffect(() => {
         document.body.scrollTop = document.documentElement.scrollTop = 0;

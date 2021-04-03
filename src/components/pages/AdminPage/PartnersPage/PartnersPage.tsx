@@ -13,7 +13,7 @@ import { useHistory } from 'react-router';
 import { AdminsPage, paths } from "../routes/constants";
 import { useRemovePartner } from "./useRemovePartner";
 import { connect } from "react-redux";
-import { setCurrentIdToState } from 'redux/reducers/Partners.reducer';
+import { setCurrentIdToState } from 'redux/reducers/AdminPages.reducer';
 import { useUpdatePartner } from "../AddPartnerPage/useUpdatePartner";
 import Loader from 'components/uiKit/Loader';
 import { useCheckRole } from "components/hooks/useCheckRole";
@@ -176,7 +176,7 @@ function PartnersPage(props: Props): JSX.Element {
 
 const mapStateToProps = (state: any) => {
   return {
-    currentId: state.partners?.currentId,
+    currentId: state.adminPages?.currentId,
   }
 }
 

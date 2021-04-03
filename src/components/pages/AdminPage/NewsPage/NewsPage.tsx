@@ -13,7 +13,7 @@ import styles from './NewsPage.module.scss';
 import { TypeNewsPageData } from './types';
 import { useRemoveNews } from './useRemoveNews';
 import { connect } from "react-redux";
-import { setCurrentIdToState } from 'redux/reducers/News.reducer';
+import { setCurrentIdToState } from 'redux/reducers/AdminPages.reducer';
 import { useCheckRole } from 'components/hooks/useCheckRole';
 
 function NewsPage(props: {
@@ -211,7 +211,7 @@ function NewsPage(props: {
 
 const mapStateToProps = (state: any) => {
   return {
-      currentId: state.news?.currentId,
+      currentId: state.adminPages?.currentId,
   }
 }
 

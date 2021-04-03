@@ -79,6 +79,9 @@ $blue-300: #0085F8;
             visibility: hidden;
             opacity: 0;
             transition: all .3s;
+            li {
+                display: block;
+            }
         }
         &:hover {
             .link__children {

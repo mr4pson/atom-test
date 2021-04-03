@@ -24,8 +24,8 @@ export function useRemoveNews(): any {
       const transformedNews = axiosData.map((item: TypeNewsPageData) => {
         return {
           ...item,
-          subcategory: item.subcategory.title,
           createdAt: moment(item.createdAt).format('DD.MM.YYYY'),
+          subcategory: item.subcategory?.title,
         }
       })
       setNews(transformedNews)
@@ -37,7 +37,7 @@ export function useRemoveNews(): any {
       setLoading(false);
     }
   }
-    
+
   async function deleteNews(id: string): Promise<any> {
     setLoading(true);
     const options = {

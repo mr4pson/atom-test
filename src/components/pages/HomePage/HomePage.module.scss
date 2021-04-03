@@ -212,8 +212,10 @@
 }
 
 .supporter {
-  padding: 25px 20px;
+  padding: 25px 11px;
   position: relative;
+  overflow: hidden;
+
   &__bg {
     position: absolute;
     left: 0;
@@ -227,6 +229,9 @@
     position: relative;
     max-width: 330px;
     height: 410px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     margin: auto;
   }
   &__name {

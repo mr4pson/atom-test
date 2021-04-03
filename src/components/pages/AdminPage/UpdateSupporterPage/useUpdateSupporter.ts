@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { getJwtPair } from "components/pages/LoginPage/helpers";
-import { TypeSupporter } from "components/pages/HomePage/types";
-import { TypeUseUpdateSupporterResult } from "../SupportersPage/types";
+import { TypeSupporter, TypeUseUpdateSupporterResult } from "../SupportersPage/types";
 
 export function useUpdateSupporter(): TypeUseUpdateSupporterResult {
   const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);

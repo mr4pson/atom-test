@@ -1,10 +1,10 @@
-import { TypeSupporter } from "./types";
 import { ReactComponent as SupporterLeft } from './../../../assets/images/supporter-left.svg';
 import { ReactComponent as SupporterCenter } from './../../../assets/images/supporter-center.svg';
 import { ReactComponent as SupporterRight } from './../../../assets/images/supporter-right.svg';
+import { TypeSupporter } from '../AdminPage/SupportersPage/types';
 
 export const cutArrayByThree = (supporters: TypeSupporter[]): TypeSupporter[][] => {
-    return supporters.reduce((accumulator: TypeSupporter[][], currentValue, index) => {
+    return supporters.reduce((accumulator: any[][], currentValue, index) => {
         if (index % 3 === 0) {
             accumulator.push([currentValue]);
         }

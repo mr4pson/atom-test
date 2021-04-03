@@ -1,27 +1,22 @@
-import { memo, useEffect } from "react";
-import styles from './ParticipantInfoPage.module.scss';
-import Navigation from 'components/modules/Navigation';
-import { NavigationType } from 'components/modules/Navigation/constants';
-import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
+import { Col, Row } from 'antd';
 import classNames from 'classnames';
-import { Row, Col } from 'antd';
-import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
-import { ReactComponent as VkIcon } from './../../../assets/images/vk.svg';
-import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odnoclassniki.svg';
+import Loader from 'components/uiKit/Loader';
+import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
+import { memo, useEffect } from "react";
+import { useParams } from "react-router";
+import { useGetParticipant } from "../PrivateOffice/useGetParticipant";
 import { ReactComponent as FacebookIcon } from './../../../assets/images/facebook.svg';
 import { ReactComponent as InstagramIcon } from './../../../assets/images/instagram.svg';
+import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odnoclassniki.svg';
+import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
 import { ReactComponent as TelegramIcon } from './../../../assets/images/telegram.svg';
-import { getUserInfo } from "components/common/commonHelper";
-import { useGetParticipant } from "../PrivateOffice/useGetParticipant";
-import Loader from 'components/uiKit/Loader';
-import { useParams } from "react-router";
+import { ReactComponent as VkIcon } from './../../../assets/images/vk.svg';
+import styles from './ParticipantInfoPage.module.scss';
 
 function ParticipantInfoPage(): JSX.Element {
   const { loading, currentParticipant, getCurrentParticipant } = useGetParticipant();
 
   const { id } = useParams<{ id: string }>();
-
-  const userInfo = getUserInfo();
 
   function getHumanFrameIcon(): JSX.Element | null {
     if (currentParticipant?.sex === 'male') {

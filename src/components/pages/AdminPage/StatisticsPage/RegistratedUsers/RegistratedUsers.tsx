@@ -35,9 +35,9 @@ function RegistratedUsers(): JSX.Element {
         console.log(response.data);
         setRegisteredUsers({
             ...response.data,
-            userStats: response.data.userStats.map((userStat) => ({
+            userStats: response.data.userStats.reverse().map((userStat) => ({
                 value: userStat.total,
-                year: months[userStat.month],
+                year: months[userStat.month] + ' ' + userStat.year,
             }))
         });
     }

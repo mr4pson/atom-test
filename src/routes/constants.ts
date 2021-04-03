@@ -28,8 +28,8 @@ export const paths = {
   [Page.USER_TEST_COMPLETE]: '/user-test/complete',
   [Page.USER_TEST_ROUTE]: '/user-test/:questionNumber',
   [Page.ADMIN]: '/admin',
-  [Page.PAGES]: '/pages',
+  [Page.PAGES]: '/:categoryLink/:subcategoryLink',
   [Page.PAGE]: '/page',
-  [Page.PAGE_ROUTE]: '/page/:id',
+  [Page.PAGE_ROUTE]: '/page/:link',
   [Page.OUR_PARTNERS]: '/our-partners',
 }

@@ -64,6 +64,32 @@ $blue-300: #0085F8;
         background-image: url(../../../assets/images/logo.png);
         cursor: pointer;
     }
+    .link {
+        position: relative;
+        &__children {
+            position: absolute;
+            background: #fff;
+            box-shadow: 0px 4px 10px -5px rgba(0, 0, 0, 0.07);
+            border-radius: 20px;
+            width: 180px;
+            margin-top: 17px;
+            padding: 10px 20px;
+            text-align: center;
+            left: -50px;
+            visibility: hidden;
+            opacity: 0;
+            transition: all .3s;
+            li {
+                display: block;
+            }
+        }
+        &:hover {
+            .link__children {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
 }
 
 .header-footer {

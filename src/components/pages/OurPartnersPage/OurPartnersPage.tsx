@@ -1,19 +1,15 @@
-import { memo, useEffect } from "react";
-import Navigation from 'components/modules/Navigation';
-import styles from './OurPartnersPage.module.scss';
-import { getUserInfo } from "components/common/commonHelper";
-import { NavigationType } from "components/modules/Navigation/constants";
-import ContactUs from "components/modules/ContactUs";
-import OurPartnersItem from "./OurPartnersPageItem";
 import classNames from 'classnames';
+import ContactUs from "components/modules/ContactUs";
 import FrequentlyAskedQuestions from "components/modules/FrequentlyAskedQuestions";
-import { useHomePage } from "../HomePage/useHomePage";
 import Loader from 'components/uiKit/Loader';
-import { useRemovePartner } from "../AdminPage/PartnersPage/useRemovePartner";
+import { memo, useEffect } from "react";
 import { useGetOrganizationTypes } from "../AdminPage/AddPartnerPage/useGetOrganizationTypes";
+import { useRemovePartner } from "../AdminPage/PartnersPage/useRemovePartner";
+import { useHomePage } from "../HomePage/useHomePage";
+import styles from './OurPartnersPage.module.scss';
+import OurPartnersItem from "./OurPartnersPageItem";
 
 function OurPartnersPage() {
-  const userInfo = getUserInfo();
   const { questions, getFaqQuestions } = useHomePage();
   const { loading, getPartners, partners, getMagazines, magazines } = useRemovePartner();
   const { organizationTypes, getOrganizationTypes } = useGetOrganizationTypes();
@@ -40,7 +36,6 @@ function OurPartnersPage() {
 
   return <>
     <div className="container">
-      <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER} />
       <div className={styles['our-partners-page']}>
         <div className={styles['our-partners-page__title']}>
           Наши партнёры
@@ -82,7 +77,6 @@ function OurPartnersPage() {
             : <Loader className={'partners-loader'} />
         }
         <ContactUs />
-        <Navigation navigationType={NavigationType.FOOTER} />
       </div>
     </div>
   </>

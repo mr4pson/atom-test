@@ -1,11 +1,8 @@
 import { Col, FormInstance, Input, Row } from 'antd';
 import classNames from 'classnames';
-import { getUserInfo } from 'components/common/commonHelper';
 import ContactUs from 'components/modules/ContactUs';
 import DictationTimer from 'components/modules/DictationTimer';
 import FrequentlyAskedQuestions from 'components/modules/FrequentlyAskedQuestions';
-import Navigation from 'components/modules/Navigation';
-import { NavigationType } from 'components/modules/Navigation/constants';
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import { homePage } from 'i18n';
@@ -35,8 +32,6 @@ function HomePage(): JSX.Element {
         });
     };
 
-    const userInfo = getUserInfo();
-
     const supporterRows = cutArrayByThree(supporters);
     // const formRef = useRef<FormInstance>(null);
     
@@ -59,7 +54,6 @@ function HomePage(): JSX.Element {
     return (
         <div className={styles["home-page"]}>
             <div className="container">
-                <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER} />
                 <div className={styles['main-section']}>
                     <div className="left-bar">
                         <div className={styles['main-section__title']}>Атомный диктант</div>
@@ -198,7 +192,6 @@ function HomePage(): JSX.Element {
                 </div>
                 <FrequentlyAskedQuestions questions={questions} />
                 <ContactUs />
-                <Navigation navigationType={NavigationType.FOOTER} />
             </div>
         </div>
     );

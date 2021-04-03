@@ -2,3 +2,6 @@
   padding-top: 14px;
   background-color: #fafafa;
 }
+.page {
+  min-height: calc(100vh - 320px);
+}

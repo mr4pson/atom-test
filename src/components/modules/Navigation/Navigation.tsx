@@ -31,10 +31,14 @@ function Navigation(props: Props): JSX.Element {
   }
 
   const getMenus = async () => {
-    const responnse = await axios.get('/api/menus');
-    const links = responnse.data.map((menu) => ({
+    const responnse = await axios.get('/api/menus/get-visible-menus');
+    const links: TypeLink[] = responnse.data.map((menu) => ({
       name: menu.title,
       path: menu.url,
+      children: menu.subcategories.map((subcategory) => ({
+        name: subcategory.title,
+        path: subcategory.url,
+      })),
     }));
     setLinks(links.concat(additionalLinks));
   }
@@ -53,29 +57,7 @@ function Navigation(props: Props): JSX.Element {
 
   useEffect(() => {
     getMenus();
-  }, []);
-
-  //TODO: remove in future
-  function renderAdminPageLink(): JSX.Element | null {
-    if (
-      props.navigationType === NavigationType.HEADER &&
-      location.pathname !== paths[Page.LOGIN] &&
-      location.pathname !== paths[Page.SIGN_UP] &&
-      location.pathname !== paths[Page.FORGOT_PASSWORD] &&
-      location.pathname !== paths[Page.ADMIN] &&
-      location.pathname !== `${paths[Page.ADMIN]}/news`
-    ) {
-      return (
-        <Link
-          to={paths[Page.ADMIN]}
-          className={styles["user-info__admin-page"]}
-        >
-          {navigationTranslations.adminPage}
-        </Link>
-      );
-    }
-    return null;
-  }
+  }, [location]);
 
   return (
     <>
@@ -90,14 +72,22 @@ function Navigation(props: Props): JSX.Element {
             {!location.pathname.includes(paths[Page.ADMIN])
               ? links.map((link: TypeLink) => (
                 <li key={link.path}>
-                  <Link to={link.path}>{link.name}</Link>
+                  {!link.children?.length 
+                    ? <Link to={link.path}>{link.name}</Link> 
+                    : <div className={styles['link']}>
+                        <div>{link.name}</div>
+                        <ul className={styles['link__children']}>
+                          {link.children.map((childLink) => (<li className={styles['link__child']}>
+                            <Link to={link.path + childLink.path}>{childLink.name}</Link>
+                          </li>))}
+                        </ul>
+                      </div>}
                 </li>
               ))
               : null}
           </ul>
           <div className={styles["user-info"]}>
             <AuthButton userInfo={props.userInfo!} navigationType={props.navigationType} />
-            {/* {renderAdminPageLink()} */}
           </div>
         </div>
       </div>}

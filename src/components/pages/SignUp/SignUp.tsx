@@ -53,7 +53,6 @@ function SignUp(): JSX.Element {
     return (
         <>
             <div className='container'>
-                <Navigation navigationType={NavigationType.HEADER} />
                 <Form
                     form={form}
                     name="signUpForm"
@@ -150,7 +149,6 @@ function SignUp(): JSX.Element {
                         У меня уже есть аккаунт
                     </Link>
                 </Form>
-                <Navigation navigationType={NavigationType.FOOTER} />
             </div>
         </>
     );

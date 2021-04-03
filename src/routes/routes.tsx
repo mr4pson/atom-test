@@ -62,10 +62,9 @@ export function getRoutes(): TypeRoute[] {
             component: <AdminPage />
         },
         {
-            type: Page.PAGES,
-            path: paths[Page.PAGES],
-            component: <PagesPage />,
-            exact: true,
+            type: Page.OUR_PARTNERS,
+            path: paths[Page.OUR_PARTNERS],
+            component: <OurPartnersPage />,
         },
         {
             type: Page.PAGE,
@@ -73,9 +72,10 @@ export function getRoutes(): TypeRoute[] {
             component: <ChosenPage />,
         },
         {
-            type: Page.OUR_PARTNERS,
-            path: paths[Page.OUR_PARTNERS],
-            component: <OurPartnersPage />,
+            type: Page.PAGES,
+            path: paths[Page.PAGES],
+            component: <PagesPage />,
+            exact: true,
         },
     ]
 }

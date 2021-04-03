@@ -19,3 +19,4 @@ export { arrowDownIcon } from './arrowDownIcon';
 export { trashIcon } from './trashIcon';
 export { visibleIcon } from './visibleIcon';
 export { unVisibleIcon } from './unVisibleIcon';
+export { questionOutlineIcon } from './questionOutlineIcon';

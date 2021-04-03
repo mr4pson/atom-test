@@ -21,6 +21,9 @@ export enum AdminsPage {
   ADD_SUPPORTER = 'ADD_SUPPORTER',
   EDIT_SUPPORTER = 'EDIT_SUPPORTER',
   EDIT_SUPPORTER_ROUTE = 'EDIT_SUPPORTER_ROUTE',
+  DICTATION_QUESTIONS = 'DICTATION_QUESTIONS',
+  WATCH_DICTATION_QUESTIONS = 'WATCH_DICTATION_QUESTIONS',
+  WATCH_DICTATION_QUESTIONS_ROUTE = 'WATCH_DICTATION_QUESTIONS_ROUTE',
 }
 
 export const paths = {
@@ -46,4 +49,7 @@ export const paths = {
   [AdminsPage.ADD_SUPPORTER]: '/admin/supporters/create',
   [AdminsPage.EDIT_SUPPORTER]: '/admin/supporters/edit',
   [AdminsPage.EDIT_SUPPORTER_ROUTE]: '/admin/supporters/edit/:id',
+  [AdminsPage.DICTATION_QUESTIONS]: '/admin/dictation-questions',
+  [AdminsPage.WATCH_DICTATION_QUESTIONS]: '/admin/dictation-questions/watch',
+  [AdminsPage.WATCH_DICTATION_QUESTIONS_ROUTE]: '/admin/dictation-questions/watch/:id',
 }

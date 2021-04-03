@@ -14,6 +14,8 @@ import MenuDetailPage from "components/pages/AdminPage/MenuDetailPage";
 import UpdateParticipant from "components/pages/AdminPage/UpdateParticipant";
 import SupportersPage from "components/pages/AdminPage/SupportersPage";
 import UpdateSupporterPage from "components/pages/AdminPage/UpdateSupporterPage";
+import DictationQuestionsPage from "../DictationQuestionsPage";
+import WatchDictationQuestion from "../WatchDictationQuestion";
 
 export function getRoutes(): TypeRoute[] {
   return [
@@ -116,6 +118,17 @@ export function getRoutes(): TypeRoute[] {
       type: AdminsPage.EDIT_SUPPORTER,
       path: paths[AdminsPage.EDIT_SUPPORTER_ROUTE],
       component: <UpdateSupporterPage />,
+    },
+    {
+      type: AdminsPage.DICTATION_QUESTIONS,
+      path: paths[AdminsPage.DICTATION_QUESTIONS],
+      component: <DictationQuestionsPage />,
+      exact: true,
+    },
+    {
+      type: AdminsPage.WATCH_DICTATION_QUESTIONS,
+      path: paths[AdminsPage.WATCH_DICTATION_QUESTIONS_ROUTE],
+      component: <WatchDictationQuestion />,
     },
   ];
 }

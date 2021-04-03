@@ -1,7 +1,5 @@
 import { Menu } from "antd";
 import classNames from "classnames";
-import Navigation from "components/modules/Navigation";
-import { NavigationType } from "components/modules/Navigation/constants";
 import Icon from "components/uiKit/Icon";
 import {
   chartOutlineIcon,
@@ -11,6 +9,7 @@ import {
   newFileIcon,
   partnersIcon,
   questionMarkIcon,
+  questionOutlineIcon,
   userIcon,
   userPlusIcon,
 } from "icons";
@@ -160,6 +159,21 @@ function AdminPage(): JSX.Element {
         history.push(paths[AdminsPage.SUPPORTERS]);
       },
     },
+    {
+      key: paths[AdminsPage.DICTATION_QUESTIONS],
+      title: "Вопросы по диктанту",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={questionOutlineIcon.path}
+          viewBox={questionOutlineIcon.viewBox}
+          title="DictationQuestions"
+        />
+      ),
+      onClick: () => {
+        history.push(paths[AdminsPage.DICTATION_QUESTIONS]);
+      },
+    },
   ];
 
   return (
@@ -169,13 +183,18 @@ function AdminPage(): JSX.Element {
           className={classNames("menu", styles["menu"])}
           defaultSelectedKeys={[
             location.pathname === "/admin" ||
-            location.pathname === paths[AdminsPage.NEWS_CREATE] ||
-            location.pathname.includes(paths[AdminsPage.NEWS_EDIT])
+              location.pathname === paths[AdminsPage.NEWS_CREATE] ||
+              location.pathname.includes(paths[AdminsPage.NEWS_EDIT])
               ? paths[AdminsPage.NEWS]
               : location.pathname === paths[AdminsPage.ADD_PARTNER] ||
                 location.pathname.includes(paths[AdminsPage.EDIT_PARTNER])
-              ? paths[AdminsPage.PARTNERS]
-              : location.pathname,
+                ? paths[AdminsPage.PARTNERS]
+                : location.pathname === paths[AdminsPage.ADD_SUPPORTER] ||
+                  location.pathname.includes(paths[AdminsPage.EDIT_SUPPORTER])
+                  ? paths[AdminsPage.SUPPORTERS]
+                  : location.pathname.includes(paths[AdminsPage.WATCH_DICTATION_QUESTIONS])
+                    ? paths[AdminsPage.DICTATION_QUESTIONS]
+                    : location.pathname
           ]}
           mode="inline"
           theme="light"

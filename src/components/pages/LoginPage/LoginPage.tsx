@@ -51,7 +51,6 @@ function LoginPage(props): JSX.Element {
     return (
         <>
             <div className='container'>
-                <Navigation navigationType={NavigationType.HEADER}/>
                 <Form
                     name="basic"
                     initialValues={{}}
@@ -89,7 +88,6 @@ function LoginPage(props): JSX.Element {
                         Зарегистрироваться
                     </Link>
                 </Form>
-                <Navigation navigationType={NavigationType.FOOTER}/>
             </div>
         </>
     );

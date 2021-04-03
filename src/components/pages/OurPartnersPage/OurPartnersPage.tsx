@@ -40,7 +40,6 @@ function OurPartnersPage() {
 
   return <>
     <div className="container">
-      <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER} />
       <div className={styles['our-partners-page']}>
         <div className={styles['our-partners-page__title']}>
           Наши партнёры
@@ -82,7 +81,6 @@ function OurPartnersPage() {
             : <Loader className={'partners-loader'} />
         }
         <ContactUs />
-        <Navigation navigationType={NavigationType.FOOTER} />
       </div>
     </div>
   </>

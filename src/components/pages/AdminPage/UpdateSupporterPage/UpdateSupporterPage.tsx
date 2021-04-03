@@ -64,7 +64,7 @@ function UpdateSupporterPage(): JSX.Element {
     <>
       {(id ? currentSupporter : true) ? (
         <Form
-          className={styles["add-partner-page"]}
+          className={styles["update-supporter-page"]}
           name="basic"
           onFinish={onSubmit}
           ref={formRef}
@@ -77,7 +77,7 @@ function UpdateSupporterPage(): JSX.Element {
           <ButtonElem
             type={buttonElemType.Primary}
             htmlType={htmlType.SUBMIT}
-            className={styles["add-partner-page__button-add"]}
+            className={styles["update-supporter-page__button-add"]}
             loading={loadingUpdate}
             onClick={() => setIsChoosenFileChecked(true)}
           >

@@ -1,4 +1,4 @@
-import { memo, useRef } from "react"
+import { memo, useEffect, useRef } from "react"
 import { Form, FormInstance, Input } from 'antd';
 import styles from './ContactUs.module.scss';
 import ReactHtmlParser from 'react-html-parser';
@@ -7,15 +7,36 @@ import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType, htmlType } from 'components/uiKit/ButtomElem/types';
 import { homePage } from "i18n";
 import { ReactComponent as ContactUsFooter } from './../../../assets/images/home-page/contact-us-footer.svg';
+import { useUpdateDictationQuestions } from "components/pages/AdminPage/DictationQuestionsPage/useUpdateDictationQuestions";
+import { openNotification } from "components/common/commonHelper";
+import { TypeDictationQuestionData } from "components/pages/AdminPage/DictationQuestionsPage/types";
 
 const { TextArea } = Input;
 
 function ContactUs(): JSX.Element {
   const formRef = useRef<FormInstance>(null);
 
-  const onSubmit = (e) => {
-    console.log(e);
+  const { error, addDictationQuestion } = useUpdateDictationQuestions();
+
+  const onSubmit = async (formData: TypeDictationQuestionData) => {
+    if (
+      formData?.fullName &&
+      formData?.email &&
+      formData?.message
+    ) {
+      await addDictationQuestion({ ...formData })
+      if (!error) {
+        openNotification('success', 'Сообщение отправлено! Чуть позже мы с вами свяжемся.');
+      }
+    }
   }
+  console.log(error);
+
+  useEffect(() => {
+    if (error) {
+      openNotification('error', 'Внутрення ошибка сервера');
+    } 
+  }, [error])
 
   return <div className={styles['contact-us']}>
     <div className={styles['contact-us__title']}>
@@ -48,25 +69,24 @@ function ContactUs(): JSX.Element {
         >
           <div className={styles['contact-us-form__top']}>
             <Form.Item
-              name="name"
-              rules={[{ required: true, message: 'Please input your login!' }]}
+              name="fullName"
+              rules={[{ required: true, message: 'Пожалуйста, введите имя!' }]}
             >
               <Input className={styles['contact-us-form__input']} placeholder='Ваше имя' />
             </Form.Item>
             <Form.Item
               name="email"
-              rules={[{ required: true, message: 'Please input your login!' }]}
+              rules={[{ required: true, message: 'Пожалуйста, введите email!' }]}
             >
-              <Input className={styles['contact-us-form__input']} placeholder='Email*' />
+              <Input type="email" className={styles['contact-us-form__input']} placeholder='Email*' />
             </Form.Item>
           </div>
           <Form.Item
             name="message"
-            rules={[{ required: true, message: 'Please input your login!' }]}
+            rules={[{ required: true, message: 'Пожалуйста, введите ваше сообщение!' }]}
           >
             <TextArea
               className={styles['contact-us-form__input']}
-              required={true}
               placeholder="Сообщение"
               autoSize={{ minRows: 3, maxRows: 5 }}
             />

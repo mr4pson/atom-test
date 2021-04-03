@@ -1,30 +1,43 @@
-import { Col, Row } from 'antd';
-import classNames from 'classnames';
-import Loader from 'components/uiKit/Loader';
+import { memo, useEffect, useState } from "react";
+import styles from './ParticipantInfoPage.module.scss';
+import Navigation from 'components/modules/Navigation';
+import { NavigationType } from 'components/modules/Navigation/constants';
 import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
-import { memo, useEffect } from "react";
-import { useParams } from "react-router";
-import { useGetParticipant } from "../PrivateOffice/useGetParticipant";
+import classNames from 'classnames';
+import { Row, Col } from 'antd';
+import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
+import { ReactComponent as VkIcon } from './../../../assets/images/vk.svg';
+import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odnoclassniki.svg';
 import { ReactComponent as FacebookIcon } from './../../../assets/images/facebook.svg';
 import { ReactComponent as InstagramIcon } from './../../../assets/images/instagram.svg';
-import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odnoclassniki.svg';
-import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
 import { ReactComponent as TelegramIcon } from './../../../assets/images/telegram.svg';
-import { ReactComponent as VkIcon } from './../../../assets/images/vk.svg';
-import styles from './ParticipantInfoPage.module.scss';
+import { getUserInfo } from "components/common/commonHelper";
+import { useGetParticipant } from "../PrivateOffice/useGetParticipant";
+import Loader from 'components/uiKit/Loader';
+import { useParams } from "react-router";
 
 function ParticipantInfoPage(): JSX.Element {
   const { loading, currentParticipant, getCurrentParticipant } = useGetParticipant();
+  const [avatar, setAvatar] = useState<any>(null);
 
   const { id } = useParams<{ id: string }>();
 
-  function getHumanFrameIcon(): JSX.Element | null {
-    if (currentParticipant?.sex === 'male') {
-      return <ManFrameIcon />;
-    } else if (currentParticipant?.sex === 'female') {
-      return <WomanFrameIcon />;
+  const userInfo = getUserInfo();
+
+  function getUserPhoto(): JSX.Element | null {
+    if (avatar) {
+      return <div
+        className={styles['user-photo__img']}
+        style={{ backgroundImage: `url(${avatar})` }}
+      />
     } else {
-      return null;
+      if (currentParticipant?.sex === 'male') {
+        return <ManFrameIcon />;
+      } else if (currentParticipant?.sex === 'female') {
+        return <WomanFrameIcon />;
+      } else {
+        return null;
+      }
     }
   }
 
@@ -32,10 +45,13 @@ function ParticipantInfoPage(): JSX.Element {
     getCurrentParticipant(id);
   }, [])
 
-  console.log(currentParticipant);
+  useEffect(() => {
+    setAvatar(currentParticipant?.avatar);
+  }, [currentParticipant])
 
   return <>
     <div className='container'>
+      <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER} />
       {!loading ?
         <div className={styles['private-office']}>
           <div className={styles['private-office__user-info']}>
@@ -44,9 +60,8 @@ function ParticipantInfoPage(): JSX.Element {
               styles['user-photo'],
             )}
             >
-              <div className={styles['user-photo__img']}>
-                {getHumanFrameIcon()}
-                {/* <img src={avatar?.length ? avatar[0].secure_url : ''} alt='' /> */}
+              <div className={styles['user-photo__img-container']}>
+                {getUserPhoto()}
               </div>
             </div>
             <div className={styles['user-info']}>
@@ -140,6 +155,7 @@ function ParticipantInfoPage(): JSX.Element {
         </div>
         : <Loader className={'default-loader'} />
       }
+      <Navigation navigationType={NavigationType.FOOTER} />
     </div>
   </>
 }

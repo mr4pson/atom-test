@@ -145,6 +145,21 @@ function AdminPage(): JSX.Element {
         history.push(paths[AdminsPage.STATISTICS]);
       },
     },
+    {
+      key: paths[AdminsPage.SUPPORTERS],
+      title: "Нас поддерживают",
+      icon: (
+        <Icon
+          className={styles["menu__icon"]}
+          path={userPlusIcon.path}
+          viewBox={userPlusIcon.viewBox}
+          title="AtomTest"
+        />
+      ),
+      onClick: () => {
+        history.push(paths[AdminsPage.SUPPORTERS]);
+      },
+    },
   ];
 
   return (

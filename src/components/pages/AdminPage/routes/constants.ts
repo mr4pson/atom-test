@@ -15,9 +15,12 @@ export enum AdminsPage {
   TEST_QUESTUIONS = 'TEST_QUESTUIONS',
   PARTNERS = 'PARTNERS',
   ADD_PARTNER = 'ADD_PARTNER',
-  EDIT_PARTNER_ROUTE = 'EDIT_PARTNER_ROUTE',
   EDIT_PARTNER = 'EDIT_PARTNER',
-  PROJECT_PERSONS = 'PROJECT_PERSONS',
+  EDIT_PARTNER_ROUTE = 'EDIT_PARTNER_ROUTE',
+  SUPPORTERS = 'SUPPORTERS',
+  ADD_SUPPORTER = 'ADD_SUPPORTER',
+  EDIT_SUPPORTER = 'EDIT_SUPPORTER',
+  EDIT_SUPPORTER_ROUTE = 'EDIT_SUPPORTER_ROUTE',
 }
 
 export const paths = {
@@ -39,4 +42,8 @@ export const paths = {
   [AdminsPage.ADD_PARTNER]: '/admin/partners/create',
   [AdminsPage.EDIT_PARTNER]: '/admin/partners/edit',
   [AdminsPage.EDIT_PARTNER_ROUTE]: '/admin/partners/edit/:id',
+  [AdminsPage.SUPPORTERS]: '/admin/supporters',
+  [AdminsPage.ADD_SUPPORTER]: '/admin/supporters/create',
+  [AdminsPage.EDIT_SUPPORTER]: '/admin/supporters/edit',
+  [AdminsPage.EDIT_SUPPORTER_ROUTE]: '/admin/supporters/edit/:id',
 }

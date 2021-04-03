@@ -21,13 +21,22 @@
   border-radius: 47px;
   padding: 13.5px 13.5px 9px;
   
-  &__img {
+  &__img-container {
     width: 243px;
     height: 259px;
     border-radius: 47px;
     background: #EBF6FE;
     display: flex;
     align-items: flex-end;
+    overflow: hidden;
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
   }
 
   &__action-name {

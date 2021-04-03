@@ -21,6 +21,8 @@ import styles from './HomePage.module.scss';
 import { TypeSupporter } from './types';
 import { useHomePage } from './useHomePage';
 
+// const { TextArea } = Input;
+
 function HomePage(): JSX.Element {
     const getSupporterClasses = (index): string => {
         return classNames(styles['supporter'], {
@@ -31,12 +33,13 @@ function HomePage(): JSX.Element {
     };
 
     const supporterRows = cutArrayByThree(supporters);
+    // const formRef = useRef<FormInstance>(null);
     
     const { questions, counterParameters, getFaqQuestions, getCounterParameters } = useHomePage();
 
-    const onSubmit = (e) => {
-        console.log(e);
-    }
+    // const onSubmit = (e) => {
+    //     console.log(e);
+    // }
 
     useEffect(() => {
         document.body.scrollTop = document.documentElement.scrollTop = 0;

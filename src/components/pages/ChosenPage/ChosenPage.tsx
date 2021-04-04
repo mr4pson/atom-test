@@ -1,36 +1,75 @@
-import { memo } from "react";
-import { useParams } from "react-router";
+import axios from "axios";
+import { getImageUrl } from "components/common/commonHelper";
+import moment from "moment";
+import { memo, useEffect, useState } from "react";
+import ReactHtmlParser from 'react-html-parser';
+import { useLocation, useParams } from "react-router";
+import { HashLink as Link } from 'react-router-hash-link';
+import { TypeNewsPageData } from "../AdminPage/NewsPage/types";
+import { getJwtPair } from '../LoginPage/helpers';
 import styles from './ChosenPage.module.scss';
+import Loader from 'components/uiKit/Loader';
 
 function ChosenPage() {
-
+  const [news, setNews] = useState<TypeNewsPageData>();
+  const [recommendedNews, setRecommendedNews] = useState<TypeNewsPageData[]>();
   const { link } = useParams<{ link: string }>();
-  console.log(link);
+  const curJwtPair: string = getJwtPair();
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const options = {
+    headers: {
+        'Authorization': `Bearer ${curJwtPair}`,
+        'withCredentials': true
+    },
+  }
+
+  const getPage = async () => {
+    const response = await axios.get<TypeNewsPageData>('/api/news/getByLink/' + link, options);
+    setNews({
+      ...response.data,
+      createdAt: moment(response.data.createdAt).format('DD.MM.YYYY'),
+    });
+  }
+
+  const getRecommendedNews = async () => {
+    const response = await axios.get<TypeNewsPageData[]>('/api/news/getRecommendedList/' + link, options);
+    setRecommendedNews(response.data);
+    console.log(response.data);
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+    Promise.all([
+      getPage(),
+      getRecommendedNews(),
+    ]).then(() => {
+      setIsLoading(false);
+    });
+  }, [location]);
 
   return <div className="container">
-    <div className={styles["chosen-page"]}>
+    {!isLoading ? <div className={styles["chosen-page"]}>
       <div className={styles['chosen-page__image-headers-wrapper']}>
-        <div className={styles['chosen-page__image']} />
+        <div style={{ backgroundImage: `url(${getImageUrl(news?.uploadFile)})` }} className={styles['chosen-page__image']} />
         <div className={styles['chosen-page__headers']}>
-          <span>Предложенная новость</span>
-          <span>Другая новость</span>
-          <span>Длинный заголовок новости</span>
-          <span>Очень длинный заголовок новости</span>
+          {recommendedNews?.map((recommendedNewsItem) => (
+            <Link to={'/page/' + recommendedNewsItem.url}>{recommendedNewsItem.name}</Link>
+          ))}
         </div>
       </div>
       <div className={styles["chosen-page__title"]}>
-        Заголовок новости
+        {news?.name}
       </div>
       <div className={styles["chosen-page__creation-time"]}>
-        28:03:2021
+        {news?.createdAt}
       </div>
       <div className={styles["chosen-page__description"]}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sapien feugiat massa egestas sem duis egestas natoque. Justo, lectus lorem ultrices arcu. Eget aliquet at tristique dignissim etiam pharetra elit molestie bibendum. Odio nulla urna, nunc, vel. Malesuada morbi morbi feugiat aliquet posuere velit. Praesent felis ut malesuada urna. <br/>
-        Lorem integer urna integer lectus leo vitae. Netus congue risus ac pellentesque morbi nulla. Aenean lectus sed morbi scelerisque id felis hendrerit erat. Pulvinar vel scelerisque massa orci imperdiet risus, adipiscing enim nibh. Volutpat sagittis, praesent praesent urna amet tempus. Porttitor massa at dictumst neque tristique. Risus arcu commodo neque sed mattis. Velit lacus nisl, bibendum sed. Mollis sed purus morbi fermentum, aliquam maecenas interdum tincidunt porttitor.<br/>
-        Erat interdum aliquam dolor, urna ultrices in habitant praesent mauris. Augue risus dictum ut turpis sem. Metus in a duis pellentesque purus adipiscing pellentesque eu tellus. Gravida quisque dictum quisque at ac egestas a amet. Maecenas auctor imperdiet nunc leo integer feugiat. Amet aenean erat nulla ut gravida nulla tellus. Suscipit ultrices laoreet maecenas purus eget et. Volutpat enim, tristique quam ipsum. Tortor sed mauris eros, orci vulputate mauris ultricies. Faucibus habitasse consectetur non tincidunt nunc vitae nec. Viverra vivamus morbi pellentesque sed eget.<br/>
-        Volutpat, quam ipsum eget duis aliquam molestie purus nec. In fusce velit feugiat lobortis placerat sagittis, feugiat odio. Volutpat feugiat at massa nibh dictum magnis neque. Eget quis pretium, eget consectetur pulvinar risus arcu. Adipiscing aliquet suspendisse pellentesque dolor. Aliquet aliquam elit neque ac commodo. Mi tellus, auctor rhoncus ullamcorper tristique sed bibendum tincidunt. Justo aenean aenean sit porttitor eu proin sit. Pharetra sit integer in rhoncus vel etiam. At vitae nibh enim pellentesque sem amet. Arcu sodales aliquet justo ac id tempor.
+        {ReactHtmlParser(news?.description)}
       </div>
     </div>
+    : <Loader/>}
   </div>
 }
 

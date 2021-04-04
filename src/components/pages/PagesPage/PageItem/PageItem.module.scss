@@ -10,6 +10,7 @@
   border-radius: 35px;
   padding: 15px 15px 30px 15px;
   margin-bottom: 50px;
+  position: relative;
 
   &:nth-child(3n-1) {
     margin: 0 30px;
@@ -43,6 +44,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    padding: 20px;
   }
 
   &__creation-date {

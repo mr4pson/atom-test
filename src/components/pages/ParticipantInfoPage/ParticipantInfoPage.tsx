@@ -51,7 +51,6 @@ function ParticipantInfoPage(): JSX.Element {
 
   return <>
     <div className='container'>
-      <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER} />
       {!loading ?
         <div className={styles['private-office']}>
           <div className={styles['private-office__user-info']}>
@@ -155,7 +154,6 @@ function ParticipantInfoPage(): JSX.Element {
         </div>
         : <Loader className={'default-loader'} />
       }
-      <Navigation navigationType={NavigationType.FOOTER} />
     </div>
   </>
 }

@@ -35,6 +35,7 @@ function Navigation(props: Props): JSX.Element {
     const links: TypeLink[] = responnse.data.map((menu) => ({
       name: menu.title,
       path: menu.url,
+      deletable: menu.deletable,
       children: menu.subcategories.map((subcategory) => ({
         name: subcategory.title,
         path: subcategory.url,
@@ -72,15 +73,15 @@ function Navigation(props: Props): JSX.Element {
             {!location.pathname.includes(paths[Page.ADMIN])
               ? links.map((link: TypeLink) => (
                 <li key={link.path}>
-                  {!link.children?.length 
+                  {!link.children?.length && !link.deletable
                     ? <Link to={link.path}>{link.name}</Link> 
                     : <div className={styles['link']}>
                         <div>{link.name}</div>
-                        <ul className={styles['link__children']}>
-                          {link.children.map((childLink) => (<li className={styles['link__child']}>
+                        {link?.children?.length ? <ul className={styles['link__children']}>
+                          {link.children!?.map((childLink) => (<li className={styles['link__child']}>
                             <Link to={link.path + childLink.path}>{childLink.name}</Link>
                           </li>))}
-                        </ul>
+                        </ul> : ''}
                       </div>}
                 </li>
               ))

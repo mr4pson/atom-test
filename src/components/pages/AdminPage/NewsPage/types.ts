@@ -9,6 +9,7 @@ export type TypeNewsPageData = {
   uploadFile: any;
   subcategory: TypeSubCategory,
   createdAt: string;
+  url?: string;
 }
 
 export enum newsCreationMode {

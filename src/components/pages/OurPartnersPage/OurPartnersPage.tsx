@@ -33,6 +33,8 @@ function OurPartnersPage() {
       getMagazines(magazineObject?.id);
     }
   }, [organizationTypes])
+  
+  console.log(partners);
 
   return <>
     <div className="container">
@@ -50,6 +52,7 @@ function OurPartnersPage() {
                 link={item.link}
                 organizationType={item.organizationType}
                 uploadFile={item?.uploadFile!}
+                visible={item.visible}
               />
               }) : <Loader className={'partners-loader'} />
           }
@@ -68,6 +71,7 @@ function OurPartnersPage() {
               link={item.link}
               organizationType={item.organizationType}
               uploadFile={item?.uploadFile!}
+              visible={item.visible}
             />
             })
           }

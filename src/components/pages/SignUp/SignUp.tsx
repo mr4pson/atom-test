@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from '../LoginPage/LoginPage.module.scss';
@@ -30,15 +30,7 @@ function SignUp(): JSX.Element {
         if (hasRusLetters) {
             openNotification('error', 'Логин содержит русские символы!');
         } else {
-            await regUser({...userFormData, avatar: ''});
-            if (status && (status !== 200 && status !== 201)) {
-                openNotification('error', 'Внутрення ошибка сервера');
-            }
-            form.resetFields();
-            openNotification('success', 'Вы были успешно зарегистрированны, редирект на авторизацию.');
-            setTimeout(() => {
-                history.push(paths[Page.LOGIN]);
-            }, 2000)
+            await regUser({ ...userFormData, avatar: '' });
         }
     };
 
@@ -49,6 +41,21 @@ function SignUp(): JSX.Element {
             setHasRusLetters(event.target.value);
         }
     }
+
+    useEffect(() => {
+        if (status && (status !== 200 && status !== 201)) {
+            openNotification('error', 'Внутрення ошибка сервера');
+            if (status === 409) {
+                openNotification('error', 'Пользователь с таким именем уже существует. Пожалуйста выберите другое имя');
+            }
+        } else if (status === 200 || status === 201) {
+            form.resetFields();
+            openNotification('success', 'Вы были успешно зарегистрированны, редирект на авторизацию.');
+            setTimeout(() => {
+                history.push(paths[Page.LOGIN]);
+            }, 2000)
+        }
+    }, [status])
 
     return (
         <>
@@ -126,7 +133,12 @@ function SignUp(): JSX.Element {
                         name="password"
                         rules={[formItemRulse[4]]}
                     >
-                        <Input.Password className={styles['login-page__input']} placeholder='Пароль' />
+                        <Input.Password
+                            minLength={8}
+                            maxLength={20}
+                            className={styles['login-page__input']}
+                            placeholder='Пароль'
+                        />
                     </Form.Item>
                     <Form.Item>
                         <Button

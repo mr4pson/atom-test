@@ -3,17 +3,64 @@ import { TypeSelectOption } from 'components/common/types';
 
 export const cityItems: TypeSelectOption[] = [
   {
-    value: 'Moscow',
+    value: 'Москва',
     text: 'Москва',
   },
   {
-    value: 'SaintPetersberg',
+    value: 'Санкт-Петербург',
     text: 'Санкт-Петербург',
   },
   {
-    value: 'Kazan',
+    value: 'Казань',
     text: 'Казань',
-  }
+  },
+  {
+    value: 'Новосибирск',
+    text: 'Новосибирск',
+  },
+  {
+    value: 'Екатеринбург',
+    text: 'Екатеринбург',
+  },  {
+    value: 'Нижний Новгород',
+    text: 'Нижний Новгород',
+  },
+  {
+    value: 'Челябинск',
+    text: 'Челябинск',
+  },
+  {
+    value: 'Самара',
+    text: 'Самара',
+  },
+  {
+    value: 'Омск',
+    text: 'Омск',
+  },
+  {
+    value: 'Ростов-на-Дону',
+    text: 'Ростов-на-Дону',
+  },
+  {
+    value: 'Уфа',
+    text: 'Уфа',
+  },
+  {
+    value: 'Красноярск',
+    text: 'Красноярск',
+  },
+  {
+    value: 'Воронеж',
+    text: 'Воронеж',
+  },
+  {
+    value: 'Пермь',
+    text: 'Пермь',
+  },
+  {
+    value: 'Волгоград',
+    text: 'Волгоград',
+  },
 ]
 
 export const sexItems: TypeSelectOption[] = [

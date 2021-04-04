@@ -24,13 +24,41 @@ export function useUpdateParticipants(): TypeUseUpdateParticipantResult {
       const { data: axiosData } = await axios.get<any>(
         `/api/users/`, options,
       );
-      const transformedNews = axiosData.map((item: TypeParticipant & { createdAt: string }) => {
+      const transformedParticipants = axiosData.map((item: TypeParticipant & { createdAt: string }) => {
         return {
           ...item,
           createdAt: moment(item.createdAt).format('DD.MM.YYYY'),
         }
       })
-      setParticipants(transformedNews)
+      setParticipants(transformedParticipants)
+      return {};
+    } catch ({ response }) {
+      console.log(response);
+      return { error: response };
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function getParticipantByName(name: string): Promise<TypeParticipant & { createdAt: string } | Object> {
+    setLoading(true);
+    const options = {
+      headers: {
+          'Authorization': `Bearer ${curJwtPair}`,
+          'withCredentials': true
+      },
+    }
+    try {
+      const { data: participantData } = await axios.get<any>(
+        `/api/users/getByName/${name}`, options,
+      );
+      const transformedParticipants = participantData.map((item: TypeParticipant & { createdAt: string }) => {
+        return {
+          ...item,
+          createdAt: moment(item.createdAt).format('DD.MM.YYYY'),
+        }
+      })
+      setParticipants([...transformedParticipants]);
       return {};
     } catch ({ response }) {
       console.log(response);
@@ -66,6 +94,7 @@ export function useUpdateParticipants(): TypeUseUpdateParticipantResult {
     loading,
     participants,
     getParticipants,
+    getParticipantByName,
     deleteParticipants,
   }
 }

@@ -146,7 +146,7 @@ function PartnersPage(props: Props): JSX.Element {
               className={styles["partners-page__create-btn"]}
               onClick={handleAddPartner}
             >
-              Добавить партнера
+              Добавить партнёра
             </ButtonElem>
           </div>
           <>

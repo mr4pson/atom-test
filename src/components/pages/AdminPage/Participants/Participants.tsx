@@ -27,7 +27,7 @@ function Participants(props: Props): JSX.Element {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [chosenParticipant, setChosenParticipant] = useState<string>('');
 
-    const { loading, participants, getParticipants, deleteParticipants } = useUpdateParticipants();
+    const { loading, participants, getParticipants, getParticipantByName, deleteParticipants } = useUpdateParticipants();
 
     const inititalFormState = {
       participants: 'new',
@@ -84,14 +84,15 @@ function Participants(props: Props): JSX.Element {
       onSubmit();
     }
 
-    function handlePressEnter(e) {
-      e.target.blur(); 
-      //Write you validation logic here
+    function handleSearchPressEnter(): void {
+      const searchValue = formRef.current?.getFieldValue('searchParticipants');
+      getParticipantByName(searchValue);
     }
 
-    function handleSearchChange(): void {
-      const searchValue = formRef.current?.getFieldValue('searchParticipants');
-      console.log(searchValue);
+    function handleSearch(e) {
+      e.target.blur(); 
+      handleSearchPressEnter();
+      //Write you validation logic here
     }
 
     const showModal = (itemData: any) => {
@@ -128,7 +129,7 @@ function Participants(props: Props): JSX.Element {
       getParticipants();
     }, [])
 
-    console.log(props.currentId);
+    console.log(participants);
 
     return (
       <div className={styles['participants-page']}>
@@ -165,9 +166,9 @@ function Participants(props: Props): JSX.Element {
                   className={styles["tool-bar__input"]}
                   placeholder="Поиск участника"
                   type="search"
-                  onChange={handleSearchChange}
-                  onBlur={onSubmit}
-                  onPressEnter={handlePressEnter}
+                  // onChange={handleSearchChange}
+                  onBlur={handleSearch}
+                  onPressEnter={handleSearch}
                   suffix={
                     <Icon
                       className={styles["tool-bar__search-icon"]}
@@ -179,14 +180,6 @@ function Participants(props: Props): JSX.Element {
                 />
               </Form.Item>
             </div>
-            {/* <ButtonElem
-              type={buttonElemType.Primary}
-              htmlType="button"
-              className={styles["tool-bar__button"]}
-              onClick={handleCreateParticipant}
-            >
-              Добавить участника
-            </ButtonElem> */}
             <div />
           </div>
           <Table

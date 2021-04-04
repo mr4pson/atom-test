@@ -13,5 +13,6 @@ export type TypeUseUpdateParticipantResult = {
   loading: boolean;
   participants: (TypeParticipant & { createdAt: string })[] | null;
   getParticipants: () => Promise<any>;
+  getParticipantByName: (name: string) => Promise<TypeParticipant & { createdAt: string } | Object>;
   deleteParticipants: (id: string) => Promise<any>;
 }

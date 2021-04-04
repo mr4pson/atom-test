@@ -69,7 +69,12 @@ function LoginPage(props): JSX.Element {
                         name="password"
                         rules={[{ required: true, message: 'Please input your password!' }]}
                     >
-                        <Input.Password className={styles['login-page__input']} placeholder='Пароль' />
+                        <Input.Password
+                            minLength={8}
+                            maxLength={20}
+                            className={styles['login-page__input']}
+                            placeholder='Пароль'
+                        />
                     </Form.Item>
                     <Form.Item>
                         <Button 

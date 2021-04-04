@@ -141,9 +141,9 @@ function HomePage(): JSX.Element {
                     {supporterRow.map((supporter: TypeSupporter, i) => (
                       <Col key={i} span={8} className={styles['gutter-row']}>
                         <div className={getSupporterClasses(i)}>
-                          <div className={styles['supporter__bg']}>
+                          {/* <div className={styles['supporter__bg']}>
                             {renderSwitch(i)}
-                          </div>
+                          </div> */}
                           <div
                             className={styles['supporter__avatar']}
                             style={{ backgroundImage:`url(${getImageUrl(supporter.uploadFile)})` }}

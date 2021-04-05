@@ -5,7 +5,7 @@ import { TypeUseSignUpResult } from "./types";
 export function useSignUp(): TypeUseSignUpResult {
   const [loading, setLoading] = useState<boolean>(false);
   const [status, setStatus] = useState<number | null>(null);
-
+  
   async function regUser(formData: any): Promise<any> {
     setLoading(true);
     try {
@@ -13,10 +13,11 @@ export function useSignUp(): TypeUseSignUpResult {
         `/api/register/`, { ...formData },
       );
       console.log(axiosData);
-      setStatus(axiosData.status);
+      setStatus(201);
       return {};
     } catch ({ response }) {
       console.log(response);
+      setStatus(response.status);
       return { error: response };
     } finally {
       setLoading(false);

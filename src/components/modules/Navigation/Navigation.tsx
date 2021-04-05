@@ -56,6 +56,12 @@ function Navigation(props: Props): JSX.Element {
     });
   }
 
+  function getNavigationLinks(link: TypeLink): JSX.Element {
+    return (link.path === 'https://yandex.ru' ?
+      <a href={link.path} target="_blank" rel="noreferrer">{link.name}</a>
+      : <Link to={link.path}>{link.name}</Link>)
+  }
+
   useEffect(() => {
     getMenus();
   }, [location]);
@@ -74,15 +80,15 @@ function Navigation(props: Props): JSX.Element {
               ? links.map((link: TypeLink) => (
                 <li key={link.path}>
                   {!link.children?.length && !link.deletable
-                    ? <Link to={link.path}>{link.name}</Link> 
+                    ? getNavigationLinks(link)
                     : <div className={styles['link']}>
-                        <div>{link.name}</div>
-                        {link?.children?.length ? <ul className={styles['link__children']}>
-                          {link.children!?.map((childLink) => (<li className={styles['link__child']}>
-                            <Link to={link.path + childLink.path}>{childLink.name}</Link>
-                          </li>))}
-                        </ul> : ''}
-                      </div>}
+                      <div>{link.name}</div>
+                      {link?.children?.length ? <ul className={styles['link__children']}>
+                        {link.children!?.map((childLink) => (<li className={styles['link__child']}>
+                          <Link to={link.path + childLink.path}>{childLink.name}</Link>
+                        </li>))}
+                      </ul> : ''}
+                    </div>}
                 </li>
               ))
               : null}

@@ -49,6 +49,14 @@ $blue-300: #0085F8;
             height: 24px;
         }
     }
+
+    @media (max-width: 768px) {
+        .nav-bar-header, .nav-bar-footer {
+            display: none;
+        }
+        
+    }
+
     .nav-bar-footer {
         width: 868px;
         padding: 0 32px;
@@ -93,7 +101,7 @@ $blue-300: #0085F8;
 }
 
 .header-footer {
-    width: 1290px;
+    // width: 1290px;
 }
 
 .user-info {

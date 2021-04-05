@@ -34,26 +34,32 @@ function OurPartnersPage() {
     }
   }, [organizationTypes])
 
+  console.log(partners);
+
   return <>
     <div className="container">
       <div className={styles['our-partners-page']}>
         <div className={styles['our-partners-page__title']}>
           Наши партнёры
         </div>
-        <div className={styles['our-partners-page__items-wrapper']}>
-          {
-            !loading ?
-              partners.map((item) => {
-                return <OurPartnersItem
-                id={item?.id!}
-                title={item.title}
-                link={item.link}
-                organizationType={item.organizationType}
-                uploadFile={item?.uploadFile!}
-              />
-              }) : <Loader className={'partners-loader'} />
-          }
-        </div>
+        {
+          !loading ?
+            <div className={styles['our-partners-page__items-wrapper']}>
+              {
+                partners.map((item) => {
+                  return <OurPartnersItem
+                    id={item?.id!}
+                    title={item.title}
+                    link={item.link}
+                    organizationType={item.organizationType}
+                    uploadFile={item?.uploadFile!}
+                    visible={item.visible}
+                  />
+                })
+              }
+            </div>
+            : <Loader className={'partners-loader'} />
+        }
         <div className={classNames(
           styles['our-partners-page__title'], styles['our-partners-page__newspaper'])
         }>
@@ -63,12 +69,13 @@ function OurPartnersPage() {
           {
             magazines.map((item) => {
               return <OurPartnersItem
-              id={item?.id!}
-              title={item.title}
-              link={item.link}
-              organizationType={item.organizationType}
-              uploadFile={item?.uploadFile!}
-            />
+                id={item?.id!}
+                title={item.title}
+                link={item.link}
+                organizationType={item.organizationType}
+                uploadFile={item?.uploadFile!}
+                visible={item.visible}
+              />
             })
           }
         </div>

@@ -4,7 +4,7 @@ export const statuses = [
     value: 'drafts',
   },
   {
-    title: 'Запись #1afdsfasfasf',
-    value: 'note1',
+    title: 'Опубликовано',
+    value: 'published',
   }
 ]

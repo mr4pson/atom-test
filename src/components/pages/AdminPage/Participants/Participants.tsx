@@ -27,7 +27,7 @@ function Participants(props: Props): JSX.Element {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [chosenParticipant, setChosenParticipant] = useState<string>('');
 
-    const { loading, participants, getParticipants, deleteParticipants } = useUpdateParticipants();
+    const { loading, participants, getParticipants, getParticipantByName, deleteParticipants } = useUpdateParticipants();
 
     const inititalFormState = {
       participants: 'new',
@@ -79,19 +79,20 @@ function Participants(props: Props): JSX.Element {
       },
     ];
 
-    function handleSelectChange(value: string): void {
-      // setParticipants(value);
-      onSubmit();
-    }
+    // function handleSelectChange(value: string): void {
+    //   // setParticipants(value);
+    //   onSubmit();
+    // }
 
-    function handlePressEnter(e) {
-      e.target.blur(); 
-      //Write you validation logic here
-    }
-
-    function handleSearchChange(): void {
+    function handleSearchPressEnter(): void {
       const searchValue = formRef.current?.getFieldValue('searchParticipants');
-      console.log(searchValue);
+      getParticipantByName(searchValue);
+    }
+
+    function handleSearch(e) {
+      e.target.blur(); 
+      handleSearchPressEnter();
+      //Write you validation logic here
     }
 
     const showModal = (itemData: any) => {
@@ -110,10 +111,6 @@ function Participants(props: Props): JSX.Element {
       setIsModalVisible(false);
     };
 
-    // const handleCreateParticipant = () => {
-    //   history.push(adminPaths[AdminsPage.ADD_PARTICIPANT]);
-    // }
-
     function onShowParticipant(itemData: TypeParticipantsData): void {
       history.push(`${paths[Page.PARTICIPANT_INFO]}/${itemData.id}`);
     }
@@ -128,7 +125,7 @@ function Participants(props: Props): JSX.Element {
       getParticipants();
     }, [])
 
-    console.log(props.currentId);
+    console.log(participants);
 
     return (
       <div className={styles['participants-page']}>
@@ -140,7 +137,7 @@ function Participants(props: Props): JSX.Element {
         >
           <div className={styles["tool-bar"]}>
             <div className={styles["tool-bar__input-select-wrapper"]}>
-              <Form.Item className={styles["participants-page__form-item"]} name="participants">
+              {/* <Form.Item className={styles["participants-page__form-item"]} name="participants">
                 <Select
                   placeholder="Выберите участника"
                   className={classNames(
@@ -156,7 +153,7 @@ function Participants(props: Props): JSX.Element {
                     </Option>
                   ))}
                 </Select>
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item
                 className={styles["participants-page__form-item"]}
                 name="searchParticipants"
@@ -165,9 +162,8 @@ function Participants(props: Props): JSX.Element {
                   className={styles["tool-bar__input"]}
                   placeholder="Поиск участника"
                   type="search"
-                  onChange={handleSearchChange}
-                  onBlur={onSubmit}
-                  onPressEnter={handlePressEnter}
+                  onBlur={handleSearch}
+                  onPressEnter={handleSearch}
                   suffix={
                     <Icon
                       className={styles["tool-bar__search-icon"]}
@@ -179,14 +175,6 @@ function Participants(props: Props): JSX.Element {
                 />
               </Form.Item>
             </div>
-            {/* <ButtonElem
-              type={buttonElemType.Primary}
-              htmlType="button"
-              className={styles["tool-bar__button"]}
-              onClick={handleCreateParticipant}
-            >
-              Добавить участника
-            </ButtonElem> */}
             <div />
           </div>
           <Table

@@ -117,3 +117,13 @@
     line-height: 16px;
   }
 }
+
+@media (max-width: 414px) {
+  .login-page__title {
+    font-size: 36px;
+  }
+
+  .login-page__button, .login-page__input, .login-page__select {
+    width: 340px !important;
+  }
+}

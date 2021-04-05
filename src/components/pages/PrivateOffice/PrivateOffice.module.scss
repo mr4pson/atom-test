@@ -61,6 +61,8 @@
 .user-info {
   margin-left: 30px;
   margin-top: 30px;
+  max-width: 880px;
+
   &__full-name {
     font-size: 36px;
     font-weight: bold;
@@ -265,5 +267,25 @@
     top: 575px;
     font-weight: 600;
     color: #0064f6;
+  }
+}
+
+@media (max-width: 768px) {
+  .private-office__user-info {
+    flex-direction: column;
+  }
+
+  // .user-info {
+  //   max-width: 500px;
+  // }
+
+  .diploma-info__frame {
+    width: 340px;
+    height: 274px;
+  }
+
+  .diploma-info__image {
+    width: 315.42px;
+    height: 244.9px;
   }
 }

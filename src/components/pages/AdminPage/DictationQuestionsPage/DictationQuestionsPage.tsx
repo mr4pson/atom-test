@@ -49,13 +49,13 @@ function DictationQuestionsPage(props: {
             path={deleteIcon.path}
             viewBox={deleteIcon.viewBox}
             onClick={() => showModal(itemData)}
-            title="AtomTest"
+            title="Удалить сообщение"
           />
           <Icon
             className={styles['admin-table__icon']}
             path={visibleIcon.path}
             viewBox={visibleIcon.viewBox}
-            title="AtomTest"
+            title="Посмотреть сообщение"
             onClick={() => onShowDictationQuestion(itemData)}
           />
         </Space>

@@ -69,8 +69,8 @@ function HomePage(): JSX.Element {
               Проводится с целью проверить свои знания<br />и привлечь внимание широкой общественности <br /> к атомной отрасли
             </div>
             <div className={styles['main-section__buttons']}>
-              <ButtonElem type={buttonElemType.Primary}>О проекте</ButtonElem>
-              <ButtonElem type={buttonElemType.Default}>Организаторы</ButtonElem>
+              <a href="/#about"><ButtonElem type={buttonElemType.Primary}>О проекте</ButtonElem></a>
+              <a href="/#organizators"><ButtonElem type={buttonElemType.Default}>Организаторы</ButtonElem></a>
             </div>
           </div>
           <div className="right-bar">
@@ -86,7 +86,6 @@ function HomePage(): JSX.Element {
           </div>
           <div className={styles['dictant']}>
             <div className={classNames(styles['dictant__example-image'], styles['expample-image'])}>
-              {ReactHtmlParser(homePage.aboutProject.body.exampleImage)}
               <div className={styles['expample-image__wing']}>
                 <div className={styles['expample-image__body']}>
                   <div className={styles['expample-image__title']}>2021</div>

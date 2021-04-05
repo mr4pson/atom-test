@@ -79,9 +79,12 @@
     font-weight: bold;
     width: 542px;
     height: 418px;
-    background-color: #DAF1FF;
+    // background-color: #DAF1FF;
+    background-image: url('/assets/images/home-page/Desktop\ -\ 1.jpg');
     border-radius: 10px;
     margin-right: 30px;
+    background-position: center;
+    background-size: cover;
   }
 
   &__info {
@@ -93,7 +96,7 @@
   &__wing {
     position: absolute;
     left: -38px;
-    bottom: -57px;
+    bottom: -70px;
     background-image: url(../../../assets/images/diploma-wing.svg);
     width: 485px;
     height: 295px;

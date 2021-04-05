@@ -13,6 +13,7 @@ export function useSignUp(): TypeUseSignUpResult {
         `/api/register/`, { ...formData },
       );
       console.log(axiosData);
+      setStatus(201);
       return {};
     } catch ({ response }) {
       console.log(response);

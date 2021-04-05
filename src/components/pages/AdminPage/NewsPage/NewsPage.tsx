@@ -8,13 +8,14 @@ import { deleteIcon, editIcon, searchIcon } from 'icons';
 import { memo, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router';
 import { AdminsPage, paths } from 'components/pages/AdminPage/routes/constants';
-import { noteList } from './constants';
+import { subcategoriesList } from './constants';
 import styles from './NewsPage.module.scss';
 import { TypeNewsPageData } from './types';
 import { useRemoveNews } from './useRemoveNews';
 import { connect } from "react-redux";
 import { setCurrentIdToState } from 'redux/reducers/AdminPages.reducer';
 import { useCheckRole } from 'components/hooks/useCheckRole';
+import { useCreateNews } from '../CreateNews/useUpdateNews';
 
 function NewsPage(props: {
   currentId: string;
@@ -24,14 +25,25 @@ function NewsPage(props: {
 
   const formRef = useRef<FormInstance>(null);
   const { Option } = Select;
-  const [note, setNote] = useState<string>(noteList[0].value);
+  const [note, setNote] = useState<string>(subcategoriesList[0].value);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [chosenNews, setChosenNews] = useState<string>('');
 
-  const { loading, getNews, news, deleteNews } = useRemoveNews();
+  const { loading, getNews, news, deleteNews, getNewsByName } = useRemoveNews();
+
+  const { getSubcategories, subcategories } = useCreateNews();
+
+  const transformedSubcategories = subcategories.map((item) => {
+    return {
+      title: item.title,
+      value: item.title,
+    };
+  })
+
+  const allSubcategories = subcategoriesList.concat(transformedSubcategories);
 
   const inititalFormState = {
-    note: 'all',
+    note: subcategoriesList[0].value,
     searchNews: '',
   }
 
@@ -80,14 +92,15 @@ function NewsPage(props: {
     onSubmit();
   }
 
-  function handlePressEnter(e) {
-    e.target.blur();
-    //Write you validation logic here
+  function handleSearchPressEnter(): void {
+    const searchValue = formRef.current?.getFieldValue('searchNews');
+    getNewsByName(searchValue);
   }
 
-  function handleSearchChange(): void {
-    const searchValue = formRef.current?.getFieldValue('searchNews');
-    console.log(searchValue);
+  function handleSearch(e) {
+    e.target.blur(); 
+    handleSearchPressEnter();
+    //Write you validation logic here
   }
 
   const showModal = (itemData: TypeNewsPageData) => {
@@ -123,12 +136,13 @@ function NewsPage(props: {
   useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
   useEffect(() => {
-    (async () => {
-      await getNews();
-    })();
+    Promise.all([
+      getNews(),
+      getSubcategories()
+    ])
   }, []);
 
-  console.log(news);
+  console.log(allSubcategories);
 
   return (
     <div className={styles['news-page']}>
@@ -150,8 +164,8 @@ function NewsPage(props: {
                 onChange={handleSelectChange}
                 value={note}
               >
-                {noteList.map((item) => (
-                  <Option key={item?.id} value={item?.value}>
+                {allSubcategories.map((item) => (
+                  <Option key={item?.value} value={item?.value}>
                     {item?.title}
                   </Option>
                 ))}
@@ -163,11 +177,10 @@ function NewsPage(props: {
             >
               <Input
                 className={styles["tool-bar__input"]}
-                placeholder="Поиск новости"
+                placeholder="Поиск страницы"
                 type="search"
-                onChange={handleSearchChange}
                 onBlur={onSubmit}
-                onPressEnter={handlePressEnter}
+                onPressEnter={handleSearch}
                 suffix={
                   <Icon
                     className={styles["tool-bar__search-icon"]}

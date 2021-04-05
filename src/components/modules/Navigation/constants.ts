@@ -16,7 +16,7 @@ export const navigationPaths = {
     Pages : paths[Page.PAGES],
     ORGANIZATORS: '/#organizators',
     INFO_PARTNERS: paths[Page.OUR_PARTNERS],
-    PRIVACY_POLICY: 'privacy-policy',
+    PRIVACY_POLICY: 'https://yandex.ru',
 }
 
 export enum NavigationType {

@@ -38,6 +38,35 @@ export function useRemoveNews(): any {
     }
   }
 
+
+  async function getNewsByName(name: string): Promise<TypeNewsPageData | Object> {
+    setLoading(true);
+    const options = {
+      headers: {
+          'Authorization': `Bearer ${curJwtPair}`,
+          'withCredentials': true
+      },
+    }
+    try {
+      const { data: participantData } = await axios.get<any>(
+        `/api/news/getByName/${name}`, options,
+      );
+      const transformedNews = participantData.map((item: TypeNewsPageData) => {
+        return {
+          ...item,
+          createdAt: moment(item.createdAt).format('DD.MM.YYYY'),
+        }
+      })
+      setNews([...transformedNews]);
+      return {};
+    } catch ({ response }) {
+      console.log(response);
+      return { error: response };
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function deleteNews(id: string): Promise<any> {
     setLoading(true);
     const options = {
@@ -64,6 +93,7 @@ export function useRemoveNews(): any {
     loading,
     getNews,
     news,
+    getNewsByName,
     deleteNews
   }
 }

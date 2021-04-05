@@ -79,10 +79,10 @@ function Participants(props: Props): JSX.Element {
       },
     ];
 
-    function handleSelectChange(value: string): void {
-      // setParticipants(value);
-      onSubmit();
-    }
+    // function handleSelectChange(value: string): void {
+    //   // setParticipants(value);
+    //   onSubmit();
+    // }
 
     function handleSearchPressEnter(): void {
       const searchValue = formRef.current?.getFieldValue('searchParticipants');
@@ -111,10 +111,6 @@ function Participants(props: Props): JSX.Element {
       setIsModalVisible(false);
     };
 
-    // const handleCreateParticipant = () => {
-    //   history.push(adminPaths[AdminsPage.ADD_PARTICIPANT]);
-    // }
-
     function onShowParticipant(itemData: TypeParticipantsData): void {
       history.push(`${paths[Page.PARTICIPANT_INFO]}/${itemData.id}`);
     }
@@ -141,7 +137,7 @@ function Participants(props: Props): JSX.Element {
         >
           <div className={styles["tool-bar"]}>
             <div className={styles["tool-bar__input-select-wrapper"]}>
-              <Form.Item className={styles["participants-page__form-item"]} name="participants">
+              {/* <Form.Item className={styles["participants-page__form-item"]} name="participants">
                 <Select
                   placeholder="Выберите участника"
                   className={classNames(
@@ -157,7 +153,7 @@ function Participants(props: Props): JSX.Element {
                     </Option>
                   ))}
                 </Select>
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item
                 className={styles["participants-page__form-item"]}
                 name="searchParticipants"
@@ -166,7 +162,6 @@ function Participants(props: Props): JSX.Element {
                   className={styles["tool-bar__input"]}
                   placeholder="Поиск участника"
                   type="search"
-                  // onChange={handleSearchChange}
                   onBlur={handleSearch}
                   onPressEnter={handleSearch}
                   suffix={

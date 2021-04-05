@@ -26,6 +26,9 @@ import Loader from 'components/uiKit/Loader';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import ButtonElem from "components/uiKit/ButtomElem";
 import { useUploadFile } from "components/hooks/useUploadFile";
+import * as htmlToImage from 'html-to-image';
+import { toJpeg } from 'html-to-image';
+
 // import { loginPage } from 'i18n'
 
 function PrivateOffice(props): JSX.Element {
@@ -56,6 +59,7 @@ function PrivateOffice(props): JSX.Element {
   const [email, setEmail] = useState<string>('');
 
   const [avatar, setAvatar] = useState<any>(null);
+  const [isSaveDiplomaVisible, setIsSaveDiplomaVisible] = useState<any>(null);
 
   const { uploadMediaFile } = useUploadFile(formRef, undefined, 'avatar');
 
@@ -103,6 +107,35 @@ function PrivateOffice(props): JSX.Element {
     setAvatar(getImageUrl(fileName));
   }
 
+  const downloadDiploma = () => {
+    setIsSaveDiplomaVisible(true);
+  }
+
+  useEffect(() => {
+    // save diploma html as image
+    const node = document.getElementById('diploma');
+    if (isSaveDiplomaVisible && node) {
+      setTimeout(() => {
+        setTimeout(() => {
+          setIsSaveDiplomaVisible(false);
+        }, 1000);
+        htmlToImage.toJpeg(node!).then(function (dataUrl) {
+          const link = document.createElement('a');
+          link.href = dataUrl;
+          link.download = 'diploma.jpg';
+          document.body.appendChild(link);
+          link.click();
+          setTimeout(() => {
+            document.body.removeChild(link);
+          }, 100);
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        });
+      }, 100);
+    }
+
+  }, [isSaveDiplomaVisible])
 
   useEffect(() => {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -388,7 +421,10 @@ function PrivateOffice(props): JSX.Element {
                 <div className={styles['diploma-info__title']}>Диплом</div>
                 <div className={styles['diploma-info__frame']}>
                   <div className={styles['diploma-info__image']}>
-                    <span className={styles['diploma-info__name']}>Диплом</span>
+                    {/* <span className={styles['diploma-info__name']}>Диплом</span> */}
+                    <div className={styles['diploma-info__full-name']}>{fullName}</div>
+                    <div className={styles['diploma-info__percentage']}>99%</div>
+                    <img width={707} src="diploma.png"/>
                   </div>
                   <div className={classNames(styles['diploma-info__share-in'], styles['share-in'])}>
                     <ShareIn />
@@ -412,12 +448,21 @@ function PrivateOffice(props): JSX.Element {
                     </div>
                   </div>
                 </div>
-                <button type="button" className={styles['diploma-info__download']}>Скачать диплом</button>
+                <button
+                  onClick={downloadDiploma}
+                  type="button"
+                  className={styles['diploma-info__download']}
+                >Скачать диплом</button>
               </div>
             </Form>
           </div>
           : <Loader className={'default-loader'} />
       }
+      {isSaveDiplomaVisible && <div id="diploma" className={styles['bottom-diploma']}>
+        <div className={styles['bottom-diploma__name']}>{fullName}</div>
+        <div className={styles['bottom-diploma__percentage']}>100%</div>
+        <img src="diploma.png"/>
+      </div>}
     </>
   );
 }

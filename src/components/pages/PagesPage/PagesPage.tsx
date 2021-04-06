@@ -1,4 +1,4 @@
-import { Pagination } from 'antd';
+// import { Pagination } from 'antd';
 import axios from 'axios';
 import ContactUs from "components/modules/ContactUs";
 import { memo, useEffect, useState } from "react";
@@ -76,7 +76,7 @@ function PagesPage() {
             </>
           : <h3>Список пуст</h3>}
           </div>
-        : <Loader />
+        : <Loader className={'default-loader'} />
       }
     </div>
   </>

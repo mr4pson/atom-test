@@ -218,3 +218,73 @@
     cursor: pointer;
   }
 }
+
+@media (max-width: 1024px) {
+  .user-info__divider {
+    width: 600px;
+  }
+
+  .user-info__column-name {
+    margin-right: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .private-office__user-info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  // .user-info {
+  //   max-width: 500px;
+  // }
+
+  .user-info {
+    &__full-name {
+      font-size: 26px;
+    }
+
+    &__column-name {
+      margin-right: 60px;
+    }
+
+    &__column-value {
+      font-size: 16px;
+    }
+  
+    &__divider {
+      width: unset;
+    }
+
+    &__redirect-btn {
+      width: 100%;
+    }
+  }
+
+  .diploma-info {
+    &__title {
+      font-size: 36px;
+    }
+
+    &__image {
+      width: 315.42px;
+      height: 244.9px;
+    }
+
+    &__frame {
+      padding: 14.55px 12.3px;
+      width: 340px;
+      height: 274px;
+    }
+  
+    &__download {
+      margin-top: 100px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .share-in {
+    left: -10px;
+    top: 215px;
+  }
+}

@@ -24,3 +24,14 @@
     width: 100%;
   }
 }
+
+@media (max-width: 768px) {
+  .q-and-a {
+    margin-top: 75px;
+    &__title {
+      font-size: 36px;
+      line-height: 114%;
+      margin-bottom: 10px;
+    }
+  }
+}

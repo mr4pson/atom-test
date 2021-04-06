@@ -90,3 +90,41 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    .dictation-timer {
+        &__avatar {
+            width: 360px;
+            height: 291px;
+            background-size: cover;
+        }
+        &__footer {
+            height: 147px;
+            width: 375px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        &__body {
+            padding: 50px 45px 0;
+        }
+
+        &__title {
+            margin-top: 0;
+        }
+
+        .days {
+            &__value {
+                font-size: 56px;
+                line-height: 60px;
+            }
+        }
+
+        .period {
+            &__value {
+                font-size: 30px;
+                line-height: 27px;
+            }
+        }
+    }
+}

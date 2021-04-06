@@ -38,7 +38,6 @@ export function useRemoveNews(): any {
     }
   }
 
-
   async function getNewsByName(name: string): Promise<TypeNewsPageData | Object> {
     setLoading(true);
     const options = {

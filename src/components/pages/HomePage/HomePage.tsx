@@ -23,6 +23,9 @@ import { useHomePage } from './useHomePage';
 import Loader from 'components/uiKit/Loader';
 import { getImageUrl } from 'components/common/commonHelper';
 import { TypeSupporter } from '../AdminPage/SupportersPage/types';
+import Carousel from '@brainhubeu/react-carousel';
+import '@brainhubeu/react-carousel/lib/style.css';
+import CarouselWithDots from 'components/uiKit/CarouselWithDots';
 
 // const { TextArea } = Input;
 
@@ -68,7 +71,7 @@ function HomePage(): JSX.Element {
             <div className={styles['main-section__desc']}>
               Проводится с целью проверить свои знания<br />и привлечь внимание широкой общественности <br /> к атомной отрасли
             </div>
-            <div className={styles['main-section__buttons']}>
+            <div className={styles['main-section__buttons-normal']}>
               <a href="/#about"><ButtonElem type={buttonElemType.Primary}>О проекте</ButtonElem></a>
               <a href="/#organizators"><ButtonElem type={buttonElemType.Default}>Организаторы</ButtonElem></a>
             </div>
@@ -76,6 +79,10 @@ function HomePage(): JSX.Element {
           <div className="right-bar">
             {counterParameters?.data && <DictationTimer dictantDateString={counterParameters?.data as string} />}
           </div>
+        </div>
+        <div className={styles['main-section-buttons-small']}>
+          <a href="/#about"><ButtonElem type={buttonElemType.Primary}>О проекте</ButtonElem></a>
+          <a href="/#organizators"><ButtonElem type={buttonElemType.Default}>Организаторы</ButtonElem></a>
         </div>
         <div id="about" className={styles['about-project']}>
           <div className={styles['about-project__title']}>
@@ -117,7 +124,7 @@ function HomePage(): JSX.Element {
               <div className={styles['organizator__type']}>{ReactHtmlParser(homePage.organizators.type)}</div>
               <div className={styles['organizator__name']}>{ReactHtmlParser(homePage.organizators.name)}</div>
               <div className={styles['organizator__desc']}>{ReactHtmlParser(homePage.organizators.desc)}</div>
-              <a href="https://atomgoroda.ru/" rel="noreferrer" target="_blank">
+              <a className={styles['organizator__button-normal']} href="https://atomgoroda.ru/" rel="noreferrer" target="_blank">
                 <ButtonElem type={buttonElemType.Primary}>
                   {ReactHtmlParser(homePage.organizators.button.toOrganizationSiteBtn)}
                 </ButtonElem>
@@ -126,6 +133,11 @@ function HomePage(): JSX.Element {
             <div className={styles['organizators__right-bar']}>
               <div className={styles['organizators__image']}></div>
             </div>
+            <a className={styles['organizator__button-small']} href="https://atomgoroda.ru/" rel="noreferrer" target="_blank">
+              <ButtonElem type={buttonElemType.Primary}>
+                {ReactHtmlParser(homePage.organizators.button.toOrganizationSiteBtn)}
+              </ButtonElem>
+            </a>
           </div>
         </div>
         {
@@ -145,7 +157,7 @@ function HomePage(): JSX.Element {
                           </div> */}
                           <div
                             className={styles['supporter__avatar']}
-                            style={{ backgroundImage:`url(${getImageUrl(supporter.uploadFile)})` }}
+                            style={{ backgroundImage: `url(${getImageUrl(supporter.uploadFile)})` }}
                           />
                           <div className={styles['supporter__name']}>{ReactHtmlParser(supporter.fullName)}</div>
                           <div className={styles['supporter__position']}>
@@ -158,6 +170,23 @@ function HomePage(): JSX.Element {
                   </Row>
                 ))}
               </div>
+
+              <CarouselWithDots className={styles['supporter__carousel']} items={supporters?.map((supporter: TypeSupporter, index) => (
+                    <Col key={index} span={8} className={styles['gutter-row']}>
+                      <div className={getSupporterClasses(index)}>
+                        <div
+                          className={styles['supporter__avatar']}
+                          style={{ backgroundImage: `url(${getImageUrl(supporter.uploadFile)})` }}
+                        />
+                        <div className={styles['supporter__name']}>{ReactHtmlParser(supporter.fullName)}</div>
+                        <div className={styles['supporter__position']}>
+                          <span>{supporter.position}</span>&nbsp;
+                            <span>{getBoldName(supporter.organization)}</span>
+                        </div>
+                      </div>
+                    </Col>
+              ))} />
+              <div className={styles['supporter__swipe-info']}>Свайпайте вправо чтобы посмотреть отсальных спонсоров.</div>
             </div>
             : <Loader className={'default-loader'} />
         }
@@ -175,7 +204,7 @@ function HomePage(): JSX.Element {
                 <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.first)}</div>
               </div>
               <div className={styles['participant-step__ellipse']}>
-                <Ellipse1 />
+                <Ellipse1 className={styles['elipse-small']} />
               </div>
             </div>
             <div className={styles['participant-step']}>
@@ -187,7 +216,7 @@ function HomePage(): JSX.Element {
                 <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.second)}</div>
               </div>
               <div className={styles['participant-step__ellipse']}>
-                <Ellipse2 />
+                <Ellipse2 className={styles['elipse-small']} />
               </div>
             </div>
             <div className={styles['participant-step']}>
@@ -199,7 +228,7 @@ function HomePage(): JSX.Element {
                 <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.third)}</div>
               </div>
               <div className={styles['participant-step__ellipse']}>
-                <Ellipse3 />
+                <Ellipse3 className={styles['elipse-small']} />
               </div>
             </div>
             <div className={styles['participant-step']}>

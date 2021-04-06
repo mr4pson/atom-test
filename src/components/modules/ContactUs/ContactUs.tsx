@@ -35,7 +35,7 @@ function ContactUs(): JSX.Element {
   useEffect(() => {
     if (error) {
       openNotification('error', 'Внутрення ошибка сервера');
-    } 
+    }
   }, [error])
 
   return <div className={styles['contact-us']}>
@@ -43,7 +43,7 @@ function ContactUs(): JSX.Element {
       {ReactHtmlParser(homePage.contactUs.title)}
     </div>
     <div className={styles['contact-us__body']}>
-      <div className="contact-us__left-bar">
+      <div className={styles["contact-us__left-bar"]}>
         <div className={styles['contact-us__image']}>
           <div className={styles['contact-us__footer']}>
             <ContactUsFooter />
@@ -92,7 +92,12 @@ function ContactUs(): JSX.Element {
             />
           </Form.Item>
           <div className={styles['contact-us-form__controlls']}>
-            <ButtonElem htmlType={htmlType.SUBMIT} type={buttonElemType.Primary}>{ReactHtmlParser(homePage.contactUs.body.button.sendBtn)}</ButtonElem>
+            <ButtonElem
+              className={styles['contact-us-form__button']}
+              htmlType={htmlType.SUBMIT}
+              type={buttonElemType.Primary}>
+              {ReactHtmlParser(homePage.contactUs.body.button.sendBtn)}
+            </ButtonElem>
             <div className={styles['contact-us-form__info']}>{ReactHtmlParser(homePage.contactUs.body.sendActionInfo)}</div>
           </div>
         </Form>

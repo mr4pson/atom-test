@@ -34,8 +34,6 @@ function OurPartnersPage() {
     }
   }, [organizationTypes])
 
-  console.log(partners);
-
   return <>
     <div className="container">
       <div className={styles['our-partners-page']}>

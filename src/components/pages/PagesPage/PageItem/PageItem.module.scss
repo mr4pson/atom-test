@@ -62,3 +62,20 @@
     text-decoration: underline;
   }
 }
+
+@media (max-width: 768px) {
+  .page-item {
+    width: 341px;
+    min-height: 521px;
+
+    &__image {
+      width: 311px;
+      height: 235px;
+    }
+
+    &:nth-child(3n-1) {
+      margin: 0 0 50px 0;
+    }
+    
+  }
+}

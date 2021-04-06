@@ -7,6 +7,14 @@
     font-size: 20px;
     margin-bottom: 7px;
   }
+
+  &__uploaded-image {
+    margin-top: 20px;
+    width: 300px;
+    height: 200px;
+    background-color: #ccc;
+    border-radius: 10px;
+  }
 }
 
 .main-data {

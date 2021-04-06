@@ -13,6 +13,7 @@ import Loader from 'components/uiKit/Loader';
 import { useCheckRole } from "components/hooks/useCheckRole";
 import { useUploadFile } from "components/hooks/useUploadFile";
 import { useUpdateSupporter } from "./useUpdateSupporter";
+import { getImageUrl } from "components/common/commonHelper";
 
 function UpdateSupporterPage(): JSX.Element {
   const formRef = useRef<FormInstance>(null);
@@ -25,7 +26,7 @@ function UpdateSupporterPage(): JSX.Element {
 
   const { loadingUpdate, currentSupporter, addSupporter, getCurrentSupporter, updateSupporter } = useUpdateSupporter();
 
-  const { uploadMediaFile } = useUploadFile(formRef, setIsChoosenFileChecked );
+  const { uploadMediaFile, mediaFile } = useUploadFile(formRef, setIsChoosenFileChecked );
 
   const inititalFormState = {
     fullName: '',
@@ -159,6 +160,12 @@ function UpdateSupporterPage(): JSX.Element {
                   />
                 </label>
               </Form.Item>
+              {currentSupporter?.uploadFile && 
+                <div
+                  style={{ backgroundImage: `url(${mediaFile ? getImageUrl(mediaFile) : getImageUrl(currentSupporter?.uploadFile)})` }}
+                  className={styles['page-content__uploaded-image']}
+                ></div>
+              }
               {!formRef.current?.getFieldsValue().uploadFile &&
                 isChoosenFileChecked && (
                   <span className={styles["choose-file"]}>

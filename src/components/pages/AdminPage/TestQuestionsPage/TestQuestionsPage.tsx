@@ -18,16 +18,16 @@ function TestQuestionsPage(): JSX.Element {
     const [currentTestOption, setCurrentTestOption] = useState<TypeTestQuestionOption | null>(null);
     const [testQuestions, setTestQuestions] = useState<TypeTestQuestion[]>([]);
     const [rerender, setRerender] = useState<boolean>(true);
-    const curJwtPair: string = getJwtPair();
+    const curJwtPair = getJwtPair();
     const inputFileRef = useRef({} as HTMLInputElement);
-    const options = {
-        headers: {
-            'Authorization': `Bearer ${curJwtPair}`,
-            'withCredentials': true
-        },
-    }
 
     const getQuestions = async () => {
+        const options = {
+            headers: {
+                'Authorization': `Bearer ${await curJwtPair}`,
+                'withCredentials': true
+            },
+        }    
         const questionsResponse = await axios.get<TypeTestQuestion[]>('/api/questions', options);
         return questionsResponse.data.map((question) => ({
             ...question,
@@ -171,6 +171,13 @@ function TestQuestionsPage(): JSX.Element {
             type: currentTest?.type,
             image: uploadFileResponse.data[0].fileName,
         }
+        const options = {
+            headers: {
+                'Authorization': `Bearer ${await curJwtPair}`,
+                'withCredentials': true
+            },
+        }
+    
         await axios.put<TypeTestQuestion[]>('/api/questions/' + currentTest?.id, payload, options);
 
         const newTestQuestions = [...testQuestions];
@@ -233,6 +240,13 @@ function TestQuestionsPage(): JSX.Element {
             image: currentTest?.image,
         }
         try {
+            const options = {
+                headers: {
+                    'Authorization': `Bearer ${await curJwtPair}`,
+                    'withCredentials': true
+                },
+            }
+        
             await axios.put<TypeTestQuestion>('/api/questions/' + currentTest?.id, payload, options);
         } catch {
             console.log('Error');

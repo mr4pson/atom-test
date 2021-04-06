@@ -7,7 +7,7 @@ import { TypeDictationQuestion, TypeUseUpdateDictationQuestionsResult } from "./
 export function useUpdateDictationQuestions(): TypeUseUpdateDictationQuestionsResult {
   const [loading, setLoading] = useState<boolean>(false);
   const [dictationQuestions, setDictationQuestions] = useState<TypeDictationQuestion[]>([]);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const [error, setError] = useState<boolean>(false);
 
   async function getDictationQuestions(): Promise<TypeDictationQuestion[] | Object> {
@@ -15,7 +15,7 @@ export function useUpdateDictationQuestions(): TypeUseUpdateDictationQuestionsRe
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -45,7 +45,7 @@ export function useUpdateDictationQuestions(): TypeUseUpdateDictationQuestionsRe
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -70,7 +70,7 @@ export function useUpdateDictationQuestions(): TypeUseUpdateDictationQuestionsRe
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }

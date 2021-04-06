@@ -6,14 +6,14 @@ import { TypePartner, TypeUseUpdatePartnerResult } from "../PartnersPage/types";
 
 export function useUpdatePartner(): TypeUseUpdatePartnerResult {
   const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const [currentPartner, setCurrentPartner] = useState<any>(null);
 
   async function getCurrentPartner(id: string): Promise<any> {
     setLoadingUpdate(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -40,7 +40,7 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
     setLoadingUpdate(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -63,7 +63,7 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
     setLoadingUpdate(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }

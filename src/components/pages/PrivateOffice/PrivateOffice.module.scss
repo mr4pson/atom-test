@@ -155,15 +155,16 @@
 
   &__frame {
     position: relative;
-    width: 830px;
+    width: 767px;
     height: 565px;
     background-color: #FFFFFF;
     padding: 30px;
   }
 
   &__image {
+    position: relative;
     background-color: #F0F7FB;
-    width: 770px;
+    width: 707px;
     height: 505px;
     display: flex;
     align-items: center;
@@ -175,6 +176,21 @@
     font-size: 18px;
     line-height: 22px;
     color: #000000;
+  }
+
+  &__full-name {
+    position: absolute;
+    font-size: 19px;
+    top: 223px;
+  }
+  &__percentage {
+    font-family: Nexa Script Light;
+    position: absolute;
+    font-size: 50px;
+    left: 73px;
+    top: 278px;
+    font-weight: 600;
+    color: #0064f6;
   }
 
   &__download {
@@ -229,6 +245,28 @@
     width: 20px;
     height: 20px;
     cursor: pointer;
+  }
+}
+
+.bottom-diploma {
+  position: relative;
+  width: fit-content;
+  &__name {
+    position: absolute;
+    top: 460px;
+    left: 0px;
+    font-size: 36px;
+    width: 100%;
+    text-align: center;
+  }
+  &__percentage {
+    font-family: Nexa Script Light;
+    position: absolute;
+    font-size: 90px;
+    left: 180px;
+    top: 575px;
+    font-weight: 600;
+    color: #0064f6;
   }
 }
 

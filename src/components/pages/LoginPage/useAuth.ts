@@ -26,6 +26,7 @@ export function useAuth(): TypeUseAuthHookResult {
         },
         { withCredentials: true },
       );
+      localStorage.setItem('password', password)
       setJwtPair(axiosData.access_token);
       setAuthenticated(true);
       const userInfo = getUserInfo();

@@ -8,13 +8,13 @@ export function useRemovePartner(): TypeUseRemovePartner {
   const [loading, setLoading] = useState<boolean>(false);
   const [partners, setPartners] = useState<TypePartner[]>([]);
   const [magazines, setMagazines] = useState<TypePartner[]>([]);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
 
   async function getPartners(): Promise<TypePartner[] | Object> {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -42,7 +42,7 @@ export function useRemovePartner(): TypeUseRemovePartner {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -64,7 +64,7 @@ export function useRemovePartner(): TypeUseRemovePartner {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }

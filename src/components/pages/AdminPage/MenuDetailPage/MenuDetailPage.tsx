@@ -20,13 +20,8 @@ const { TextArea } = Input;
 function MenuDetailPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const [menuElem, setMenuElem] = useState<TypeMenu | null>(null);
-  const curJwtPair: string = getJwtPair();
-  const options = {
-    headers: {
-      Authorization: `Bearer ${curJwtPair}`,
-      withCredentials: true,
-    },
-  };
+  const curJwtPair = getJwtPair();
+
   const getActions = (isEditing: boolean = false): TypeAction[] => {
     return [
       {
@@ -51,6 +46,12 @@ function MenuDetailPage(): JSX.Element {
                 deletable: config.deletable,
                 visible: config.visible,
               }
+              const options = {
+                headers: {
+                  Authorization: `Bearer ${await curJwtPair}`,
+                  withCredentials: true,
+                },
+              };
               await axios.put<TypeMenu>('/api/menus/' + config.id, payload, options);
               // config.isEditing = false;
               setMenuElem({
@@ -64,6 +65,12 @@ function MenuDetailPage(): JSX.Element {
   }
 
   const getMenu = async () => {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${await curJwtPair}`,
+        withCredentials: true,
+      },
+    };
     const response = await axios.get<TypeMenu>('/api/menus/' + id, options);
     setMenuElem({
       ...response.data,
@@ -95,6 +102,12 @@ function MenuDetailPage(): JSX.Element {
   }
 
   const onSubCategorySubmit = async (formValues, curSubCategory: TypeSubCategory) => {
+    const options = {
+      headers: {
+        Authorization: `Bearer ${await curJwtPair}`,
+        withCredentials: true,
+      },
+    };
     const newSubcategory = menuElem?.subcategories?.find((subcategory) => subcategory.id === curSubCategory.id) as TypeSubCategory;
     newSubcategory.isEditing = false;
     Object.assign(newSubcategory, formValues);
@@ -106,8 +119,8 @@ function MenuDetailPage(): JSX.Element {
         url: newSubcategory.url,
         news: [],
         menu: menuElem?.id,
-      };  
-      await axios.post<TypeSubCategory>('/api/subcategories/' + newSubcategory.id, payload, options);
+      };
+      await axios.put<TypeSubCategory>('/api/subcategories/' + newSubcategory.id, payload, options);
     } else {
       console.log('create');
       const payload = {

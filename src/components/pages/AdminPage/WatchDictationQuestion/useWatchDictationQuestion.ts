@@ -9,14 +9,14 @@ import {
 
 export function useWatchDictationQuestion(): TypeUseWatchDictationQuestionResult {
   const [loadingWatch, setLoadingWatch] = useState<boolean>(false);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const [currentQuestion, setCurrentQuestion] = useState<TypeDictationQuestion | null>(null);
 
   async function getCurrentQuestion(id: string): Promise<TypeDictationQuestion | Object> {
     setLoadingWatch(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }

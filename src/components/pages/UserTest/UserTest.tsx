@@ -27,15 +27,15 @@ function UserTest(props: UserTestProps): JSX.Element {
     const history = useHistory();
     const [nextButtonDisabled, setNextButtonDisabled] = useState<boolean>(true);
 
-    const curJwtPair: string = getJwtPair();
-    const options = {
-        headers: {
-            'Authorization': `Bearer ${curJwtPair}`,
-            'withCredentials': true
-        },
-    }
+    const curJwtPair = getJwtPair();
 
     const getQuestions = async () => {
+        const options = {
+            headers: {
+                'Authorization': `Bearer ${await curJwtPair}`,
+                'withCredentials': true
+            },
+        }
         const response = await axios.get<TypeUserTestQuestion[]>('/api/questions', options);
         const questions = response.data.map((question) => ({
             ...question,

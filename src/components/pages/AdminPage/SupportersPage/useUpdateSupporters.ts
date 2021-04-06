@@ -5,14 +5,14 @@ import { TypeSupporter, TypeUseRemoveSupporterResult } from "./types";
 
 export function useUpdateSupporters(): TypeUseRemoveSupporterResult {
   const [loading, setLoading] = useState<boolean>(false);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const [supporters, setSupporters] = useState<TypeSupporter[] | null>(null);
 
   async function getSupporters(): Promise<TypeSupporter | Object> {
     setLoading(true);
     const options = {
       headers: {
-        'Authorization': `Bearer ${curJwtPair}`,
+        'Authorization': `Bearer ${await curJwtPair}`,
         'withCredentials': true
       },
     }
@@ -34,7 +34,7 @@ export function useUpdateSupporters(): TypeUseRemoveSupporterResult {
     setLoading(true);
     const options = {
       headers: {
-        'Authorization': `Bearer ${curJwtPair}`,
+        'Authorization': `Bearer ${await curJwtPair}`,
         'withCredentials': true
       },
     }

@@ -7,13 +7,13 @@ import { TypeOrganizationTypes, TypeUseGetOrganizationTypes } from "../PartnersP
 export function useGetOrganizationTypes(): TypeUseGetOrganizationTypes {
   const [loading, setLoading] = useState<boolean>(false);
   const [organizationTypes, setOrganizationTypes] = useState<TypeOrganizationTypes[]>([]);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
 
   async function getOrganizationTypes(): Promise<any> {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }

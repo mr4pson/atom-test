@@ -33,13 +33,6 @@ function FaqPage(): JSX.Element {
     }
 
     const curJwtPair = getJwtPair();
-    const options = {
-        headers: {
-            'Authorization': `Bearer ${curJwtPair}`,
-            'withCredentials': true
-        },
-    }
-
 
     useCheckRole('У вас нет доступа к панели администратора, т.к. вы обычный пользователь!');
 
@@ -54,7 +47,12 @@ function FaqPage(): JSX.Element {
                 icon: !isEditing ? <EditIcon /> : <DoneIcon />,
                 callback: async (action: TypeAction, config: TypeCollapseConfig, formValues: Object) => {
                     config.isEditing = !config.isEditing;
-
+                    const options = {
+                        headers: {
+                            'Authorization': `Bearer ${await curJwtPair}`,
+                            'withCredentials': true
+                        },
+                    }
                     if (config.isEditing) {
                         action.icon = <DoneIcon />;
                     } else {
@@ -84,8 +82,14 @@ function FaqPage(): JSX.Element {
             {
                 id: 'Delete',
                 icon: <TrashIcon />,
-                callback: (action: TypeAction, config: TypeCollapseConfig) => {
+                callback: async (action: TypeAction, config: TypeCollapseConfig) => {
                     console.log(faqQuestions);
+                    const options = {
+                        headers: {
+                            'Authorization': `Bearer ${await curJwtPair}`,
+                            'withCredentials': true
+                        },
+                    }
                     if (!config.id) {
                         return;
                     }

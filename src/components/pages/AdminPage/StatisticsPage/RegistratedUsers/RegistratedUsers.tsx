@@ -16,17 +16,17 @@ import { months, TypeRegisteredUsers, TypeRegisteredUsersFormated } from './type
 function RegistratedUsers(): JSX.Element {
     const [registeredUsers, setRegisteredUsers] = useState<TypeRegisteredUsersFormated>();
     const initialDatePickerValue = { dateFrom: moment('01.01.2020').format('DD.MM.YY'), dateTo: moment().format('DD.MM.YY') };
-    const curJwtPair: string = getJwtPair();
-    const options = {
-        headers: {
-            'Authorization': `Bearer ${curJwtPair}`,
-            'withCredentials': true
-        },
-    }
+    const curJwtPair = getJwtPair();
     const getRegisteredUsers = async (dateFrom: string, dateTo: string) => {
         const payload = {
             dateFrom,
             dateTo,
+        }
+        const options = {
+            headers: {
+                'Authorization': `Bearer ${await curJwtPair}`,
+                'withCredentials': true
+            },
         }
         const response = await axios.get<TypeRegisteredUsers>('/api/statistics/registered-users', {
             ...options,

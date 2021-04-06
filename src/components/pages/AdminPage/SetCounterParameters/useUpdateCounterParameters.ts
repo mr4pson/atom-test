@@ -15,7 +15,7 @@ type TypeUseUpdateCounterResult = {
 
 export function useUpdateCounterParameters(): TypeUseUpdateCounterResult {
   const [loading, setLoading] = useState<boolean>(false);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const [statusType, setStatusType] = useState<StatusType>(StatusType.INFO);
   const [counterName, setCounterName] = useState<counterParametersType>();
   const [bannerData, setBannerData] = useState<any>();
@@ -25,7 +25,7 @@ export function useUpdateCounterParameters(): TypeUseUpdateCounterResult {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -53,7 +53,7 @@ export function useUpdateCounterParameters(): TypeUseUpdateCounterResult {
     setCounterName(id);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }

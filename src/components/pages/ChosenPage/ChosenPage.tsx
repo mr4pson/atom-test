@@ -14,18 +14,17 @@ function ChosenPage() {
   const [news, setNews] = useState<TypeNewsPageData>();
   const [recommendedNews, setRecommendedNews] = useState<TypeNewsPageData[]>();
   const { link } = useParams<{ link: string }>();
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const options = {
-    headers: {
-        'Authorization': `Bearer ${curJwtPair}`,
-        'withCredentials': true
-    },
-  }
-
   const getPage = async () => {
+    const options = {
+      headers: {
+          'Authorization': `Bearer ${await curJwtPair}`,
+          'withCredentials': true
+      },
+    }
     const response = await axios.get<TypeNewsPageData>('/api/news/getByLink/' + link, options);
     setNews({
       ...response.data,
@@ -34,6 +33,12 @@ function ChosenPage() {
   }
 
   const getRecommendedNews = async () => {
+    const options = {
+      headers: {
+          'Authorization': `Bearer ${await curJwtPair}`,
+          'withCredentials': true
+      },
+    }
     const response = await axios.get<TypeNewsPageData[]>('/api/news/getRecommendedList/' + link, options);
     setRecommendedNews(response.data);
     console.log(response.data);

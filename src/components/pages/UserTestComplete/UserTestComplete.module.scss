@@ -28,3 +28,9 @@
     top: 140px;
     right: 0;
 }
+
+@media (max-width: 768px) {
+    .info-sheet {
+        top: 230px;
+    }
+}

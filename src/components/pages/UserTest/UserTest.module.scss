@@ -24,6 +24,10 @@
     }
 }
 
+.stop-test-small {
+    display: none;
+}
+
 .questions-info {
     font-family: AGOpus;
     position: absolute;
@@ -41,5 +45,30 @@
         font-weight: bold;
         line-height: 174.4%;
         text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .user-test {
+        &__body {
+            flex-direction: column;
+            padding-top: 25px;
+        }
+    }
+    .stop-test {
+        display: none;
+    }
+
+    .stop-test-small {
+        margin-top: 45px;
+        display: block;
+        &__btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 31px;
+            margin-right: 0;
+        }
     }
 }

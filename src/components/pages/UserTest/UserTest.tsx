@@ -116,6 +116,14 @@ function UserTest(props: UserTestProps): JSX.Element {
                             />
                         </Form>
                     </div>
+                    <div className={classNames(styles['user-test__stop-test'], styles['stop-test-small'])}>
+                        <ButtonElem
+                            onClick={handleStopTest}
+                            className={classNames(styles['user-test__stop-test'], styles['stop-test-small__btn'])}
+                            type={buttonElemType.Primary}
+                            htmlType={htmlType.SUBMIT}
+                        >{userTest.buttons.stopTest}</ButtonElem>
+                    </div>
                     <div className={styles['user-test__right-col']}>
                         <TestTimer/>
                         <div className={styles['questions-info']}>

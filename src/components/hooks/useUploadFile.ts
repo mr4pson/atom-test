@@ -1,11 +1,13 @@
 import { FormInstance } from "antd";
 import axios from "axios";
+import { useState } from "react";
 
 export function useUploadFile(
   formRef: React.RefObject<FormInstance<any>>,
   setIsChoosenFileChecked?: (value: boolean) => void,
   fieldName: string = 'uploadFile',
 ): any {
+  const [mediaFile, setMediaFile] = useState<string>();
   const path = '/api/attachments/addAttachments';
 
   async function uploadFiles(files: FileList) {
@@ -27,11 +29,13 @@ export function useUploadFile(
     if (setIsChoosenFileChecked) {
       setIsChoosenFileChecked(false);
     }
-    
-    return uploadFileResponse.data[0].fileName
+
+    setMediaFile(uploadFileResponse.data[0].fileName);
+    return uploadFileResponse.data[0].fileName;
   }
 
   return {
     uploadMediaFile,
+    mediaFile,
   }
 }

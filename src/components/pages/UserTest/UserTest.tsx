@@ -91,6 +91,10 @@ function UserTest(props: UserTestProps): JSX.Element {
         });
     }
 
+    const handleStopTest = () => {
+        history.push(paths[Page.USER_TEST_COMPLETE]);
+    }
+
     // console.log(props);
         console.log(question);
     return (
@@ -124,6 +128,7 @@ function UserTest(props: UserTestProps): JSX.Element {
                 </div>
                 <div className={classNames(styles['user-test__stop-test'], styles['stop-test'])}>
                     <ButtonElem
+                        onClick={handleStopTest}
                         className={classNames(styles['user-test__stop-test'], styles['stop-test__btn'])}
                         type={buttonElemType.Primary}
                         htmlType={htmlType.SUBMIT}

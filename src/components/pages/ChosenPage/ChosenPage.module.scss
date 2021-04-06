@@ -13,7 +13,9 @@
     height: 523px;
     border-radius: 30px;
     background: #eeeeee;
-    background-size: cover;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
   &__headers-normal {

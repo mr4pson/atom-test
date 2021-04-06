@@ -432,6 +432,11 @@
     align-items: center;
     justify-content: center;
     margin-top: 65px;
+    padding-left: 30px;
+
+    &:first-child {
+      margin-right: 30px;
+    }
   }
 
   .about-project {
@@ -443,6 +448,7 @@
     &__sub-title {
       width: 100%;
       font-size: 15px;
+      margin-bottom: 75px;
     }
     .dictant {
       flex-direction: column;
@@ -528,6 +534,10 @@
     }
   }
 
+  .supporter {
+    width: 340px;
+  }
+
   .supporter__carousel {
     width: 100%;
     display: block;
@@ -558,5 +568,9 @@
 
   .elipse-small {
     display: none;
+  }
+
+  .button-small {
+    margin-right: 0;
   }
 }

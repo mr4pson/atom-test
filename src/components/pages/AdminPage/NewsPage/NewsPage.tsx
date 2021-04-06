@@ -25,16 +25,17 @@ function NewsPage(props: {
 
   const formRef = useRef<FormInstance>(null);
   const { Option } = Select;
-  const [note, setNote] = useState<string>(subcategoriesList[0].value);
+  const [category, setCategory] = useState<string>(subcategoriesList[0].value);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [chosenNews, setChosenNews] = useState<string>('');
 
-  const { loading, getNews, news, deleteNews, getNewsByName } = useRemoveNews();
+  const { loading, getNews, news, deleteNews, getNewsByName, getNewsByCategory } = useRemoveNews();
 
   const { getSubcategories, subcategories } = useCreateNews();
 
   const transformedSubcategories = subcategories.map((item) => {
     return {
+      id: item.id!,
       title: item.title,
       value: item.title,
     };
@@ -43,7 +44,7 @@ function NewsPage(props: {
   const allSubcategories = subcategoriesList.concat(transformedSubcategories);
 
   const inititalFormState = {
-    note: subcategoriesList[0].value,
+    category: subcategoriesList[0].title,
     searchNews: '',
   }
 
@@ -88,7 +89,9 @@ function NewsPage(props: {
   ];
 
   function handleSelectChange(value: string): void {
-    setNote(value);
+    console.log(value);
+    setCategory(value);
+    getNewsByCategory(value);
     onSubmit();
   }
 
@@ -142,7 +145,7 @@ function NewsPage(props: {
     ])
   }, []);
 
-  console.log(allSubcategories);
+  console.log(category);
 
   return (
     <div className={styles['news-page']}>
@@ -154,7 +157,7 @@ function NewsPage(props: {
       >
         <div className={styles["tool-bar"]}>
           <div className={styles["tool-bar__input-select-wrapper"]}>
-            <Form.Item className={styles["news-page__form-item"]} name="note">
+            <Form.Item className={styles["news-page__form-item"]} name="category">
               <Select
                 placeholder="Выбирите запись"
                 className={classNames(
@@ -162,10 +165,10 @@ function NewsPage(props: {
                   styles["tool-bar__select"]
                 )}
                 onChange={handleSelectChange}
-                value={note}
+                value={category}
               >
                 {allSubcategories.map((item) => (
-                  <Option key={item?.value} value={item?.value}>
+                  <Option key={item?.id} value={item?.id}>
                     {item?.title}
                   </Option>
                 ))}

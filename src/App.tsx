@@ -9,16 +9,14 @@ import { getRoutes } from './routes/routes';
 import { TypeRoute } from 'routes/type';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import Navigation from 'components/modules/Navigation';
-import { getUserInfo } from 'components/common/commonHelper';
 
 
 function App() {
-  const userInfo = getUserInfo();
   return (
     <div className="App">
       <Router>
         <div className="container">
-          <Navigation userInfo={userInfo!} navigationType={NavigationType.HEADER} />
+          <Navigation navigationType={NavigationType.HEADER} />
         </div>
         <div className="page">
           <Switch>

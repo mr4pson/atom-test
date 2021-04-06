@@ -49,12 +49,6 @@ body {
   color: #4B4B4B;
 }
 
-@media (max-width: 414px) {
-	.container {
-		padding: 0 17px 17px;
-	}
-}
-
 /*Ant design common components styles*/
 .ant-select-selector:focus {
   border: none;
@@ -363,4 +357,29 @@ body {
 
 .subcategory__select .ant-select-selection-placeholder, .subcategory__select .ant-select-selection-item {
 	margin-top: 4px;
+}
+
+.fr-wrapper div:first-child a {
+	visibility: hidden;
+	padding: 0;
+}
+
+
+
+@media (max-width: 414px) {
+	.private-office .ant-col-12 {
+		max-width: 65%;
+	}
+}
+
+@media (max-width: 768px) {
+	.BrainhubCarousel .BrainhubCarousel__trackContainer .BrainhubCarousel__track {
+		margin-left: -60px !important;
+	}
+}
+
+@media (max-width: 600px) {
+	.BrainhubCarousel .BrainhubCarousel__trackContainer .BrainhubCarousel__track {
+		margin-left: -125px !important;
+	}
 }

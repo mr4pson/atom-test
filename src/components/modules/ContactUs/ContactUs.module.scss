@@ -30,6 +30,7 @@
   &__image {
     width: 600px;
     height: 470px;
+    background-repeat: no-repeat;
     background-image: url(../../../assets/images/home-page/contact-us.png);
     background-position-x: -70px;
     background-size: cover;
@@ -119,5 +120,72 @@
   }
   .ant-form-item {
     margin-bottom: 22px;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .contact-us {
+    padding-bottom: 70px;
+    width: 100%;
+
+    &__right-bar {
+      width: 100%;
+      padding-top: 0;
+      margin-right: 0;
+    }
+
+    &__title {
+      font-size: 36px;
+      line-height: 100%;
+      margin-bottom: 0;
+    }
+
+    &__left-bar {
+      display: flex;
+      justify-content: center;
+    }
+    
+    &__body {
+      flex-direction: column-reverse;
+      width: 100%;
+    }
+
+    &__image {
+      background-image: url(/assets/images/home-page/sapiens.png);
+      width: 320px;
+      height: 247px;
+      margin-right: 0;
+      background-position-x: 0;
+    }
+
+    &__footer {
+      bottom: -30px;
+      left: -30px;
+    }
+  }
+
+  .contact-us-form {
+    &__top {
+      flex-direction: column;
+    }
+
+    &__input {
+      width: 100%;
+    }
+
+    &__controlls {
+      flex-direction: column;
+    }
+
+    &__button {
+      width: 100%;
+      margin-right: 0 !important;
+      margin-bottom: 15px;
+    }
+
+    &__info {
+      text-align: center;
+    }
   }
 }

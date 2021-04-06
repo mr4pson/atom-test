@@ -385,10 +385,10 @@ function PrivateOffice(props): JSX.Element {
                 </div>
               </div>
               <div className={styles['diploma-info']}>
-                <div className={styles['diploma-info__title']}>Диплом</div>
+                <div className={styles['diploma-info__title']}>Сертификат</div>
                 <div className={styles['diploma-info__frame']}>
                   <div className={styles['diploma-info__image']}>
-                    <span className={styles['diploma-info__name']}>Диплом</span>
+                    <span className={styles['diploma-info__name']}>Сертификат</span>
                   </div>
                   <div className={classNames(styles['diploma-info__share-in'], styles['share-in'])}>
                     <ShareIn />

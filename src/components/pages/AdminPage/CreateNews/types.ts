@@ -6,6 +6,7 @@ export type TypeCreateNewsPageData = {
   name: string;
   heading: string;
   description: string;
+  preview: string;
   status: string;
   uploadFile: any;
   createdAt: string;

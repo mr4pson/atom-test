@@ -89,7 +89,6 @@ function NewsPage(props: {
   ];
 
   function handleSelectChange(value: string): void {
-    console.log(value);
     setCategory(value);
     getNewsByCategory(value);
     onSubmit();
@@ -110,7 +109,6 @@ function NewsPage(props: {
     setChosenNews(itemData.name);
     props.setCurrentIdToState(itemData.id);
     setIsModalVisible(true);
-    console.log(itemData.id);
   };
 
   const handleDelete = async () => {
@@ -144,8 +142,6 @@ function NewsPage(props: {
       getSubcategories()
     ])
   }, []);
-
-  console.log(category);
 
   return (
     <div className={styles['news-page']}>

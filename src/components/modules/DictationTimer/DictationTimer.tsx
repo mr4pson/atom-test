@@ -10,7 +10,7 @@ type Props = {
 }
 
 function DictationTimer(props: Props): JSX.Element {
-    const seconds = getRemainingSeconds(props.dictantDateString);
+    const seconds = getRemainingSeconds(props.dictantDateString.replace(/\s/, 'T'));
     const time = getTimeObjectFromSeconds(seconds);
     const [remainingTime, setTime] = useState<TypeTime>(getPadTime(time));
     useEffect(() => {

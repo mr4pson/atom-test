@@ -6,7 +6,7 @@ import styles from "./CreateNews.module.scss";
 import Icon from "components/uiKit/Icon";
 import classNames from "classnames";
 import { fileBlankIcon, imageAltIcon } from "icons";
-import { statuses } from "./constants";
+import { froalaTag, statuses } from "./constants";
 import TextRedactor from "components/uiKit/TextRedactor";
 import { useLocation, useHistory } from "react-router-dom";
 import { AdminsPage, paths } from "../routes/constants";
@@ -45,9 +45,11 @@ function CreateNews(): JSX.Element {
 
     if (formFieldsValue.name && formFieldsValue.uploadFile && formFieldsValue.subcategory) {
       setIsChoosenFileChecked(false);
-      await updateNews({ ...formFieldsValue }, id)
+      await updateNews({ 
+        ...formFieldsValue,
+        description: formFieldsValue.description.replace(froalaTag, ''),
+      }, id)
       history.push(paths[AdminsPage.NEWS]);
-      console.log(formRef.current?.getFieldsValue());
     }
     console.log(formRef.current?.getFieldsValue());
   }
@@ -57,9 +59,15 @@ function CreateNews(): JSX.Element {
 
     if (formFieldsValue.name && formFieldsValue.uploadFile && formFieldsValue.subcategory) {
       if (id) {
-        await updateNews({ ...formFieldsValue }, id);
+        await updateNews({
+          ...formFieldsValue,
+          description: formFieldsValue.description.replace(froalaTag, ''),
+        }, id);
       } else {
-        await createNews({ ...formFieldsValue });
+        await createNews({
+          ...formFieldsValue,
+          description: formFieldsValue.description.replace(froalaTag, ''),
+        });
       }
       setIsChoosenFileChecked(false);
       history.push(paths[AdminsPage.NEWS]);

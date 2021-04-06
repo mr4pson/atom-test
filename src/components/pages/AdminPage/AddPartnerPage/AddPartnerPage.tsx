@@ -15,6 +15,7 @@ import Loader from 'components/uiKit/Loader';
 import { useCheckRole } from "components/hooks/useCheckRole";
 import { useGetOrganizationTypes } from "./useGetOrganizationTypes";
 import { useUploadFile } from "components/hooks/useUploadFile";
+import { froalaTag } from "../CreateNews/constants";
 
 function AddPartnerPage(): JSX.Element {
   const formRef = useRef<FormInstance>(null);
@@ -47,9 +48,16 @@ function AddPartnerPage(): JSX.Element {
       formFieldsValue.uploadFile
     ) {
       if (id) {
-        await updatePartner({ ...formFieldsValue, visible: true }, id);
+        await updatePartner({ 
+          ...formFieldsValue,
+          visible: true, 
+          description: formFieldsValue.description.replace(froalaTag, ''),
+        }, id);
       } else {
-        await addPartner({ ...formFieldsValue, visible: true });
+        await addPartner({
+          ...formFieldsValue, visible: true, 
+          description: formFieldsValue.description.replace(froalaTag, ''),
+         });
       }
       setIsChoosenFileChecked(false);
       history.push(paths[AdminsPage.PARTNERS]);

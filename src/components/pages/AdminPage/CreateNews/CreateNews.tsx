@@ -31,6 +31,7 @@ function CreateNews(): JSX.Element {
     subcategory: "",
     status: "drafts",
     description: "",
+    preview: "",
     uploadFile: null,
   };
 
@@ -177,6 +178,25 @@ function CreateNews(): JSX.Element {
                   <span className={styles["choose-file"]}>Пожалйуста, выберите файл!</span>
                 )}
             </div>
+            <div className={styles["create-news-page__title"]}>Превью</div>
+            <Form.Item
+              rules={[
+                {
+                  required: true,
+                  message: "Пожалуйста, введите превью статьи !",
+                },
+              ]}
+              className={styles["form-item"]}
+              name="preview"
+            >
+              <Input
+                className={styles["main-data-header__input"]}
+                placeholder="Введите превью статьи"
+                type="search"
+                value={currentNews?.preview}
+                disabled={loading}
+              />
+            </Form.Item>
             <div className={styles["main-data-description"]}>
               <div className={styles["create-news-page__title"]}>
                 Описание новости

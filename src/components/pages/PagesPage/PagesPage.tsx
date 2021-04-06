@@ -13,20 +13,19 @@ import { TypeMenu } from '../AdminPage/MenuPage/types';
 function PagesPage() {
 
   const { categoryLink, subcategoryLink } = useParams<{ categoryLink: string, subcategoryLink: string }>();
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const [pages, setPages] = useState<TypePage[]>([]);
   const [menu, setMenu] = useState<TypeMenu>();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const options = {
-    headers: {
-        'Authorization': `Bearer ${curJwtPair}`,
-        'withCredentials': true
-    },
-  }
-
   const getPages = async () => {
+    const options = {
+      headers: {
+          'Authorization': `Bearer ${await curJwtPair}`,
+          'withCredentials': true
+      },
+    }
     const response = await axios.get<TypePage[]>('/api/news/' + categoryLink + '/' + subcategoryLink, options);
     setPages(response.data.map((page) => ({
       ...page,
@@ -35,6 +34,12 @@ function PagesPage() {
   }
 
   const getMenuByLink = async () => {
+    const options = {
+      headers: {
+          'Authorization': `Bearer ${await curJwtPair}`,
+          'withCredentials': true
+      },
+    }
     const response = await axios.get<TypeMenu>('/api/subcategories/byLink/' + subcategoryLink, options);
     setMenu(response.data);
   }

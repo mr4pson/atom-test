@@ -4,7 +4,9 @@ import { TypeUserInfo } from './types';
 import { notification } from "antd";
 
 export function getUserInfo(): TypeUserInfo | null {
-  const currentJwt = getJwtPair();
+  const jwtPair: string | null = 
+    localStorage.getItem('jwtPair') ? localStorage.getItem('jwtPair') : '';
+  const currentJwt: string = jwtPair ? JSON.parse(jwtPair) : '';
   if (!currentJwt) {
     return null;
   }

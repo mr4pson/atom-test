@@ -26,13 +26,7 @@ function MenuPage(): JSX.Element {
   const [menuElems, setMenuElems] = useState<TypeMenu[]>([]);
   const history = useHistory();
 
-  const curJwtPair: string = getJwtPair();
-  const options = {
-    headers: {
-      Authorization: `Bearer ${curJwtPair}`,
-      withCredentials: true,
-    },
-  };
+  const curJwtPair = getJwtPair();
 
   const getActions = (
     isEditing: boolean = false,
@@ -52,6 +46,12 @@ function MenuPage(): JSX.Element {
             editable: config?.editable,
             deletable: config?.deletable,
           }
+          const options = {
+            headers: {
+              Authorization: `Bearer ${await curJwtPair}`,
+              withCredentials: true,
+            },
+          };
           const menuResponse = await axios.put<TypeMenu[]>('/api/menus/' + config.id, payload, options);
 
           setMenuElems([
@@ -94,6 +94,12 @@ function MenuPage(): JSX.Element {
                 subcategories: [],
                 visible: config.visible,
               }
+              const options = {
+                headers: {
+                  Authorization: `Bearer ${await curJwtPair}`,
+                  withCredentials: true,
+                },
+              };
               const menuResponse = await axios.post<TypeMenu>('/api/menus', payload, options);
               setMenuElems(menuElems.concat([{
                 ...menuResponse.data,
@@ -114,6 +120,12 @@ function MenuPage(): JSX.Element {
           if (!config.id) {
             return;
           } 
+          const options = {
+            headers: {
+              Authorization: `Bearer ${await curJwtPair}`,
+              withCredentials: true,
+            },
+          };
           if (window.confirm(`Вы уверены, что хотите удалить меню №${config.id}`)) {
             const response = await axios.delete<TypeMenu[]>('/api/menus/' + config.id, options);
             setMenuElems(response.data.map((menu) => {

@@ -8,7 +8,7 @@ import { TypeSubCategory } from "../MenuDetailPage/types";
 
 export function useCreateNews(): TypeUseUpdateNewsResult {
   const [loading, setLoading] = useState<boolean>(false);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const [currentNews, setCurrentNews] = useState<TypeNewsPageData | null>(null);
   const [subcategories, setSubcategories] = useState<TypeSubCategory[]>([]);
 
@@ -16,7 +16,7 @@ export function useCreateNews(): TypeUseUpdateNewsResult {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -43,7 +43,7 @@ export function useCreateNews(): TypeUseUpdateNewsResult {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -66,7 +66,7 @@ export function useCreateNews(): TypeUseUpdateNewsResult {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -89,7 +89,7 @@ export function useCreateNews(): TypeUseUpdateNewsResult {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }

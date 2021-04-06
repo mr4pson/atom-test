@@ -5,14 +5,14 @@ import { TypeSupporter, TypeUseUpdateSupporterResult } from "../SupportersPage/t
 
 export function useUpdateSupporter(): TypeUseUpdateSupporterResult {
   const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const [currentSupporter, setCurrentSupporter] = useState<any>(null);
 
   async function getCurrentSupporter(id: string): Promise<TypeSupporter | Object> {
     setLoadingUpdate(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -34,7 +34,7 @@ export function useUpdateSupporter(): TypeUseUpdateSupporterResult {
     setLoadingUpdate(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -57,7 +57,7 @@ export function useUpdateSupporter(): TypeUseUpdateSupporterResult {
     setLoadingUpdate(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }

@@ -7,14 +7,14 @@ import { TypeParticipant } from "./types";
 
 export function useGetParticipant(): TypeUseGetParticipantResult {
   const [loading, setLoading] = useState<boolean>(false);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const [currentParticipant, setCurrentParticipant] = useState<TypeParticipant | null>(null);
 
   async function getCurrentParticipant(id: string): Promise<any> {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -40,7 +40,7 @@ export function useGetParticipant(): TypeUseGetParticipantResult {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }

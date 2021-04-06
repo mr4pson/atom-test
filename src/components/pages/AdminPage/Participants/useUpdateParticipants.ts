@@ -7,7 +7,7 @@ import { TypeParticipant } from "components/pages/PrivateOffice/types";
 
 export function useUpdateParticipants(): TypeUseUpdateParticipantResult {
   const [loading, setLoading] = useState<boolean>(false);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
   const [participants, setParticipants] = useState<
     (TypeParticipant & { createdAt: string })[] | null
   >(null);
@@ -16,7 +16,7 @@ export function useUpdateParticipants(): TypeUseUpdateParticipantResult {
     setLoading(true);
     const options = {
       headers: {
-        'Authorization': `Bearer ${curJwtPair}`,
+        'Authorization': `Bearer ${await curJwtPair}`,
         'withCredentials': true
       },
     }
@@ -44,7 +44,7 @@ export function useUpdateParticipants(): TypeUseUpdateParticipantResult {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -72,7 +72,7 @@ export function useUpdateParticipants(): TypeUseUpdateParticipantResult {
     setLoading(true);
     const options = {
       headers: {
-        'Authorization': `Bearer ${curJwtPair}`,
+        'Authorization': `Bearer ${await curJwtPair}`,
         'withCredentials': true
       },
     }

@@ -8,15 +8,9 @@ import { ReactComponent as EditIcon } from '../../../../assets/images/admin/edit
 import { ReactComponent as ImageIcon } from '../../../../assets/images/admin/image.svg';
 import { ReactComponent as TrashIcon } from '../../../../assets/images/admin/trash.svg';
 import { TypeAction } from './TestQuestionsOption/types';
-import { TypeTestQuestion, TypeTestQuestionOption } from "./types";
+import { QuestionOptionType, TypeTestQuestion, TypeTestQuestionOption } from "./types";
 
-const curJwtPair: string = getJwtPair();
-const options = {
-  headers: {
-    'Authorization': `Bearer ${curJwtPair}`,
-    'withCredentials': true
-  },
-}
+const curJwtPair = getJwtPair();
 
 export const getQuestionActions = (
   isEditing: boolean = false,
@@ -51,6 +45,12 @@ export const getQuestionActions = (
         action.icon = <EditIcon />;
         Object.assign(config, formValues);
         // TODO request to backend
+        const options = {
+          headers: {
+            'Authorization': `Bearer ${await curJwtPair}`,
+            'withCredentials': true
+          },
+        }
         if (config.id) {
           const payload = {
             _id: config.id,
@@ -64,6 +64,7 @@ export const getQuestionActions = (
             type: config.type,
             image: config.image,
           }
+          
           await axios.put<TypeTestQuestion>('/api/questions/' + config.id, payload, options);
         } else {
           console.log('create');
@@ -104,12 +105,18 @@ export const getQuestionActions = (
       {
         id: 'Delete',
         icon: <TrashIcon />,
-        callback: (action: TypeAction, config: TypeCollapseConfig) => {
+        callback: async (action: TypeAction, config: TypeCollapseConfig) => {
           if (!config.id) {
             return;
           }
           if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
             // TODO request to backend
+            const options = {
+              headers: {
+                'Authorization': `Bearer ${await curJwtPair}`,
+                'withCredentials': true
+              },
+            }
             axios.delete('/api/questions/' + config.id, options).then((response) => {
               setTestQuestions(response.data.map((question) => {
                 question.actions = getQuestionActions(question.isEditing, setTestQuestions, question, setRerender, setCurrentTest, setCurrentTestOption);
@@ -182,12 +189,16 @@ export const getQuestionOptionActions = (
       setTestQuestions((prevStateQuestions) => {
         const questions = [...prevStateQuestions];
         const curQuestion = questions.find(curQuestion => curQuestion.id === question.id) as TypeTestQuestion;
-        const activeOption = curQuestion.options.find((option) => option.trueOption) as TypeTestQuestionOption;
-        if (activeOption) {
-          activeOption.trueOption = false;
+        if (curQuestion.type === QuestionOptionType.RADIO) {
+          const activeOption = curQuestion.options.find((option) => option.trueOption) as TypeTestQuestionOption;
+          if (activeOption) {
+            activeOption.trueOption = false;
+          }
+          config.trueOption = true;
+        } else {
+          config.trueOption = !option?.trueOption;
         }
         action.icon = <TrueIcon className="test-questions-option__action_active" />;
-        config.trueOption = true;
 
         return questions;
       });

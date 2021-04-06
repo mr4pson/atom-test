@@ -7,13 +7,13 @@ import moment from "moment";
 export function useRemoveNews(): any {
   const [loading, setLoading] = useState<boolean>(false);
   const [news, setNews] = useState<any[]>([]);
-  const curJwtPair: string = getJwtPair();
+  const curJwtPair = getJwtPair();
 
   async function getNews(): Promise<any> {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -43,7 +43,7 @@ export function useRemoveNews(): any {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }
@@ -71,7 +71,7 @@ export function useRemoveNews(): any {
     setLoading(true);
     const options = {
       headers: {
-          'Authorization': `Bearer ${curJwtPair}`,
+          'Authorization': `Bearer ${await curJwtPair}`,
           'withCredentials': true
       },
     }

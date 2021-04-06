@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import { getJwtPair } from '../LoginPage/helpers';
 import { TypeUserTestQuestion } from '../UserTest/types';
 import styles from './UserTestComplete.module.scss';
+import { ReactComponent as InfoSheetSvg } from './../../../assets/images/user-test/info-sheet.svg';
+import classNames from 'classnames';
 
 type UserTestCompleteProps = {
     answers: Object;
@@ -32,19 +34,18 @@ function UserTest(props: UserTestCompleteProps): JSX.Element {
         getQuestions();
     }, []);
 
-    const answeredQuiestionsNumber = Object.keys(props.answers).length;
-    const quiestionsNumber = questionsNumber;
+    // const answeredQuiestionsNumber = Object.keys(props.answers).length;
+    // const quiestionsNumber = questionsNumber;
     return(
         <div className={styles['user-test-complete']}>
-            <div className="container">
+            <div className={classNames('container', styles['container'])}>
+                <h1 className={styles['user-test-complete__title']}>Правильные ответы</h1>
                 <div className={styles['user-test-complete__body']}>
-                    <h1 className={styles['user-test-complete__title']}>{!props.isTimerFinished ? 
-                        userTestComplete.successfulTitle :
-                        userTestComplete.failedTitle
-                    }</h1>
-                    <div className={styles['user-test-complete__info']}>
-                        {userTestComplete.questionsAnswered}: {answeredQuiestionsNumber} {userTestComplete.from} {quiestionsNumber}
-                    </div>
+                    
+                </div>
+                <div className={classNames(styles['user-test-complete__info-sheet'], styles['info-sheet'])}>
+                    <InfoSheetSvg />
+                    <div className="user-test-complete__info-sheet"></div>
                 </div>
             </div>
         </div>

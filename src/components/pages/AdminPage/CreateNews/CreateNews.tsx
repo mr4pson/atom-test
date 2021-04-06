@@ -15,6 +15,7 @@ import Loader from 'components/uiKit/Loader';
 import { useParams } from "react-router";
 import { useCheckRole } from "components/hooks/useCheckRole";
 import { useUploadFile } from "components/hooks/useUploadFile";
+import { getImageUrl } from "components/common/commonHelper";
 
 function CreateNews(): JSX.Element {
   const location = useLocation();
@@ -37,7 +38,7 @@ function CreateNews(): JSX.Element {
 
   const formRef = useRef<FormInstance>(null);
 
-  const { uploadMediaFile } = useUploadFile(formRef, setIsChoosenFileChecked);
+  const { mediaFile, uploadMediaFile } = useUploadFile(formRef, setIsChoosenFileChecked);
 
   async function handleSave(): Promise<void> {
     const formFieldsValue = formRef.current?.getFieldsValue();
@@ -157,6 +158,12 @@ function CreateNews(): JSX.Element {
                   />
                 </label>
               </Form.Item>
+              {currentNews?.uploadFile && 
+                <div
+                  style={{ backgroundImage: `url(${mediaFile ? getImageUrl(mediaFile) : getImageUrl(currentNews?.uploadFile)})` }}
+                  className={styles['create-news-page__uploaded-image']}
+                ></div>
+              }
               {!formRef.current?.getFieldsValue().uploadFile &&
                 isChoosenFileChecked && (
                   <span className={styles["choose-file"]}>Пожалйуста, выберите файл!</span>

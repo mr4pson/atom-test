@@ -43,6 +43,8 @@
     height: 100%;
     background-position: center;
     background-repeat: no-repeat;
+    background-size: contain;
+    transform: scale(0.7);
   }
   
   &__title {

@@ -1,4 +1,4 @@
-import { Col, FormInstance, Input, Row } from 'antd';
+import { Col, Row } from 'antd';
 import classNames from 'classnames';
 import ContactUs from 'components/modules/ContactUs';
 import DictationTimer from 'components/modules/DictationTimer';
@@ -6,7 +6,7 @@ import FrequentlyAskedQuestions from 'components/modules/FrequentlyAskedQuestion
 import ButtonElem from 'components/uiKit/ButtomElem';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import { homePage } from 'i18n';
-import { memo, ReactNode, useEffect, useRef } from 'react';
+import { memo, ReactNode, useEffect } from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import { useUpdateSupporters } from '../AdminPage/SupportersPage/useUpdateSupporters';
 import { ReactComponent as Ellipse1 } from './../../../assets/images/home-page/ellipse1.svg';
@@ -17,13 +17,12 @@ import { ReactComponent as HowToParticipate2 } from './../../../assets/images/ho
 import { ReactComponent as HowToParticipate3 } from './../../../assets/images/home-page/how-to-participate3.svg';
 import { ReactComponent as HowToParticipate4 } from './../../../assets/images/home-page/how-to-participate4.svg';
 // import { supporters } from './constants';
-import { cutArrayByThree, renderSwitch } from './helpers';
+import { cutArrayByThree } from './helpers';
 import styles from './HomePage.module.scss';
 import { useHomePage } from './useHomePage';
 import Loader from 'components/uiKit/Loader';
 import { getImageUrl } from 'components/common/commonHelper';
 import { TypeSupporter } from '../AdminPage/SupportersPage/types';
-import Carousel from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 import CarouselWithDots from 'components/uiKit/CarouselWithDots';
 
@@ -81,8 +80,8 @@ function HomePage(): JSX.Element {
           </div>
         </div>
         <div className={styles['main-section-buttons-small']}>
-          <a href="/#about"><ButtonElem type={buttonElemType.Primary}>О проекте</ButtonElem></a>
-          <a href="/#organizators"><ButtonElem type={buttonElemType.Default}>Организаторы</ButtonElem></a>
+          <a style={{ display: 'block', marginRight: 30 }} href="/#about"><ButtonElem className={styles['button-small']} type={buttonElemType.Primary}>О проекте</ButtonElem></a>
+          <a style={{ display: 'block' }} href="/#organizators"><ButtonElem className={styles['button-small']} type={buttonElemType.Default}>Организаторы</ButtonElem></a>
         </div>
         <div id="about" className={styles['about-project']}>
           <div className={styles['about-project__title']}>
@@ -186,7 +185,7 @@ function HomePage(): JSX.Element {
                       </div>
                     </Col>
               ))} />
-              <div className={styles['supporter__swipe-info']}>Свайпайте вправо чтобы посмотреть отсальных спонсоров.</div>
+              <div className={styles['supporter__swipe-info']}>Свайпайте влево чтобы посмотреть отсальных спонсоров.</div>
             </div>
             : <Loader className={'default-loader'} />
         }

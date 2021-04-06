@@ -93,6 +93,8 @@
 
 @media (max-width: 768px) {
     .dictation-timer {
+        margin-left: 0;
+        padding-left: 71px;
         &__avatar {
             width: 360px;
             height: 291px;
@@ -101,6 +103,7 @@
         &__footer {
             height: 147px;
             width: 375px;
+            left: 45px;
             background-size: contain;
             background-repeat: no-repeat;
         }

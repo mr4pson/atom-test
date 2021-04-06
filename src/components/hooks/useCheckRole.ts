@@ -11,6 +11,9 @@ export function useCheckRole(message): void {
     if (userInfo?.role === userType.USER) {
         history.push('/private-office');
         openNotification('error', message);
+    } else if (!userInfo) {
+      history.push('/');
+      openNotification('error', 'У вас нет доступа к этой странице.');
     }
   }, [])
 }

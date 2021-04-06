@@ -1,4 +1,3 @@
-import { TypeUserInfo } from "components/common/types";
 import Icon from "components/uiKit/Icon";
 import { logoutIcon, userInfoIcon, arrowUpIcon } from "icons";
 import { memo, useEffect, useState } from "react"
@@ -10,28 +9,31 @@ import authBtnStyles from "./AuthButton.module.scss";
 import { getShortFullName } from "./utils";
 import AuthDropDown from 'components/modules/AuthDropDown';
 import classNames from 'classnames';
-import { generateUiniqueId } from "components/common/commonHelper";
+import { generateUiniqueId, getUserInfo } from "components/common/commonHelper";
 import { getJwtPair } from "components/pages/LoginPage/helpers";
 import { useAuth } from "components/pages/LoginPage/useAuth";
 
 type Props = {
   navigationType: NavigationType;
-  userInfo: TypeUserInfo;
 }
 
 function AuthButton(props: Props): JSX.Element {
   const location = useLocation();
   const [isDropDownVisible, setIsDropDownVisible] = useState<boolean>(false);
   const [uniqueId] = useState<string>(generateUiniqueId());
+  const [authBtnUserNameClassNames, setAuthBtnUserNameClassNames] = useState<string>(getAuthButtonUserNameClassNames(''));
+  const [currentJwtPair, setCurrentJwtPair] = useState<string>('');
 
   const { logout } = useAuth();
+
+  const userInfo = getUserInfo();
 
   function getAuthButtonClassNames(): string {
     return classNames(authBtnStyles['auth-button'], {
       [authBtnStyles['auth-button_justify-start']]: props.navigationType === NavigationType.FOOTER,
       [authBtnStyles['auth-button_justify-center']]: (location.pathname === paths[Page.LOGIN]
         || location.pathname === paths[Page.SIGN_UP] || location.pathname === paths[Page.FORGOT_PASSWORD]
-        || (location.pathname === paths[Page.HOME] && !getJwtPair())) && props.navigationType !== NavigationType.FOOTER,
+        || (location.pathname === paths[Page.HOME] && !currentJwtPair)) && props.navigationType !== NavigationType.FOOTER,
       [authBtnStyles['auth-button_justify-end']]: props.navigationType === NavigationType.HEADER &&
         (location.pathname.includes('admin')
           || location.pathname === paths[Page.PRIVATE_OFFICE]),
@@ -101,17 +103,31 @@ function AuthButton(props: Props): JSX.Element {
     return true;
   }
 
-  function getAuthButtonAction() {
+  function getAuthButtonUserNameClassNames(jwtPair: string): string {
+    return classNames(authBtnStyles['auth-button__user-name-wrapper'], {
+      [authBtnStyles['auth-button__user-name-wrapper_focus']]: isDropDownVisible,
+      [authBtnStyles['auth-button__user-name-wrapper_hide']]: !jwtPair || getDropDownVisibilityFlag(),
+    })
+  }
+
+  async function getAuthButtonAction() {
     if (props.navigationType === NavigationType.HEADER &&
-      (!getJwtPair() || getDropDownVisibilityFlag())) {
+      (!currentJwtPair || getDropDownVisibilityFlag())) {
       logout();
     } else if (props.navigationType === NavigationType.FOOTER &&
-      (!getJwtPair() || getDropDownVisibilityFlag())) {
+      (!currentJwtPair || getDropDownVisibilityFlag())) {
       goToTopOfPage()
     } else {
       changeDropDownVisibility()
     }
   }
+
+  useEffect(() => {
+    (async () => {
+      setCurrentJwtPair(await getJwtPair());
+      setAuthBtnUserNameClassNames(getAuthButtonUserNameClassNames(currentJwtPair));
+    })();
+  })
 
   return <div className={authBtnStyles['auth-button-wrapper']}>
     <div className={getAuthButtonClassNames()}>
@@ -122,13 +138,10 @@ function AuthButton(props: Props): JSX.Element {
         {renderUserInfoIcon()}
       </button>
       <button
-        className={classNames(authBtnStyles['auth-button__user-name-wrapper'], {
-          [authBtnStyles['auth-button__user-name-wrapper_focus']]: isDropDownVisible,
-          [authBtnStyles['auth-button__user-name-wrapper_hide']]: !getJwtPair() || getDropDownVisibilityFlag(),
-        })}
+        className={authBtnUserNameClassNames}
         onClick={changeDropDownVisibility}
       >
-        {getShortFullName(props.userInfo?.fullName)}
+        {getShortFullName(userInfo?.fullName!)}
       </button>
     </div>
     <AuthDropDown

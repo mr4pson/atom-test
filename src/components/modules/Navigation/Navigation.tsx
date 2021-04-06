@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { TypeUserInfo } from "components/common/types";
 import AuthButton from "components/modules/AuthButton";
 import { memo, useEffect, useState } from "react";
 import { useLocation } from "react-router";
@@ -15,7 +14,6 @@ import axios from "axios";
 
 type Props = {
   navigationType: NavigationType;
-  userInfo?: TypeUserInfo;
 };
 
 function Navigation(props: Props): JSX.Element {
@@ -94,7 +92,7 @@ function Navigation(props: Props): JSX.Element {
               : null}
           </ul>
           <div className={styles["user-info"]}>
-            <AuthButton userInfo={props.userInfo!} navigationType={props.navigationType} />
+            <AuthButton navigationType={props.navigationType} />
           </div>
         </div>
       </div>}

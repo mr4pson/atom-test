@@ -380,6 +380,6 @@ body {
 
 @media (max-width: 600px) {
 	.BrainhubCarousel .BrainhubCarousel__trackContainer .BrainhubCarousel__track {
-		margin-left: -125px !important;
+		margin-left: -110px !important;
 	}
 }

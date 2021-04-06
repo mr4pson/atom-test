@@ -38,5 +38,24 @@
     }
     &__options-container {
         display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 768px) {
+    .user-test-question {
+        &__title {
+            font-size: 20px;
+            width: 100%;
+        }
+
+        &__image-container {
+            width: 100%;
+        }
+
+        &__next-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
     }
 }

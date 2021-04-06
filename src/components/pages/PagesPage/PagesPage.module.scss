@@ -33,3 +33,17 @@
     font-size: 56px;
   }
 }
+
+@media (max-width: 768px) {
+  .pages-page {
+    &__title {
+      font-size: 36px;
+    }
+    
+    &__items-wrapper {
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+    }
+  }
+}

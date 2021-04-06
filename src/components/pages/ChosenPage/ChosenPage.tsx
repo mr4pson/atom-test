@@ -58,7 +58,7 @@ function ChosenPage() {
     {!isLoading ? <div className={styles["chosen-page"]}>
       <div className={styles['chosen-page__image-headers-wrapper']}>
         <div style={{ backgroundImage: `url(${getImageUrl(news?.uploadFile)})` }} className={styles['chosen-page__image']} />
-        <div className={styles['chosen-page__headers']}>
+        <div className={styles['chosen-page__headers-normal']}>
           {recommendedNews?.map((recommendedNewsItem) => (
             <Link to={'/page/' + recommendedNewsItem.url}>{recommendedNewsItem.name}</Link>
           ))}
@@ -72,6 +72,11 @@ function ChosenPage() {
       </div>
       <div className={styles["chosen-page__description"]}>
         {ReactHtmlParser(news?.description)}
+      </div>
+      <div className={styles['chosen-page__headers-small']}>
+          {recommendedNews?.map((recommendedNewsItem) => (
+            <Link to={'/page/' + recommendedNewsItem.url}>{recommendedNewsItem.name}</Link>
+          ))}
       </div>
     </div>
     : <Loader/>}

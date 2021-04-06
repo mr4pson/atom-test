@@ -5,3 +5,9 @@
 .page {
   min-height: calc(100vh - 320px);
 }
+
+@media (max-width: 768px) {
+	.App {
+		padding: 0 17px 17px;
+	}
+}

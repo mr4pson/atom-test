@@ -418,13 +418,14 @@ function PrivateOffice(props): JSX.Element {
                 </div>
               </div>
               <div className={styles['diploma-info']}>
-                <div className={styles['diploma-info__title']}>Диплом</div>
+                <div className={styles['diploma-info__title']}>Сертификат</div>
                 <div className={styles['diploma-info__frame']}>
                   <div className={styles['diploma-info__image']}>
                     {/* <span className={styles['diploma-info__name']}>Диплом</span> */}
                     <div className={styles['diploma-info__full-name']}>{fullName}</div>
                     <div className={styles['diploma-info__percentage']}>99%</div>
                     <img width={707} src="diploma.png"/>
+                    {/* <span className={styles['diploma-info__name']}>Сертификат</span> */}
                   </div>
                   <div className={classNames(styles['diploma-info__share-in'], styles['share-in'])}>
                     <ShareIn />

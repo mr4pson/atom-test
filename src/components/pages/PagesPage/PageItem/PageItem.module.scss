@@ -37,6 +37,12 @@
     color: #4B4B4B;
     font-size: 16px;
     line-height: 150%;
+
+    iframe {
+      width: 100% !important;
+      height: 100% !important;
+      overflow: hidden;  
+    }
   }
 
   &__footer {

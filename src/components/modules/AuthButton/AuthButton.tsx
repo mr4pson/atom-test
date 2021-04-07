@@ -1,5 +1,5 @@
 import Icon from "components/uiKit/Icon";
-import { logoutIcon, userInfoIcon, arrowUpIcon } from "icons";
+import { logoutIcon, userInfoIcon, arrowUpIcon, menuAlt, closeIcon } from "icons";
 import { memo, useEffect, useState } from "react"
 import { useLocation } from "react-router";
 import { paths, Page } from "routes/constants";
@@ -12,9 +12,13 @@ import classNames from 'classnames';
 import { generateUiniqueId, getUserInfo } from "components/common/commonHelper";
 import { getJwtPair } from "components/pages/LoginPage/helpers";
 import { useAuth } from "components/pages/LoginPage/useAuth";
+import { TypeLink } from "../Navigation/types";
 
 type Props = {
   navigationType: NavigationType;
+  links: TypeLink[];
+  isSmallScreenNavigationVisible: boolean | undefined;
+  setIsSmallScreenNavigationVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function AuthButton(props: Props): JSX.Element {
@@ -23,40 +27,7 @@ function AuthButton(props: Props): JSX.Element {
   const [uniqueId] = useState<string>(generateUiniqueId());
   const [authBtnUserNameClassNames, setAuthBtnUserNameClassNames] = useState<string>(getAuthButtonUserNameClassNames(''));
   const [currentJwtPair, setCurrentJwtPair] = useState<string>('');
-
-  const { logout } = useAuth();
-
-  const userInfo = getUserInfo();
-
-  function getAuthButtonClassNames(): string {
-    return classNames(authBtnStyles['auth-button'], {
-      // [authBtnStyles['auth-button_justify-start']]: props.navigationType === NavigationType.FOOTER,
-      [authBtnStyles['auth-button_justify-center']]: (location.pathname === paths[Page.LOGIN]
-        || location.pathname === paths[Page.SIGN_UP] || location.pathname === paths[Page.FORGOT_PASSWORD]
-        || (location.pathname === paths[Page.HOME] && !currentJwtPair)) && props.navigationType !== NavigationType.FOOTER,
-      [authBtnStyles['auth-button_justify-end']]: props.navigationType === NavigationType.FOOTER || props.navigationType === NavigationType.HEADER &&
-        (location.pathname.includes('admin')
-          || location.pathname === paths[Page.PRIVATE_OFFICE]),
-    })
-  }
-
-  function goToTopOfPage(): void {
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-  }
-
-  const changeDropDownVisibility = () => {
-    setTimeout(() => {
-      setIsDropDownVisible(prevState => !prevState);
-    });
-  };
-
-  useEffect(() => {
-    window.addEventListener("click", function (e: any) {
-      if (!document.getElementsByClassName(uniqueId)[0]?.contains(e.target)) {
-        setIsDropDownVisible(false);
-      }
-    });
-  }, []);
+  const screenWidth = window.screen.width;
 
   function renderUserInfoIcon(): JSX.Element {
     if (props.navigationType === NavigationType.HEADER) {
@@ -64,12 +35,51 @@ function AuthButton(props: Props): JSX.Element {
         location.pathname === '/private-office' ||
         location.pathname.includes('/admin')
       ) {
+        if (screenWidth <= 768) {
+          if (props.isSmallScreenNavigationVisible) {
+            return (
+              <Icon
+                className={styles["nav-bar-header__menu-icon"]}
+                path={closeIcon.path}
+                viewBox={closeIcon.viewBox}
+                title="Close"
+              />
+            );
+          }
+          return (
+            <Icon
+              className={styles["nav-bar-header__menu-icon"]}
+              path={menuAlt.path}
+              viewBox={menuAlt.viewBox}
+              title="MenuAlt"
+            />
+          );
+        }
         return (
           <Icon
             className={styles["nav-bar-header__logout-icon"]}
             path={logoutIcon.path}
             viewBox={logoutIcon.viewBox}
             title="AtomTest"
+          />
+        );
+      } else if (screenWidth <= 768) {
+        if (props.isSmallScreenNavigationVisible) {
+          return (
+            <Icon
+              className={styles["nav-bar-header__menu-icon"]}
+              path={closeIcon.path}
+              viewBox={closeIcon.viewBox}
+              title="Close"
+            />
+          );
+        }
+        return (
+          <Icon
+            className={styles["nav-bar-header__menu-icon"]}
+            path={menuAlt.path}
+            viewBox={menuAlt.viewBox}
+            title="MenuAlt"
           />
         );
       }
@@ -92,6 +102,39 @@ function AuthButton(props: Props): JSX.Element {
     );
   }
 
+  const { logout } = useAuth();
+  const userInfo = getUserInfo();
+
+  function getAuthButtonClassNames(): string {
+    return classNames(authBtnStyles['auth-button'], {
+      [authBtnStyles['auth-button_justify-start']]: props.navigationType === NavigationType.FOOTER,
+      [authBtnStyles['auth-button_justify-center']]: (location.pathname === paths[Page.LOGIN]
+        || location.pathname === paths[Page.SIGN_UP] || location.pathname === paths[Page.FORGOT_PASSWORD]
+        || (location.pathname === paths[Page.HOME] && !currentJwtPair)) && props.navigationType !== NavigationType.FOOTER,
+      [authBtnStyles['auth-button_justify-end']]: (props.navigationType === NavigationType.HEADER &&
+        (location.pathname.includes('admin') || location.pathname === paths[Page.PRIVATE_OFFICE]))
+        || screenWidth <= 768,
+    })
+  }
+
+  function goToTopOfPage(): void {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
+  const changeDropDownVisibility = () => {
+    setTimeout(() => {
+      setIsDropDownVisible(prevState => !prevState);
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", function (e: any) {
+      if (!document.getElementsByClassName(uniqueId)[0]?.contains(e.target)) {
+        setIsDropDownVisible(false);
+      }
+    });
+  }, []);
+
   function getDropDownVisibilityFlag() {
     if (
       props.navigationType === NavigationType.HEADER &&
@@ -106,17 +149,21 @@ function AuthButton(props: Props): JSX.Element {
   function getAuthButtonUserNameClassNames(jwtPair: string): string {
     return classNames(authBtnStyles['auth-button__user-name-wrapper'], {
       [authBtnStyles['auth-button__user-name-wrapper_focus']]: isDropDownVisible,
-      [authBtnStyles['auth-button__user-name-wrapper_hide']]: !jwtPair || getDropDownVisibilityFlag(),
+      [authBtnStyles['auth-button__user-name-wrapper_hide']]: !jwtPair
+        || getDropDownVisibilityFlag() || screenWidth <= 768,
     })
   }
 
   async function getAuthButtonAction() {
     if (props.navigationType === NavigationType.HEADER &&
-      (!currentJwtPair || getDropDownVisibilityFlag())) {
-      logout();
+      screenWidth <= 768) {
+      props.setIsSmallScreenNavigationVisible(prevState => !prevState);
     } else if (props.navigationType === NavigationType.FOOTER &&
       (!currentJwtPair || getDropDownVisibilityFlag())) {
       goToTopOfPage()
+    } else if (props.navigationType === NavigationType.HEADER &&
+      (!currentJwtPair || getDropDownVisibilityFlag())) {
+      logout();
     } else {
       changeDropDownVisibility()
     }

@@ -20,3 +20,5 @@ export { trashIcon } from './trashIcon';
 export { visibleIcon } from './visibleIcon';
 export { unVisibleIcon } from './unVisibleIcon';
 export { questionOutlineIcon } from './questionOutlineIcon';
+export { menuAlt } from './menuAlt';
+export { closeIcon } from './closeIcon';

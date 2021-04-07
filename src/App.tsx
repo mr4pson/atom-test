@@ -9,16 +9,31 @@ import { getRoutes } from './routes/routes';
 import { TypeRoute } from 'routes/type';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import Navigation from 'components/modules/Navigation';
-
+import SmallScreenNavigation from 'components/modules/SmallScreenNavigation';
+import { useState } from 'react';
 
 function App() {
+  const [isSmallScreenNavigationVisible, setIsSmallScreenNavigationVisible] = useState<boolean>(false);
+
   return (
     <div className="App">
       <Router>
         <div className="container">
-          <Navigation navigationType={NavigationType.HEADER} />
+          <Navigation
+            isSmallScreenNavigationVisible={isSmallScreenNavigationVisible}
+            setIsSmallScreenNavigationVisible={setIsSmallScreenNavigationVisible}
+            navigationType={NavigationType.HEADER}
+          />
         </div>
         <div className="page">
+          {
+            isSmallScreenNavigationVisible ?
+              <SmallScreenNavigation
+                isSmallScreenNavigationVisible={isSmallScreenNavigationVisible}
+                setIsSmallScreenNavigationVisible={setIsSmallScreenNavigationVisible}
+              />
+              : null
+          }
           <Switch>
             {getRoutes().map((route: TypeRoute) => (
               <Route exact={route.exact} key={route.path} path={route.path}>

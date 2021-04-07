@@ -21,6 +21,7 @@ function AuthDropDown(props: Props): JSX.Element {
   const location = useLocation();
   const { logout } = useAuth();
   const jwtPair = getJwtPair();
+  const screenWidth = window.screen.width;
 
   const userInfo = getUserInfo();
 
@@ -73,9 +74,7 @@ function AuthDropDown(props: Props): JSX.Element {
     }
   }
 
-  return <div
-    className={getAuthDropDownClassNames()}
-  >
+  return <div className={getAuthDropDownClassNames()}>
     <div onClick={handleSignIn} className={styles['auth-dropdown__item']}>
       {!jwtPair ? 'Авторизоваться' :
         (userInfo?.role === userType.USER ? 'Войти в личный кабинет' : 'Войти в админ панель')

@@ -10,6 +10,8 @@ import { ReactComponent as TrueIcon } from '../../../assets/images/admin/circle-
 import { ReactComponent as FalseOption } from '../../../assets/images/user-test/false-option.svg';
 import { ReactComponent as GoodCheck } from '../../../assets/images/user-test/good-check.svg';
 import classNames from 'classnames';
+import { getImageUrl } from 'components/common/commonHelper';
+import { TypeAnswer } from './types';
 
 type UserTestCompleteProps = {
     answers: Object;
@@ -17,8 +19,8 @@ type UserTestCompleteProps = {
 }
 
 function UserTest(props: UserTestCompleteProps): JSX.Element {
-    // const [questionsNumber, setQuestionsNumber] = useState<number>();
     const [questions, setQuestions] = useState<TypeUserTestQuestion[]>([]);
+    const [answers, setAnswers] = useState<object>();
 
     const curJwtPair = getJwtPair();
 
@@ -31,42 +33,81 @@ function UserTest(props: UserTestCompleteProps): JSX.Element {
         }
         const response = await axios.get<TypeUserTestQuestion[]>('/api/questions', options);
         setQuestions(response.data);
-        // const questions = response.data;
-        // setQuestionsNumber(questions.length);
+    }
+
+    const getAnswers = async () => {
+        const options = {
+            headers: {
+                'Authorization': `Bearer ${await curJwtPair}`,
+                'withCredentials': true
+            },
+        }
+        const response = await axios.get<TypeAnswer[]>('/api/answers', options);
+        console.log(JSON.parse(JSON.parse(response.data.reverse()[0].answers)));
+        setAnswers(JSON.parse(JSON.parse(response.data[0].answers)));
     }
 
     useEffect(() => {
         getQuestions();
+        getAnswers();
     }, []);
 
-    // const answeredQuiestionsNumber = Object.keys(props.answers).length;
-    // const quiestionsNumber = questionsNumber;
     return(
         <div className={styles['user-test-complete']}>
-            <div className={classNames('container', styles['container'])}>
+            {answers && <div className={classNames('container', styles['container'])}>
                 <h1 className={styles['user-test-complete__title']}>Правильные ответы</h1>
                 <div className={styles['user-test-complete__body']}>
-                    {questions.map((question, questionIndex) => (
-                        <div key={questionIndex} className={styles['test-question']}>
-                            <div className={styles['test-question__title']}>{question.title}</div>
-                            <div className={styles['test-question__info']}>{question.type === ('CHECKBOX' as any) ? 'несколько вариантов ответа' : 'один вариант ответа'}</div>
-                            <div className={styles['test-question__options']}>
-                                {question.options.map((option, optionIndex) => (
-                                    <div key={optionIndex} className={styles['test-option']}>
-                                        <div className={styles['test-option__icon']}>
-                                            {option.trueOption 
-                                                ? <TrueIcon />
-                                                : <FalseOption className={styles['false']}/>
-                                            }
+                    {questions.map((question, questionIndex) => {
+                        const hasImage = !!question.options.find((option) => option.image);
+                        const classes = [styles['test-question']];
+                        if (hasImage) {
+                            classes.push(styles['test-question--image']);
+                        }
+                        return (
+                            <div key={questionIndex} className={classNames(...classes)}>
+                                <div className={styles['test-question__title']}>{question.title}</div>
+                                <div className={styles['test-question__info']}>{question.type === ('CHECKBOX' as any) ? 'несколько вариантов ответа' : 'один вариант ответа'}</div>
+                                <div className={styles['test-question__options']}>
+                                    {question.options.map((option, optionIndex) => (
+                                        !hasImage ? <div key={optionIndex} className={styles['test-option']}>
+                                            <div className={styles['test-option__icon']}>
+                                                {option.trueOption 
+                                                    ? <TrueIcon />
+                                                    : <FalseOption className={styles['false']}/>
+                                                }
+                                            </div>
+                                            <div className={styles['test-option__title']}>{option.title}</div>
+                                            <div className={styles['test-option__selection-icon']}>
+                                                {(
+                                                    answers![question._id] === option._id 
+                                                    || answers![question._id]?.includes(option._id)
+                                                ) && <GoodCheck />}
+                                            </div>
+                                        </div> 
+                                        : <div className={classNames(styles['test-option'], styles['test-option--image'])}>
+                                            <div
+                                                className={styles['test-option__content']}
+                                                style={{ backgroundImage: `url(${getImageUrl(option.image)})` }}
+                                            >
+                                                <div className={styles['test-option__icon']}>
+                                                    {option.trueOption 
+                                                        ? <TrueIcon />
+                                                        : <FalseOption className={styles['false']}/>
+                                                    }
+                                                </div>
+                                                <div className={styles['test-option__selection-icon']}>
+                                                    {(
+                                                        answers![question._id] === option._id 
+                                                        || answers![question._id]?.includes(option._id)
+                                                    ) && <GoodCheck />}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className={styles['test-option__title']}>{option.title}</div>
-                                        <div className={styles['test-option__selection-icon']}>
-                                            <GoodCheck />
-                                        </div>
-                                    </div>)
-                                )}
-                            </div>
-                        </div>)
+                                        )
+                                    )}
+                                </div>
+                            </div>)
+                        }
                     )}
                 </div>
                 <div className={classNames(styles['user-test-complete__info-sheet'], styles['info-sheet'])}>
@@ -93,7 +134,7 @@ function UserTest(props: UserTestCompleteProps): JSX.Element {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     );
 }

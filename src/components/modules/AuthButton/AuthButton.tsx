@@ -30,11 +30,11 @@ function AuthButton(props: Props): JSX.Element {
 
   function getAuthButtonClassNames(): string {
     return classNames(authBtnStyles['auth-button'], {
-      [authBtnStyles['auth-button_justify-start']]: props.navigationType === NavigationType.FOOTER,
+      // [authBtnStyles['auth-button_justify-start']]: props.navigationType === NavigationType.FOOTER,
       [authBtnStyles['auth-button_justify-center']]: (location.pathname === paths[Page.LOGIN]
         || location.pathname === paths[Page.SIGN_UP] || location.pathname === paths[Page.FORGOT_PASSWORD]
         || (location.pathname === paths[Page.HOME] && !currentJwtPair)) && props.navigationType !== NavigationType.FOOTER,
-      [authBtnStyles['auth-button_justify-end']]: props.navigationType === NavigationType.HEADER &&
+      [authBtnStyles['auth-button_justify-end']]: props.navigationType === NavigationType.FOOTER || props.navigationType === NavigationType.HEADER &&
         (location.pathname.includes('admin')
           || location.pathname === paths[Page.PRIVATE_OFFICE]),
     })

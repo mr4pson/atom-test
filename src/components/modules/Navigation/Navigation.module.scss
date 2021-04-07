@@ -59,11 +59,15 @@ $blue-300: #0085F8;
 
     .nav-bar-footer {
         width: 868px;
+        margin-left: 60px;
         padding: 0 32px;
         &__icon {
             width: 16px;
             height: 10px;
             color: #FFFFFF;
+        }
+        .auth-button {
+            width: 110px;
         }
     }
     &__logo {
@@ -107,4 +111,7 @@ $blue-300: #0085F8;
 .user-info {
     display: flex;
     height: 152px;
+    .auth-button {
+        width: 110px;
+    }
 }

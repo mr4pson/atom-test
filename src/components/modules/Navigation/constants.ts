@@ -6,7 +6,7 @@ export const navigationTranslations = {
     pages: 'Страницы',
     organisators: 'Организаторы',
     infoPartners: 'Информационные партнеры',
-    privacyPolicy: 'Политика конфиденциальности',
+    // privacyPolicy: 'Политика конфиденциальности',
     privateOffice: 'Личный кабинет',
     adminPage: 'Администратор',
 }
@@ -43,7 +43,8 @@ export const headerLinks: TypeLink[] = [
   },
 ];
 
-export const footerLinks: TypeLink[] = headerLinks.concat({
-    name: navigationTranslations.privacyPolicy,
-    path: navigationPaths.PRIVACY_POLICY,
-})
+export const footerLinks: TypeLink[] = headerLinks;
+// .concat({
+//     name: navigationTranslations.privacyPolicy,
+//     path: navigationPaths.PRIVACY_POLICY,
+// })

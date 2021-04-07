@@ -22,10 +22,10 @@ function Navigation(props: Props): JSX.Element {
 
   const additionalLinks: TypeLink[] = [];
   if (props.navigationType === NavigationType.FOOTER) {
-    additionalLinks.push({
-      name: navigationTranslations.privacyPolicy,
-      path: navigationPaths.PRIVACY_POLICY,
-    });
+    // additionalLinks.push({
+    //   name: navigationTranslations.privacyPolicy,
+    //   path: navigationPaths.PRIVACY_POLICY,
+    // });
   }
 
   const getMenus = async () => {

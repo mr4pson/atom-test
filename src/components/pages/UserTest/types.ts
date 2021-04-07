@@ -16,6 +16,7 @@ export type TypeUserTestOption = {
     _id: string;
     title: string;
     image: string;
+    trueOption: boolean;
 }
 
 export type UserTestProps = {

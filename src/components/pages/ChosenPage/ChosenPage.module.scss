@@ -59,7 +59,6 @@
 
     iframe {
       width: 100% !important;
-      height: 100% !important;
       overflow: hidden;  
     }
   }
@@ -109,6 +108,9 @@
 
     &__description {
       width: 100%;
+      iframe {
+        height: 100% !important;
+      }
     }
   }
 }

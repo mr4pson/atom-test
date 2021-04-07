@@ -25,7 +25,6 @@ export const getJwtPair = async (): Promise<string> => {
       { withCredentials: true },
     );
     setJwtPair(axiosData.access_token);
-    console.log('RefreshToken: ', axiosData.access_token);
     return axiosData.access_token;
   }
   return jwtPair;

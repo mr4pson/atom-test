@@ -10,15 +10,22 @@ import {
 import styles from "./Navigation.module.scss";
 import { TypeLink } from "./types";
 import { HashLink as Link } from 'react-router-hash-link';
-import axios from "axios";
+import { useGetMenu } from "./useGetMenu";
+import { connect } from "react-redux";
+import { setLinksToState } from 'redux/reducers/Menu.reducer';
 
 type Props = {
   navigationType: NavigationType;
+  isSmallScreenNavigationVisible?: boolean | undefined;
+  setIsSmallScreenNavigationVisible?: React.Dispatch<React.SetStateAction<boolean>>;
+  setLinksToState: (links: TypeLink[]) => (dispatch: any) => void;
 };
 
 function Navigation(props: Props): JSX.Element {
   let location = useLocation();
   const [links, setLinks] = useState<TypeLink[]>([]);
+
+  const { loading, receivedLinks, getLinks } = useGetMenu();
 
   const additionalLinks: TypeLink[] = [];
   if (props.navigationType === NavigationType.FOOTER) {
@@ -26,20 +33,6 @@ function Navigation(props: Props): JSX.Element {
       name: navigationTranslations.privacyPolicy,
       path: navigationPaths.PRIVACY_POLICY,
     });
-  }
-
-  const getMenus = async () => {
-    const responnse = await axios.get('/api/menus/get-visible-menus');
-    const links: TypeLink[] = responnse.data.map((menu) => ({
-      name: menu.title,
-      path: menu.url,
-      deletable: menu.deletable,
-      children: menu.subcategories.map((subcategory) => ({
-        name: subcategory.title,
-        path: subcategory.url,
-      })),
-    }));
-    setLinks(links.concat(additionalLinks));
   }
 
   function getNavigationClassName(): string {
@@ -61,8 +54,16 @@ function Navigation(props: Props): JSX.Element {
   }
 
   useEffect(() => {
-    getMenus();
+    getLinks();
   }, [location]);
+
+  useEffect(() => {
+    setLinks(receivedLinks.concat(additionalLinks));
+  }, [loading]);
+
+  useEffect(() => {
+    props.setLinksToState(links);
+  }, [links])
 
   return (
     <>
@@ -70,7 +71,10 @@ function Navigation(props: Props): JSX.Element {
         [styles["header-footer"]]: props.navigationType === NavigationType.FOOTER
       })}>
         <div className={styles["container"]}>
-          <Link to={paths[Page.HOME]}>
+          <Link
+            onClick={() => props.setIsSmallScreenNavigationVisible!(false)}
+            to={paths[Page.HOME]}
+          >
             <div className={styles["header__logo"]} />
           </Link>
           <ul className={getNavigationClassName()}>
@@ -92,7 +96,12 @@ function Navigation(props: Props): JSX.Element {
               : null}
           </ul>
           <div className={styles["user-info"]}>
-            <AuthButton navigationType={props.navigationType} />
+            <AuthButton
+              isSmallScreenNavigationVisible={props.isSmallScreenNavigationVisible}
+              setIsSmallScreenNavigationVisible={props.setIsSmallScreenNavigationVisible!}
+              links={links}
+              navigationType={props.navigationType}
+            />
           </div>
         </div>
       </div>}
@@ -100,4 +109,4 @@ function Navigation(props: Props): JSX.Element {
   );
 }
 
-export default memo(Navigation);
+export default connect(null, { setLinksToState })(memo(Navigation));

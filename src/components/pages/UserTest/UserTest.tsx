@@ -26,6 +26,7 @@ function UserTest(props: UserTestProps): JSX.Element {
     const formRef = useRef<FormInstance>(null);
     const history = useHistory();
     const [nextButtonDisabled, setNextButtonDisabled] = useState<boolean>(true);
+    const [curCheckboxValue, setCurCheckboxValue] = useState<string[]>();
 
     const curJwtPair = getJwtPair();
 
@@ -51,7 +52,7 @@ function UserTest(props: UserTestProps): JSX.Element {
 
     useEffect(() => {
         return () => {
-            formRef.current?.resetFields();
+            // formRef.current?.resetFields();
             setNextButtonDisabled(true);
         }
     }, [props.answers])
@@ -61,14 +62,30 @@ function UserTest(props: UserTestProps): JSX.Element {
         getQuestions();
     }, [])
 
-    const onFinish = () => {
+    const onFinish = async () => {
+        const options = {
+            headers: {
+                'Authorization': `Bearer ${await curJwtPair}`,
+                'withCredentials': true
+            },
+        }
         setQuestion(questions[questionNumber]);
         const formValue = formRef.current?.getFieldsValue();
-        const answers = { ...props?.answers, [question?._id as string]: formValue?.answer };
+        const answers = { ...props?.answers, [question?._id as string]: formValue?.answer ? formValue?.answer : curCheckboxValue };
         props.setStateAnswersToState(answers);
-        console.log(JSON.stringify(JSON.stringify(answers)));
-
+        console.log(answers);
         if (+questionNumber === questionsNumber) {
+            const trueAnswersNumber = questions.reduce((accum, current) => {
+                const curOption = current.options.find((option) => option._id === answers[current._id]);
+                if (curOption?.trueOption)
+                accum++;
+                return accum;
+            }, 0);
+            const payload = {
+                answers: JSON.stringify(JSON.stringify(answers)),
+                percentage: Math.round((trueAnswersNumber / questionsNumber) * 100),
+            };
+            await axios.post('/api/answers', payload, options);
             history.push(paths[Page.USER_TEST_COMPLETE]);
             return;
         }
@@ -89,14 +106,13 @@ function UserTest(props: UserTestProps): JSX.Element {
         formRef.current?.setFieldsValue({
             answer: value,
         });
+        setCurCheckboxValue(value as string[]);
     }
 
     const handleStopTest = () => {
         history.push(paths[Page.USER_TEST_COMPLETE]);
     }
 
-    // console.log(props);
-        console.log(question);
     return (
         <div className={styles['user-test']}>
             {question && <div className="container">

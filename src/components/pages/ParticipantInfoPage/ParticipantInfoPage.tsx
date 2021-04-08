@@ -1,28 +1,20 @@
 import { memo, useEffect, useState } from "react";
 import styles from './ParticipantInfoPage.module.scss';
-import Navigation from 'components/modules/Navigation';
-import { NavigationType } from 'components/modules/Navigation/constants';
 import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
 import classNames from 'classnames';
 import { Row, Col } from 'antd';
 import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
-import { ReactComponent as VkIcon } from './../../../assets/images/vk.svg';
-import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odnoclassniki.svg';
-import { ReactComponent as FacebookIcon } from './../../../assets/images/facebook.svg';
-import { ReactComponent as InstagramIcon } from './../../../assets/images/instagram.svg';
-import { ReactComponent as TelegramIcon } from './../../../assets/images/telegram.svg';
-import { getUserInfo } from "components/common/commonHelper";
 import { useGetParticipant } from "../PrivateOffice/useGetParticipant";
 import Loader from 'components/uiKit/Loader';
 import { useParams } from "react-router";
+import { sharingLinks } from "components/modules/ContactUs/constants";
 
 function ParticipantInfoPage(): JSX.Element {
   const { loading, currentParticipant, getCurrentParticipant } = useGetParticipant();
   const [avatar, setAvatar] = useState<any>(null);
+  const [isSaveDiplomaVisible, setIsSaveDiplomaVisible] = useState<any>(null);
 
   const { id } = useParams<{ id: string }>();
-
-  const userInfo = getUserInfo();
 
   function getUserPhoto(): JSX.Element | null {
     if (avatar) {
@@ -39,6 +31,10 @@ function ParticipantInfoPage(): JSX.Element {
         return null;
       }
     }
+  }
+
+  const downloadDiploma = () => {
+    setIsSaveDiplomaVisible(true);
   }
 
   useEffect(() => {
@@ -125,31 +121,32 @@ function ParticipantInfoPage(): JSX.Element {
             <div className={styles['diploma-info__title']}>Диплом</div>
             <div className={styles['diploma-info__frame']}>
               <div className={styles['diploma-info__image']}>
-                <span className={styles['diploma-info__name']}>Диплом</span>
+                <div className={styles['diploma-info__full-name']}>{currentParticipant?.fullName}</div>
+                <div className={styles['diploma-info__percentage']}>99%</div>
+                <img width={707} src="diploma.png" />
               </div>
               <div className={classNames(styles['diploma-info__share-in'], styles['share-in'])}>
                 <ShareIn />
-                <span className={styles['share-in__title']}>Поделиться в:</span>
+                <span className={styles['share-in__title']}>Мы в:</span>
                 <div className={styles['share-in__icons']}>
-                  <a rel="noreferrer" target="_blank" href="https://vk.com/">
-                    <VkIcon className={styles['share-in__icon']} />
-                  </a>
-                  <a rel="noreferrer" target="_blank" href="https://ok.ru/">
-                    <OdnoklassikiIcon className={styles['share-in__icon']} />
-                  </a>
-                  <a rel="noreferrer" target="_blank" href="https://facebook.com/">
-                    <FacebookIcon className={styles['share-in__icon']} />
-                  </a>
-                  <a rel="noreferrer" target="_blank" href="https://www.instagram.com/">
-                    <InstagramIcon className={styles['share-in__icon']} />
-                  </a>
-                  <a rel="noreferrer" target="_blank" href="https://web.telegram.org/">
-                    <TelegramIcon className={styles['share-in__icon']} />
-                  </a>
+                  {
+                    sharingLinks.map((link) => (
+                      <a
+                        href={link}
+                        className={styles['share-in__icon']}
+                        rel="noreferrer"
+                        target="_blank"
+                      />
+                    ))
+                  }
                 </div>
               </div>
             </div>
-            <button className={styles['diploma-info__download']}>Скачать диплом</button>
+            <button
+              onClick={downloadDiploma}
+              type="button"
+              className={styles['diploma-info__download']}
+            >Скачать диплом</button>
           </div>
         </div>
         : <Loader className={'default-loader'} />

@@ -1,6 +1,4 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import Navigation from 'components/modules/Navigation';
-import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from './PrivateOffice.module.scss';
 import { Form, Input, Select, Row, Col } from 'antd';
 import classNames from 'classnames';
@@ -13,11 +11,6 @@ import { editIcon } from 'icons';
 import { connect } from "react-redux";
 import { setJwtPairToState } from 'redux/reducers/Auth.reducer';
 import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
-import { ReactComponent as VkIcon } from './../../../assets/images/vk.svg';
-import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odnoclassniki.svg';
-import { ReactComponent as FacebookIcon } from './../../../assets/images/facebook.svg';
-import { ReactComponent as InstagramIcon } from './../../../assets/images/instagram.svg';
-import { ReactComponent as TelegramIcon } from './../../../assets/images/telegram.svg';
 import { getImageUrl, getUserInfo, openNotification } from 'components/common/commonHelper';
 import { useHistory } from 'react-router';
 import { Page, paths } from 'routes/constants';
@@ -27,7 +20,6 @@ import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import ButtonElem from "components/uiKit/ButtomElem";
 import { useUploadFile } from "components/hooks/useUploadFile";
 import * as htmlToImage from 'html-to-image';
-import { toJpeg } from 'html-to-image';
 import { sharingLinks } from 'components/modules/ContactUs/constants';
 
 // import { loginPage } from 'i18n'
@@ -434,7 +426,7 @@ function PrivateOffice(props): JSX.Element {
                   </div>
                   <div className={classNames(styles['diploma-info__share-in'], styles['share-in'])}>
                     <ShareIn />
-                    <span className={styles['share-in__title']}>Поделиться в:</span>
+                    <span className={styles['share-in__title']}>Мы в:</span>
                     <div className={styles['share-in__icons']}>
                     {
                       sharingLinks.map((link) => (

@@ -1,34 +1,29 @@
-import { memo, useEffect, useRef, useState } from 'react';
-import Navigation from 'components/modules/Navigation';
-import { NavigationType } from 'components/modules/Navigation/constants';
-import styles from './PrivateOffice.module.scss';
-import { Form, Input, Select, Row, Col } from 'antd';
-import classNames from 'classnames';
-import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
-import { phoneNumberMask, sexItems } from './constants';
-import { TypeSelectOption, userType } from 'components/common/types';
+import { Col, Form, Input, Row, Select } from 'antd';
 import MaskedInput from 'antd-mask-input';
-import Icon from 'components/uiKit/Icon';
-import { editIcon } from 'icons';
-import { connect } from "react-redux";
-import { setJwtPairToState } from 'redux/reducers/Auth.reducer';
-import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
-import { ReactComponent as VkIcon } from './../../../assets/images/vk.svg';
-import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odnoclassniki.svg';
-import { ReactComponent as FacebookIcon } from './../../../assets/images/facebook.svg';
-import { ReactComponent as InstagramIcon } from './../../../assets/images/instagram.svg';
-import { ReactComponent as TelegramIcon } from './../../../assets/images/telegram.svg';
+import axios from 'axios';
+import classNames from 'classnames';
 import { getImageUrl, getUserInfo, openNotification } from 'components/common/commonHelper';
-import { useHistory } from 'react-router';
-import { Page, paths } from 'routes/constants';
-import { useGetParticipant } from './useGetParticipant';
-import Loader from 'components/uiKit/Loader';
-import { buttonElemType } from 'components/uiKit/ButtomElem/types';
-import ButtonElem from "components/uiKit/ButtomElem";
+import { TypeSelectOption, userType } from 'components/common/types';
 import { useUploadFile } from "components/hooks/useUploadFile";
-import * as htmlToImage from 'html-to-image';
-import { toJpeg } from 'html-to-image';
 import { sharingLinks } from 'components/modules/ContactUs/constants';
+import ButtonElem from "components/uiKit/ButtomElem";
+import { buttonElemType } from 'components/uiKit/ButtomElem/types';
+import Icon from 'components/uiKit/Icon';
+import Loader from 'components/uiKit/Loader';
+import * as htmlToImage from 'html-to-image';
+import { editIcon } from 'icons';
+import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
+import { memo, useEffect, useRef, useState } from 'react';
+import { connect } from "react-redux";
+import { useHistory } from 'react-router';
+import { setJwtPairToState } from 'redux/reducers/Auth.reducer';
+import { Page, paths } from 'routes/constants';
+import { getJwtPair } from '../LoginPage/helpers';
+import { TypeAnswer } from '../UserTestComplete/types';
+import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
+import { phoneNumberMask, sexItems } from './constants';
+import styles from './PrivateOffice.module.scss';
+import { useGetParticipant } from './useGetParticipant';
 
 // import { loginPage } from 'i18n'
 
@@ -52,6 +47,7 @@ function PrivateOffice(props): JSX.Element {
   const [boolSex, setBoolSex] = useState<boolean>(false);
   const [boolPhoneNumber, setBoolPhoneNumber] = useState<boolean>(false);
   const [boolEmail, setBoolEmail] = useState<boolean>(false);
+  const [answer, setAnswer] = useState<TypeAnswer>();
 
   const [fullName, setFullName] = useState<string>('');
   const [city, setCity] = useState<string>('');
@@ -67,10 +63,25 @@ function PrivateOffice(props): JSX.Element {
   const userInfo = getUserInfo();
   const history = useHistory();
 
+  const curJwtPair = getJwtPair();
+
   function handleChange(e) {
     setSex(e);
     findSexItemText();
   };
+
+  const getAnswers = async () => {
+    const options = {
+        headers: {
+            'Authorization': `Bearer ${await curJwtPair}`,
+            'withCredentials': true
+        },
+    }
+    const response = await axios.get<TypeAnswer[]>('/api/answers', options);
+    const answer = response.data.reverse()[0];
+    console.log(answer);
+    setAnswer(answer);
+}
 
   function findSexItemText() {
     const sexObject = sexItems.find((elem: any) => {
@@ -151,6 +162,7 @@ function PrivateOffice(props): JSX.Element {
     (async () => {
       await getCurrentParticipant(userInfo?.id!);
     })();
+    getAnswers();
   }, []);
 
   useEffect(() => {
@@ -411,27 +423,29 @@ function PrivateOffice(props): JSX.Element {
                           </Col>
                       }
                     </Row>
-                    <ButtonElem
+                    {!answer && <ButtonElem
                       type={buttonElemType.Primary}
                       htmlType="button"
                       className={styles["user-info__redirect-btn"]}
                       onClick={onRedirectToTestPage}
                     >
                       Начать тест
-                    </ButtonElem>
+                    </ButtonElem>}
                   </Form.Item>
                 </div>
               </div>
               <div className={styles['diploma-info']}>
                 <div className={styles['diploma-info__title']}>Диплом</div>
                 <div className={styles['diploma-info__frame']}>
-                  <div className={styles['diploma-info__image']}>
-                    {/* <span className={styles['diploma-info__name']}>Диплом</span> */}
+                  {answer 
+                    ? <div className={styles['diploma-info__image']}>
                     <div className={styles['diploma-info__full-name']}>{fullName}</div>
-                    <div className={styles['diploma-info__percentage']}>99%</div>
+                    <div className={styles['diploma-info__percentage']}>{+answer?.percentage!}%</div>
                     <img width={707} src="diploma.png"/>
-                    {/* <span className={styles['diploma-info__name']}>Сертификат</span> */}
                   </div>
+                    : <div className={styles['diploma-info__image']}>
+                    <span className={styles['diploma-info__name']}>Диплом</span>
+                  </div>}
                   <div className={classNames(styles['diploma-info__share-in'], styles['share-in'])}>
                     <ShareIn />
                     <span className={styles['share-in__title']}>Поделиться в:</span>
@@ -449,11 +463,16 @@ function PrivateOffice(props): JSX.Element {
                     </div>
                   </div>
                 </div>
-                <button
-                  onClick={downloadDiploma}
-                  type="button"
-                  className={styles['diploma-info__download']}
-                >Скачать диплом</button>
+                {answer 
+                  ? <button
+                    onClick={downloadDiploma}
+                    type="button"
+                    className={styles['diploma-info__download']}
+                  >Скачать диплом</button>
+                  : <div
+                      className={styles['diploma-info__download']}
+                    ></div>
+                }
               </div>
             </Form>
           </div>
@@ -461,7 +480,7 @@ function PrivateOffice(props): JSX.Element {
       }
       {isSaveDiplomaVisible && <div id="diploma" className={styles['bottom-diploma']}>
         <div className={styles['bottom-diploma__name']}>{fullName}</div>
-        <div className={styles['bottom-diploma__percentage']}>100%</div>
+        <div className={styles['bottom-diploma__percentage']}>{+answer?.percentage!}%</div>
         <img src="diploma.png"/>
       </div>}
     </>

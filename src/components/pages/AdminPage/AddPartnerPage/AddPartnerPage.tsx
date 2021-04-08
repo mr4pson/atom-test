@@ -16,6 +16,7 @@ import { useCheckRole } from "components/hooks/useCheckRole";
 import { useGetOrganizationTypes } from "./useGetOrganizationTypes";
 import { useUploadFile } from "components/hooks/useUploadFile";
 import { froalaTag } from "../CreateNews/constants";
+import { getImageUrl } from "components/common/commonHelper";
 
 function AddPartnerPage(): JSX.Element {
   const formRef = useRef<FormInstance>(null);
@@ -26,15 +27,16 @@ function AddPartnerPage(): JSX.Element {
   );
   const { id } = useParams<{ id: string }>();
 
-  const { loadingUpdate, addPartner, currentPartner, getCurrentPartner, updatePartner } = useUpdatePartner();
+  const { loadingUpdate, addPartner, currentPartner, getCurrentPartner, updatePartner, isOwnTypeShown, setIsOwnTypeShown } = useUpdatePartner();
   const { loading, getOrganizationTypes, organizationTypes } = useGetOrganizationTypes();
-  const { uploadMediaFile } = useUploadFile(formRef, setIsChoosenFileChecked );
+  const { mediaFile, uploadMediaFile } = useUploadFile(formRef, setIsChoosenFileChecked);
 
   const { Option } = Select;
 
   const inititalFormState = {
     title: '',
     link: '',
+    ownType: '',
     uploadFile: null,
     description: '',
   };
@@ -48,19 +50,29 @@ function AddPartnerPage(): JSX.Element {
       formFieldsValue.uploadFile
     ) {
       if (id) {
-        await updatePartner({ 
+        await updatePartner({
           ...formFieldsValue,
-          visible: true, 
+          visible: true,
           description: formFieldsValue.description.replace(froalaTag, ''),
         }, id);
       } else {
         await addPartner({
-          ...formFieldsValue, visible: true, 
+          ...formFieldsValue, visible: true,
           description: formFieldsValue.description.replace(froalaTag, ''),
-         });
+        });
       }
       setIsChoosenFileChecked(false);
       history.push(paths[AdminsPage.PARTNERS]);
+    }
+  }
+
+  const handleOrganizationTypeChange = (organizationTypeId) => {
+    console.log(organizationTypeId);
+    const selectedOrgType = organizationTypes.find((organizationType) => organizationType.id === organizationTypeId);
+    if (selectedOrgType?.title === 'Без рубрики') {
+      setIsOwnTypeShown(true);
+    } else {
+      setIsOwnTypeShown(false);
     }
   }
 
@@ -73,7 +85,14 @@ function AddPartnerPage(): JSX.Element {
     getOrganizationTypes();
   }, []);
 
-  console.log(organizationTypes);
+  useEffect(() => {
+    console.log(currentPartner);
+    if (currentPartner?.organizationTypeObject.title === 'Без рубрики') {
+      setIsOwnTypeShown(true);
+    } else {
+      setIsOwnTypeShown(false);
+    }
+  }, [currentPartner]);
 
   return (
     <>
@@ -149,6 +168,7 @@ function AddPartnerPage(): JSX.Element {
                 <Select
                   className={styles["page-content__input"]}
                   placeholder='Тип организации'
+                  onChange={handleOrganizationTypeChange}
                 >
                   {
                     organizationTypes.map((item) => (
@@ -157,6 +177,21 @@ function AddPartnerPage(): JSX.Element {
                   }
                 </Select>
               </Form.Item>
+              {isOwnTypeShown && <Form.Item
+                rules={[
+                  { required: true, message: "Пожалуйста, введите свой тип" },
+                ]}
+                className={styles["form-item"]}
+                name="ownType"
+              >
+                <Input
+                  className={styles["page-content__input"]}
+                  placeholder="Введите свой тип"
+                  type="text"
+                  value={currentPartner?.ownType}
+                  disabled={loadingUpdate && loading}
+                />
+              </Form.Item>}
               <Form.Item className={styles["form-item"]} name="uploadFile">
                 <label className={classNames(styles["page-content__upload-file"], {
                   [styles['page-content__upload-file_disabled']]: loadingUpdate && loading
@@ -184,6 +219,12 @@ function AddPartnerPage(): JSX.Element {
                   </span>
                 )}
             </div>
+            {currentPartner?.uploadFile &&
+              <div
+                style={{ backgroundImage: `url(${mediaFile ? getImageUrl(mediaFile) : getImageUrl(currentPartner?.uploadFile)})` }}
+                className={styles['page-content__uploaded-image']}
+              ></div>
+            }
             <div className={styles["page-content-description"]}>
               <div className={styles["page-content__title"]}>
                 Описание партнёра (если нужно)

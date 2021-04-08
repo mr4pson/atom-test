@@ -35,7 +35,7 @@
     width: 100%;
     height: 100%;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
   }
 
@@ -60,7 +60,9 @@
 
 .user-info {
   margin-left: 30px;
-  margin-top: 35px;
+  margin-top: 30px;
+  max-width: 880px;
+
   &__full-name {
     font-size: 36px;
     font-weight: bold;
@@ -103,6 +105,13 @@
     margin-left: 12px;
     cursor: pointer;
   }
+
+  &__redirect-btn {
+    width: 148px;
+    height: 44px;
+    padding: 0;
+    margin-top: 25px;
+  }
 }
 
 .input-wrapper {
@@ -113,9 +122,13 @@
 }
 
 .row-item  {
-  margin-bottom: 10px !important;
+  margin-bottom: 6px !important;
   &__full-name {
     margin-bottom: 0px;
+  }
+
+  &__phone {
+    margin-bottom: 15px !important;
   }
 }
 
@@ -142,15 +155,16 @@
 
   &__frame {
     position: relative;
-    width: 830px;
+    width: 767px;
     height: 565px;
     background-color: #FFFFFF;
     padding: 30px;
   }
 
   &__image {
+    position: relative;
     background-color: #F0F7FB;
-    width: 770px;
+    width: 707px;
     height: 505px;
     display: flex;
     align-items: center;
@@ -162,6 +176,21 @@
     font-size: 18px;
     line-height: 22px;
     color: #000000;
+  }
+
+  &__full-name {
+    position: absolute;
+    font-size: 19px;
+    top: 223px;
+  }
+  &__percentage {
+    font-family: Nexa Script Light;
+    position: absolute;
+    font-size: 50px;
+    left: 73px;
+    top: 278px;
+    font-weight: 600;
+    color: #0064f6;
   }
 
   &__download {
@@ -209,15 +238,57 @@
     position: absolute;
     left: 53px;
     top: 78px;
-    width: 160px;
+    width: 194px;
   }
 
   &__icon {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
+    margin-right: 0px;
     cursor: pointer;
+    &:nth-child(1) {
+      background-image: url(../../../assets/images/home-page/vk.png);
+    }
+    &:nth-child(2) {
+      background-image: url(../../../assets/images/home-page/ok.png);
+    }
+    &:nth-child(3) {
+      background-image: url(../../../assets/images/home-page/fb.png);
+    }
+    &:nth-child(4) {
+      background-image: url(../../../assets/images/home-page/insta.png);
+    }
+    &:nth-child(5) {
+      background-image: url(../../../assets/images/home-page/tg.png);
+    }
+    &:nth-child(6) {
+      background-image: url(../../../assets/images/home-page/Youtube.png);
+    }
   }
 }
+
+.bottom-diploma {
+  position: relative;
+  width: fit-content;
+  &__name {
+    position: absolute;
+    top: 460px;
+    left: 0px;
+    font-size: 36px;
+    width: 100%;
+    text-align: center;
+  }
+  &__percentage {
+    font-family: Nexa Script Light;
+    position: absolute;
+    font-size: 90px;
+    left: 180px;
+    top: 575px;
+    font-weight: 600;
+    color: #0064f6;
+  }
+}
+
 
 @media (max-width: 1024px) {
   .user-info__divider {
@@ -269,6 +340,10 @@
     &__image {
       width: 315.42px;
       height: 244.9px;
+
+      img {
+        width: 100%;
+      }
     }
 
     &__frame {
@@ -276,15 +351,29 @@
       width: 340px;
       height: 274px;
     }
+
+    &__full-name {
+      font-size: 14px;
+      top: 103px;
+      left: 63px;
+    }
   
+    &__percentage {
+      font-size: 25px;
+      left: 25px;
+      top: 131px;
+      font-weight: 600;
+      color: #0064f6;
+    }
+
     &__download {
-      margin-top: 100px;
-      margin-bottom: 10px;
+      margin-top: 75px;
+      margin-bottom: 95px;
     }
   }
 
   .share-in {
     left: -10px;
-    top: 215px;
+    top: 190px;
   }
 }

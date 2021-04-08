@@ -1,4 +1,5 @@
-import { Col, Form, Input, Row, Select } from 'antd';
+import { memo, useEffect, useRef, useState } from 'react';
+import { Form, Input, Select, Row, Col } from 'antd';
 import MaskedInput from 'antd-mask-input';
 import axios from 'axios';
 import classNames from 'classnames';
@@ -6,24 +7,23 @@ import { getImageUrl, getUserInfo, openNotification } from 'components/common/co
 import { TypeSelectOption, userType } from 'components/common/types';
 import { useUploadFile } from "components/hooks/useUploadFile";
 import { sharingLinks } from 'components/modules/ContactUs/constants';
-import ButtonElem from "components/uiKit/ButtomElem";
-import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import Icon from 'components/uiKit/Icon';
 import Loader from 'components/uiKit/Loader';
 import * as htmlToImage from 'html-to-image';
 import { editIcon } from 'icons';
 import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
-import { memo, useEffect, useRef, useState } from 'react';
 import { connect } from "react-redux";
+import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
 import { useHistory } from 'react-router';
 import { setJwtPairToState } from 'redux/reducers/Auth.reducer';
 import { Page, paths } from 'routes/constants';
 import { getJwtPair } from '../LoginPage/helpers';
 import { TypeAnswer } from '../UserTestComplete/types';
-import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
 import { phoneNumberMask, sexItems } from './constants';
 import styles from './PrivateOffice.module.scss';
 import { useGetParticipant } from './useGetParticipant';
+import { buttonElemType } from 'components/uiKit/ButtomElem/types';
+import ButtonElem from "components/uiKit/ButtomElem";
 
 // import { loginPage } from 'i18n'
 
@@ -448,7 +448,7 @@ function PrivateOffice(props): JSX.Element {
                   </div>}
                   <div className={classNames(styles['diploma-info__share-in'], styles['share-in'])}>
                     <ShareIn />
-                    <span className={styles['share-in__title']}>Поделиться в:</span>
+                    <span className={styles['share-in__title']}>Мы в:</span>
                     <div className={styles['share-in__icons']}>
                     {
                       sharingLinks.map((link) => (

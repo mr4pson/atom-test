@@ -7,6 +7,7 @@ type Props = {
   title: string;
   link: string;
   organizationType?: any;
+  ownType?: string;
   uploadFile: string;
   visible: boolean;
 }
@@ -24,7 +25,7 @@ function OurPartnersItem(props: Props) {
           </span>
         </a>
         <div className={styles['our-partners-item__title']}>{props.title}</div>
-        <div className={styles['our-partners-item__heading']}>{props.organizationType?.title}</div>
+        <div className={styles['our-partners-item__heading']}>{props.ownType ? props.ownType : props.organizationType?.title}</div>
       </div>
     }
   </>

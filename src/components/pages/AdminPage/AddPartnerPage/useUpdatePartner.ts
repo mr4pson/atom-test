@@ -8,6 +8,7 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
   const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);
   const curJwtPair = getJwtPair();
   const [currentPartner, setCurrentPartner] = useState<any>(null);
+  const [isOwnTypeShown, setIsOwnTypeShown] = useState<boolean>(false);
 
   async function getCurrentPartner(id: string): Promise<any> {
     setLoadingUpdate(true);
@@ -25,6 +26,7 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
           ...partnerData,
           createdAt: moment(partnerData.createdAt).format('DD.MM.YYYY'),
           organizationType: partnerData.organizationType?.id,
+          organizationTypeObject: partnerData.organizationType,
         }
         setCurrentPartner(transformedNews);
       return {};
@@ -88,5 +90,7 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
     currentPartner,
     getCurrentPartner,
     updatePartner,
+    isOwnTypeShown,
+    setIsOwnTypeShown
   }
 }

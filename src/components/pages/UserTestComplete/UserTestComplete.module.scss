@@ -124,7 +124,23 @@
 }
 
 @media (max-width: 768px) {
+    .user-test-complete {
+        &__body {
+            margin-top: 235px;
+        }
+        &__title {
+            font-size: 36px;
+        }
+    }
+
+    .test-question {
+        .test-option {
+            width: 100%;
+        }
+    }
+
     .info-sheet {
-        top: 230px;
+        top: 100px;
+        right: -13px;    
     }
 }

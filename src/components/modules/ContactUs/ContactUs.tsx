@@ -10,6 +10,7 @@ import { ReactComponent as ContactUsFooter } from './../../../assets/images/home
 import { useUpdateDictationQuestions } from "components/pages/AdminPage/DictationQuestionsPage/useUpdateDictationQuestions";
 import { openNotification } from "components/common/commonHelper";
 import { TypeDictationQuestionData } from "components/pages/AdminPage/DictationQuestionsPage/types";
+import { sharingLinks } from "./constants";
 
 const { TextArea } = Input;
 
@@ -50,11 +51,16 @@ function ContactUs(): JSX.Element {
             <div className={classNames(styles['contact-us__share-in'], styles['share-in'])}>
               <div className={styles['share-in__title']}>{ReactHtmlParser(homePage.contactUs.body.shareTo)}</div>
               <div className={styles['share-in__links']}>
-                <div className={styles['share-in__link']}></div>
-                <div className={styles['share-in__link']}></div>
-                <div className={styles['share-in__link']}></div>
-                <div className={styles['share-in__link']}></div>
-                <div className={styles['share-in__link']}></div>
+                {
+                  sharingLinks.map((link) => (
+                    <a
+                      href={link}
+                      className={styles['share-in__link']}
+                      rel="noreferrer"
+                      target="_blank"
+                    />
+                  ))
+                }
               </div>
             </div>
           </div>

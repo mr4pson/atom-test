@@ -28,6 +28,7 @@ import ButtonElem from "components/uiKit/ButtomElem";
 import { useUploadFile } from "components/hooks/useUploadFile";
 import * as htmlToImage from 'html-to-image';
 import { toJpeg } from 'html-to-image';
+import { sharingLinks } from 'components/modules/ContactUs/constants';
 
 // import { loginPage } from 'i18n'
 
@@ -422,7 +423,7 @@ function PrivateOffice(props): JSX.Element {
                 </div>
               </div>
               <div className={styles['diploma-info']}>
-                <div className={styles['diploma-info__title']}>Сертификат</div>
+                <div className={styles['diploma-info__title']}>Диплом</div>
                 <div className={styles['diploma-info__frame']}>
                   <div className={styles['diploma-info__image']}>
                     {/* <span className={styles['diploma-info__name']}>Диплом</span> */}
@@ -435,21 +436,16 @@ function PrivateOffice(props): JSX.Element {
                     <ShareIn />
                     <span className={styles['share-in__title']}>Поделиться в:</span>
                     <div className={styles['share-in__icons']}>
-                      <a rel="noreferrer" target="_blank" href="https://vk.com/">
-                        <VkIcon className={styles['share-in__icon']} />
-                      </a>
-                      <a rel="noreferrer" target="_blank" href="https://ok.ru/">
-                        <OdnoklassikiIcon className={styles['share-in__icon']} />
-                      </a>
-                      <a rel="noreferrer" target="_blank" href="https://facebook.com/">
-                        <FacebookIcon className={styles['share-in__icon']} />
-                      </a>
-                      <a rel="noreferrer" target="_blank" href="https://www.instagram.com/">
-                        <InstagramIcon className={styles['share-in__icon']} />
-                      </a>
-                      <a rel="noreferrer" target="_blank" href="https://web.telegram.org/">
-                        <TelegramIcon className={styles['share-in__icon']} />
-                      </a>
+                    {
+                      sharingLinks.map((link) => (
+                        <a
+                          href={link}
+                          className={styles['share-in__icon']}
+                          rel="noreferrer"
+                          target="_blank"
+                        />
+                      ))
+                    }
                     </div>
                   </div>
                 </div>

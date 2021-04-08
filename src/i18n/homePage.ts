@@ -144,7 +144,7 @@ export const homePage = {
         sendBtn: 'Отправить',
       },
       sendActionInfo: 'Нажимая кнопку “Отправить”<br/> Вы соглашаетесь на обработку Ваших данных',
-      shareTo: 'Поделиться в:',
+      shareTo: 'Мы в:',
     }
   }
 }

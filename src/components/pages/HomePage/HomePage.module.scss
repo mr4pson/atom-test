@@ -558,12 +558,23 @@
     &__body {
       margin-top: 10px;
       flex-direction: column;
-      align-items: center;
     }
   }
 
   .participant-step {
-    margin-top: 30px !important;
+    margin-top: 10px !important;
+
+    &:nth-child(2) {
+      margin-top: 100px !important;
+    }
+
+    &:nth-child(3) {
+      margin-top: 40px !important;
+    }
+    
+    &:nth-child(4) {
+      margin-top: 40px !important;
+    }
   }
 
   .elipse-small {

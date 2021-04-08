@@ -1,36 +1,29 @@
-import { memo, useEffect, useRef, useState } from 'react';
-import Navigation from 'components/modules/Navigation';
-import { NavigationType } from 'components/modules/Navigation/constants';
-import styles from './PrivateOffice.module.scss';
-import { Form, Input, Select, Row, Col } from 'antd';
-import classNames from 'classnames';
-import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
-import { phoneNumberMask, sexItems } from './constants';
-import { TypeSelectOption, userType } from 'components/common/types';
+import { Col, Form, Input, Row, Select } from 'antd';
 import MaskedInput from 'antd-mask-input';
-import Icon from 'components/uiKit/Icon';
-import { editIcon } from 'icons';
-import { connect } from "react-redux";
-import { setJwtPairToState } from 'redux/reducers/Auth.reducer';
-import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
-import { ReactComponent as VkIcon } from './../../../assets/images/vk.svg';
-import { ReactComponent as OdnoklassikiIcon } from './../../../assets/images/odnoclassniki.svg';
-import { ReactComponent as FacebookIcon } from './../../../assets/images/facebook.svg';
-import { ReactComponent as InstagramIcon } from './../../../assets/images/instagram.svg';
-import { ReactComponent as TelegramIcon } from './../../../assets/images/telegram.svg';
-import { getImageUrl, getUserInfo, openNotification } from 'components/common/commonHelper';
-import { useHistory } from 'react-router';
-import { Page, paths } from 'routes/constants';
-import { useGetParticipant } from './useGetParticipant';
-import Loader from 'components/uiKit/Loader';
-import { buttonElemType } from 'components/uiKit/ButtomElem/types';
-import ButtonElem from "components/uiKit/ButtomElem";
-import { useUploadFile } from "components/hooks/useUploadFile";
-import * as htmlToImage from 'html-to-image';
-import { toJpeg } from 'html-to-image';
 import axios from 'axios';
-import { TypeAnswer } from '../UserTestComplete/types';
+import classNames from 'classnames';
+import { getImageUrl, getUserInfo, openNotification } from 'components/common/commonHelper';
+import { TypeSelectOption, userType } from 'components/common/types';
+import { useUploadFile } from "components/hooks/useUploadFile";
+import { sharingLinks } from 'components/modules/ContactUs/constants';
+import ButtonElem from "components/uiKit/ButtomElem";
+import { buttonElemType } from 'components/uiKit/ButtomElem/types';
+import Icon from 'components/uiKit/Icon';
+import Loader from 'components/uiKit/Loader';
+import * as htmlToImage from 'html-to-image';
+import { editIcon } from 'icons';
+import { ManFrameIcon, WomanFrameIcon } from 'icons/components';
+import { memo, useEffect, useRef, useState } from 'react';
+import { connect } from "react-redux";
+import { useHistory } from 'react-router';
+import { setJwtPairToState } from 'redux/reducers/Auth.reducer';
+import { Page, paths } from 'routes/constants';
 import { getJwtPair } from '../LoginPage/helpers';
+import { TypeAnswer } from '../UserTestComplete/types';
+import { ReactComponent as ShareIn } from './../../../assets/images/share-in.svg';
+import { phoneNumberMask, sexItems } from './constants';
+import styles from './PrivateOffice.module.scss';
+import { useGetParticipant } from './useGetParticipant';
 
 // import { loginPage } from 'i18n'
 
@@ -442,7 +435,7 @@ function PrivateOffice(props): JSX.Element {
                 </div>
               </div>
               <div className={styles['diploma-info']}>
-                <div className={styles['diploma-info__title']}>Сертификат</div>
+                <div className={styles['diploma-info__title']}>Диплом</div>
                 <div className={styles['diploma-info__frame']}>
                   {answer 
                     ? <div className={styles['diploma-info__image']}>
@@ -457,21 +450,16 @@ function PrivateOffice(props): JSX.Element {
                     <ShareIn />
                     <span className={styles['share-in__title']}>Поделиться в:</span>
                     <div className={styles['share-in__icons']}>
-                      <a rel="noreferrer" target="_blank" href="https://vk.com/">
-                        <VkIcon className={styles['share-in__icon']} />
-                      </a>
-                      <a rel="noreferrer" target="_blank" href="https://ok.ru/">
-                        <OdnoklassikiIcon className={styles['share-in__icon']} />
-                      </a>
-                      <a rel="noreferrer" target="_blank" href="https://facebook.com/">
-                        <FacebookIcon className={styles['share-in__icon']} />
-                      </a>
-                      <a rel="noreferrer" target="_blank" href="https://www.instagram.com/">
-                        <InstagramIcon className={styles['share-in__icon']} />
-                      </a>
-                      <a rel="noreferrer" target="_blank" href="https://web.telegram.org/">
-                        <TelegramIcon className={styles['share-in__icon']} />
-                      </a>
+                    {
+                      sharingLinks.map((link) => (
+                        <a
+                          href={link}
+                          className={styles['share-in__icon']}
+                          rel="noreferrer"
+                          target="_blank"
+                        />
+                      ))
+                    }
                     </div>
                   </div>
                 </div>

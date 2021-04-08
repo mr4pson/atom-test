@@ -49,6 +49,7 @@ function OurPartnersPage() {
                     id={item?.id!}
                     title={item.title}
                     link={item.link}
+                    ownType={item.ownType}
                     organizationType={item.organizationType}
                     uploadFile={item?.uploadFile!}
                     visible={item.visible}
@@ -58,7 +59,7 @@ function OurPartnersPage() {
             </div>
             : <Loader className={'partners-loader'} />
         }
-        <div className={classNames(
+        {/* <div className={classNames(
           styles['our-partners-page__title'], styles['our-partners-page__newspaper'])
         }>
           Газеты
@@ -76,7 +77,7 @@ function OurPartnersPage() {
               />
             })
           }
-        </div>
+        </div> */}
         {
           questions.length ? <FrequentlyAskedQuestions questions={questions} />
             : <Loader className={'partners-loader'} />

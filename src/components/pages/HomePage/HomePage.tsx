@@ -68,7 +68,7 @@ function HomePage(): JSX.Element {
           <div className="left-bar">
             <div className={styles['main-section__title']}>Атомный диктант</div>
             <div className={styles['main-section__desc']}>
-              Проводится с целью проверить свои знания<br />и привлечь внимание широкой общественности <br /> к атомной отрасли
+              Проводится с целью проверить свои знания<br />и привлечь внимание широкой общественности <br /> к атомной отрасли.
             </div>
             <div className={styles['main-section__buttons-normal']}>
               <a href="/#about"><ButtonElem type={buttonElemType.Primary}>О проекте</ButtonElem></a>
@@ -95,7 +95,7 @@ function HomePage(): JSX.Element {
               <div className={styles['expample-image__wing']}>
                 <div className={styles['expample-image__body']}>
                   <div className={styles['expample-image__title']}>2021</div>
-                  <div className={styles['expample-image__description']}>Пример Диплома<br />об окончании диктанта</div>
+                  <div className={styles['expample-image__description']}>Пример Диплома<br />об успешном прохождении Атомного диктанта</div>
                 </div>
               </div>
             </div>

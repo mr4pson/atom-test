@@ -13,6 +13,8 @@ export type TypePartner = {
   link: string;
   massMedia: string;
   organizationType: TypeOrganizationTypes;
+  organizationTypeObject: TypeOrganizationTypes;
+  ownType: string;
 }
 
 export type TypeUseUpdatePartnerResult = {
@@ -21,6 +23,8 @@ export type TypeUseUpdatePartnerResult = {
   currentPartner: TypePartner | null;
   getCurrentPartner: (id: string) => Promise<any>;
   updatePartner: (formData: any, id: string) => Promise<any>;
+  isOwnTypeShown: boolean;
+  setIsOwnTypeShown: (value: boolean) => any;
 }
 
 export type TypeUseRemovePartnerResult = {

@@ -36,7 +36,6 @@ function MenuDetailPage(): JSX.Element {
             action.icon = <EditIcon />;
             Object.assign(config, formValues);
             console.log('update');
-            console.log(config);
               const payload = {
                 _id: config.id,
                 title: config.title,
@@ -128,7 +127,6 @@ function MenuDetailPage(): JSX.Element {
               })),
             } as TypeMenu;
 
-            console.log(newMenuElem);
             setMenuElem(newMenuElem);
           }
         },
@@ -159,9 +157,6 @@ function MenuDetailPage(): JSX.Element {
       await axios.put<TypeSubCategory>('/api/subcategories/' + newSubcategory.id, payload, options);
       const subCategory = curMenuElem?.subcategories?.find((subcategory) => subcategory.id === newSubcategory.id) as TypeSubCategory;
       subCategory.isEditing = false;
-      subCategory.actions = getSubCategoryActions(false, subCategory);
-      console.log(curMenuElem);
-      setMenuElem(curMenuElem);
     } else {
       console.log('create');
       const payload = {
@@ -172,16 +167,10 @@ function MenuDetailPage(): JSX.Element {
       };
       const response = await axios.post<TypeSubCategory>('/api/subcategories', payload, options);
       newSubcategory.id = response.data.id;
-      const subCategory = curMenuElem?.subcategories?.find((subcategory) => subcategory.id === newSubcategory.id) as TypeSubCategory;
-      subCategory.isEditing = false;
-      subCategory.actions = getSubCategoryActions(false, subCategory);
-      console.log(curMenuElem);
-      setMenuElem(curMenuElem);
     }
     const subCategory = curMenuElem?.subcategories?.find((subcategory) => subcategory.id === newSubcategory.id) as TypeSubCategory;
     subCategory.isEditing = false;
     subCategory.actions = getSubCategoryActions(false, subCategory);
-    console.log(curMenuElem);
     setMenuElem(curMenuElem);
   }
 

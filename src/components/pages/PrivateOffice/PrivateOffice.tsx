@@ -28,6 +28,9 @@ import ButtonElem from "components/uiKit/ButtomElem";
 import { useUploadFile } from "components/hooks/useUploadFile";
 import * as htmlToImage from 'html-to-image';
 import { toJpeg } from 'html-to-image';
+import axios from 'axios';
+import { TypeAnswer } from '../UserTestComplete/types';
+import { getJwtPair } from '../LoginPage/helpers';
 
 // import { loginPage } from 'i18n'
 
@@ -51,6 +54,7 @@ function PrivateOffice(props): JSX.Element {
   const [boolSex, setBoolSex] = useState<boolean>(false);
   const [boolPhoneNumber, setBoolPhoneNumber] = useState<boolean>(false);
   const [boolEmail, setBoolEmail] = useState<boolean>(false);
+  const [answer, setAnswer] = useState<TypeAnswer>();
 
   const [fullName, setFullName] = useState<string>('');
   const [city, setCity] = useState<string>('');
@@ -66,10 +70,25 @@ function PrivateOffice(props): JSX.Element {
   const userInfo = getUserInfo();
   const history = useHistory();
 
+  const curJwtPair = getJwtPair();
+
   function handleChange(e) {
     setSex(e);
     findSexItemText();
   };
+
+  const getAnswers = async () => {
+    const options = {
+        headers: {
+            'Authorization': `Bearer ${await curJwtPair}`,
+            'withCredentials': true
+        },
+    }
+    const response = await axios.get<TypeAnswer[]>('/api/answers', options);
+    const answer = response.data.reverse()[0];
+    console.log(answer);
+    setAnswer(answer);
+}
 
   function findSexItemText() {
     const sexObject = sexItems.find((elem: any) => {
@@ -150,6 +169,7 @@ function PrivateOffice(props): JSX.Element {
     (async () => {
       await getCurrentParticipant(userInfo?.id!);
     })();
+    getAnswers();
   }, []);
 
   useEffect(() => {
@@ -410,27 +430,29 @@ function PrivateOffice(props): JSX.Element {
                           </Col>
                       }
                     </Row>
-                    <ButtonElem
+                    {!answer && <ButtonElem
                       type={buttonElemType.Primary}
                       htmlType="button"
                       className={styles["user-info__redirect-btn"]}
                       onClick={onRedirectToTestPage}
                     >
                       Начать тест
-                    </ButtonElem>
+                    </ButtonElem>}
                   </Form.Item>
                 </div>
               </div>
               <div className={styles['diploma-info']}>
                 <div className={styles['diploma-info__title']}>Сертификат</div>
                 <div className={styles['diploma-info__frame']}>
-                  <div className={styles['diploma-info__image']}>
-                    {/* <span className={styles['diploma-info__name']}>Диплом</span> */}
+                  {answer 
+                    ? <div className={styles['diploma-info__image']}>
                     <div className={styles['diploma-info__full-name']}>{fullName}</div>
-                    <div className={styles['diploma-info__percentage']}>99%</div>
+                    <div className={styles['diploma-info__percentage']}>{+answer?.percentage!}%</div>
                     <img width={707} src="diploma.png"/>
-                    {/* <span className={styles['diploma-info__name']}>Сертификат</span> */}
                   </div>
+                    : <div className={styles['diploma-info__image']}>
+                    <span className={styles['diploma-info__name']}>Диплом</span>
+                  </div>}
                   <div className={classNames(styles['diploma-info__share-in'], styles['share-in'])}>
                     <ShareIn />
                     <span className={styles['share-in__title']}>Поделиться в:</span>
@@ -453,11 +475,16 @@ function PrivateOffice(props): JSX.Element {
                     </div>
                   </div>
                 </div>
-                <button
-                  onClick={downloadDiploma}
-                  type="button"
-                  className={styles['diploma-info__download']}
-                >Скачать диплом</button>
+                {answer 
+                  ? <button
+                    onClick={downloadDiploma}
+                    type="button"
+                    className={styles['diploma-info__download']}
+                  >Скачать диплом</button>
+                  : <div
+                      className={styles['diploma-info__download']}
+                    ></div>
+                }
               </div>
             </Form>
           </div>
@@ -465,7 +492,7 @@ function PrivateOffice(props): JSX.Element {
       }
       {isSaveDiplomaVisible && <div id="diploma" className={styles['bottom-diploma']}>
         <div className={styles['bottom-diploma__name']}>{fullName}</div>
-        <div className={styles['bottom-diploma__percentage']}>100%</div>
+        <div className={styles['bottom-diploma__percentage']}>{+answer?.percentage!}%</div>
         <img src="diploma.png"/>
       </div>}
     </>

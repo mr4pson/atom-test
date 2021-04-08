@@ -14,8 +14,11 @@ import { ReactComponent as Ellipse2 } from './../../../assets/images/home-page/e
 import { ReactComponent as Ellipse3 } from './../../../assets/images/home-page/ellipse3.svg';
 import { ReactComponent as HowToParticipate1 } from './../../../assets/images/home-page/how-to-participate1.svg';
 import { ReactComponent as HowToParticipate2 } from './../../../assets/images/home-page/how-to-participate2.svg';
+import { ReactComponent as HowToParticipate21 } from './../../../assets/images/home-page/how-to-participate2.1.svg';
 import { ReactComponent as HowToParticipate3 } from './../../../assets/images/home-page/how-to-participate3.svg';
+import { ReactComponent as HowToParticipate31 } from './../../../assets/images/home-page/how-to-participate3.1.svg';
 import { ReactComponent as HowToParticipate4 } from './../../../assets/images/home-page/how-to-participate4.svg';
+import { ReactComponent as HowToParticipate41 } from './../../../assets/images/home-page/how-to-participate4.1.svg';
 // import { supporters } from './constants';
 import { cutArrayByThree } from './helpers';
 import styles from './HomePage.module.scss';
@@ -37,6 +40,7 @@ function HomePage(): JSX.Element {
     });
   };
 
+  const screenWidth = window.screen.width;
   const { loading, supporters, getSupporters } = useUpdateSupporters();
 
   const supporterRows = cutArrayByThree(supporters ?? []);
@@ -171,19 +175,19 @@ function HomePage(): JSX.Element {
               </div>
 
               <CarouselWithDots className={styles['supporter__carousel']} items={supporters?.map((supporter: TypeSupporter, index) => (
-                    <Col key={index} span={8} className={styles['gutter-row']}>
-                      <div className={getSupporterClasses(index)}>
-                        <div
-                          className={styles['supporter__avatar']}
-                          style={{ backgroundImage: `url(${getImageUrl(supporter.uploadFile)})` }}
-                        />
-                        <div className={styles['supporter__name']}>{ReactHtmlParser(supporter.fullName)}</div>
-                        <div className={styles['supporter__position']}>
-                          <span>{supporter.position}</span>&nbsp;
+                <Col key={index} span={8} className={styles['gutter-row']}>
+                  <div className={getSupporterClasses(index)}>
+                    <div
+                      className={styles['supporter__avatar']}
+                      style={{ backgroundImage: `url(${getImageUrl(supporter.uploadFile)})` }}
+                    />
+                    <div className={styles['supporter__name']}>{ReactHtmlParser(supporter.fullName)}</div>
+                    <div className={styles['supporter__position']}>
+                      <span>{supporter.position}</span>&nbsp;
                             <span>{getBoldName(supporter.organization)}</span>
-                        </div>
-                      </div>
-                    </Col>
+                    </div>
+                  </div>
+                </Col>
               ))} />
               <div className={styles['supporter__swipe-info']}>Свайпайте влево чтобы посмотреть отсальных спонсоров.</div>
             </div>
@@ -208,7 +212,11 @@ function HomePage(): JSX.Element {
             </div>
             <div className={styles['participant-step']}>
               <div className={styles['participant-step__bg']}>
-                <HowToParticipate2 />
+                {
+                  screenWidth >= 768
+                    ? <HowToParticipate2 />
+                    : <HowToParticipate21 />
+                }
               </div>
               <div className={styles['participant-step__body']}>
                 <div className={styles['participant-step__number']}>2</div>
@@ -220,7 +228,11 @@ function HomePage(): JSX.Element {
             </div>
             <div className={styles['participant-step']}>
               <div className={styles['participant-step__bg']}>
-                <HowToParticipate3 />
+                {
+                  screenWidth >= 768
+                    ? <HowToParticipate3 />
+                    : <HowToParticipate31 />
+                }
               </div>
               <div className={styles['participant-step__body']}>
                 <div className={styles['participant-step__number']}>3</div>
@@ -232,7 +244,11 @@ function HomePage(): JSX.Element {
             </div>
             <div className={styles['participant-step']}>
               <div className={styles['participant-step__bg']}>
-                <HowToParticipate4 />
+                {
+                  screenWidth >= 768
+                    ? <HowToParticipate4 />
+                    : <HowToParticipate41 />
+                }
               </div>
               <div className={styles['participant-step__body']}>
                 <div className={styles['participant-step__number']}>4</div>

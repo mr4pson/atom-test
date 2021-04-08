@@ -328,6 +328,11 @@ body {
 	color: #0085F8
 }
 
+.menu-sub-category-collapse .admin-collapse-elem-actions {
+	max-width: 255px;
+	width: 100%;
+}
+
 .menu-sub-category-input {
 	padding: 5.5px 20px!important;
 	border-color: #E7E7E7!important;
@@ -363,6 +368,7 @@ body {
 	visibility: hidden;
 	padding: 0;
 }
+
 
 
 

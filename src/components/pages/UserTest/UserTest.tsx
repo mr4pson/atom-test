@@ -38,12 +38,13 @@ function UserTest(props: UserTestProps): JSX.Element {
             },
         }
         const response = await axios.get<TypeUserTestQuestion[]>('/api/questions', options);
+        console.log();
         const questions = response.data.map((question) => ({
             ...question,
-            type: question.type === ('CHECKBOX' as QuestionType) && !question.options.find((option) => option.image) ? QuestionType.SINGLE :
-            question.type === ('CHECKBOX' as QuestionType) && question.options.find((option) => option.image) ? QuestionType.SENGLE_PICTURE :
-            question.type === ('RADIO' as QuestionType) && !question.options.find((option) => option.image) ? QuestionType.MULTIPLE :
-            question.type === ('RADIO' as QuestionType) && question.options.find((option) => option.image) ? QuestionType.MULTIPLE_PICTURE : QuestionType.SINGLE,
+            type: question.type === ('CHECKBOX' as QuestionType) && !question.options.find((option) => option.image) ? QuestionType.MULTIPLE :
+            question.type === ('CHECKBOX' as QuestionType) && question.options.find((option) => option.image) ? QuestionType.MULTIPLE_PICTURE :
+            question.type === ('RADIO' as QuestionType) && !question.options.find((option) => option.image) ? QuestionType.SINGLE :
+            question.type === ('RADIO' as QuestionType) && question.options.find((option) => option.image) ? QuestionType.SENGLE_PICTURE : QuestionType.SINGLE,
         }));
         setQuestions(questions);
         setQuestionsNumber(questions.length);
@@ -71,16 +72,28 @@ function UserTest(props: UserTestProps): JSX.Element {
         }
         setQuestion(questions[questionNumber]);
         const formValue = formRef.current?.getFieldsValue();
+        console.log(formValue?.answer, curCheckboxValue);
         const answers = { ...props?.answers, [question?._id as string]: formValue?.answer ? formValue?.answer : curCheckboxValue };
         props.setStateAnswersToState(answers);
         console.log(answers);
         if (+questionNumber === questionsNumber) {
             const trueAnswersNumber = questions.reduce((accum, current) => {
-                const curOption = current.options.find((option) => option._id === answers[current._id]);
-                if (curOption?.trueOption)
-                accum++;
+                const selectedOptions = current.options.filter((option) => option._id === answers[current._id] || answers[current._id]?.includes(option._id));
+                const trueOptions = current.options.filter((option) => option.trueOption);
+                let trueCounter = 0;
+                selectedOptions.forEach(option => {
+                    const trueOption = trueOptions.find((curOption) => curOption._id === option._id);
+                    if (trueOption) {
+                        trueCounter++;
+                    }
+                    
+                });
+                if (trueOptions.length === trueCounter) {
+                    accum++;
+                }
                 return accum;
             }, 0);
+            console.log(trueAnswersNumber);
             const payload = {
                 answers: JSON.stringify(JSON.stringify(answers)),
                 percentage: Math.round((trueAnswersNumber / questionsNumber) * 100),
@@ -107,6 +120,12 @@ function UserTest(props: UserTestProps): JSX.Element {
             answer: value,
         });
         setCurCheckboxValue(value as string[]);
+        console.log(value);
+    }
+
+    const onRadioGroupChange = (value) => {
+        setCurCheckboxValue(value);
+        console.log(value);
     }
 
     const handleStopTest = () => {
@@ -129,6 +148,7 @@ function UserTest(props: UserTestProps): JSX.Element {
                                 question={question}
                                 nextButtonDisabled={nextButtonDisabled}
                                 onCheckboxGroupChange={onCheckboxGroupChange}
+                                onRadioGroupChange={onRadioGroupChange}
                             />
                         </Form>
                     </div>

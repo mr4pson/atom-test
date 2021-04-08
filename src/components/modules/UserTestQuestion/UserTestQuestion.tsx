@@ -13,6 +13,7 @@ type TypeUserTestQuestionProps = {
     question: TypeUserTestQuestion;
     nextButtonDisabled: boolean;
     onCheckboxGroupChange: (value: CheckboxValueType[]) => void;
+    onRadioGroupChange: (value: CheckboxValueType[]) => void;
 }
 
 function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
@@ -20,6 +21,10 @@ function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
 
     const onCheckboxGroupChange = (value: CheckboxValueType[]) => {
         props.onCheckboxGroupChange(value);
+    }
+
+    const onRadioGroupChange = (value: any) => {
+        props.onRadioGroupChange([value.target.value]);
     }
 
     const onNextClick = () => {
@@ -51,7 +56,7 @@ function UserTestQuestion(props: TypeUserTestQuestionProps): JSX.Element {
                     <Form.Item
                         name="answer"
                     >
-                        <Radio.Group>
+                        <Radio.Group onChange={onRadioGroupChange}>
                             <div className={QuestionType.SENGLE_PICTURE === props.question.type ? styles['user-test-question__options-container'] : ''}>
                                 {props.question.options.map((option, index) => (
                                     <UserTestOption

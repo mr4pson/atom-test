@@ -85,7 +85,6 @@ function MenuPage(): JSX.Element {
             //   }
             //   await axios.put<TypeMenu>('/api/menus/' + config.id, payload, options);
             // } else {
-              console.log('create');
               const payload = {
                 title: config.title,
                 editable: config.editable,
@@ -136,7 +135,6 @@ function MenuPage(): JSX.Element {
         },
       });
     }
-    console.log(menu, actions);
     return actions;
   };
 

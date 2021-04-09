@@ -31,7 +31,6 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
         setCurrentPartner(transformedNews);
       return {};
     } catch ({ response }) {
-      console.log(response);
       return { error: response };
     } finally {
       setLoadingUpdate(false);
@@ -51,10 +50,8 @@ export function useUpdatePartner(): TypeUseUpdatePartnerResult {
         `/api/partners/`, { ...formData },
         options,
       );
-      console.log(axiosData);
       return {};
     } catch ({ response }) {
-      console.log(response);
       return { error: response };
     } finally {
       setLoadingUpdate(false);

@@ -40,7 +40,6 @@ export const setStateAnswersToState = (answers: Object) => (dispatch: any) => {
 }
 
 export const setStateIsTimerFinishedToState = (isTimerFinished: boolean) => (dispatch: any) => {
-    console.log(isTimerFinished);
     dispatch(setStateIsTestFinished(isTimerFinished));
 }
 

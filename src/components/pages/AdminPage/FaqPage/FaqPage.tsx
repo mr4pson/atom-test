@@ -65,7 +65,6 @@ function FaqPage(): JSX.Element {
                                 options
                             );
                             
-                            console.log('Updated');
                         } else {
                             const response = await axios.post(
                                 '/api/faqs', 
@@ -73,7 +72,6 @@ function FaqPage(): JSX.Element {
                                 options
                             );
 
-                            console.log('Created', response.data);
                             config.id = response.data._id;
                         }
                     }
@@ -83,7 +81,6 @@ function FaqPage(): JSX.Element {
                 id: 'Delete',
                 icon: <TrashIcon />,
                 callback: async (action: TypeAction, config: TypeCollapseConfig) => {
-                    console.log(faqQuestions);
                     const options = {
                         headers: {
                             'Authorization': `Bearer ${await curJwtPair}`,
@@ -95,7 +92,6 @@ function FaqPage(): JSX.Element {
                     }
                     if (window.confirm(`Вы уверены, что хотите удалить вопрос №${config.id}`)) {
                         axios.delete('/api/faqs/' + config.id, options).then((response) => {
-                            console.log(response.data);
                             setFaqQuestions(response.data.map((question) => ({
                                 ...question,
                                 actions: getActions(false),
@@ -120,8 +116,6 @@ function FaqPage(): JSX.Element {
             actions: getActions(true)
         }]));
     }
-
-    console.log(faqQuestions);
 
     return (
         <>

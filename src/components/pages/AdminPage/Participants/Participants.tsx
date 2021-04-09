@@ -1,12 +1,12 @@
 import { Form, FormInstance, Input, Select, Space, Table } from 'antd';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import AdminModal from 'components/pages/AdminPage/AdminModal';
 import Icon from 'components/uiKit/Icon';
 import { deleteIcon, searchIcon, visibleIcon } from 'icons';
 import { memo, useRef, useState, useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { Page, paths } from 'routes/constants';
-import { participantList } from './constants';
+// import { participantList } from './constants';
 import styles from './Participants.module.scss';
 import { TypeParticipantsData } from './types';
 import { useCheckRole } from 'components/hooks/useCheckRole';
@@ -124,8 +124,6 @@ function Participants(props: Props): JSX.Element {
     useEffect(() => {
       getParticipants();
     }, [])
-
-    console.log(participants);
 
     return (
       <div className={styles['participants-page']}>

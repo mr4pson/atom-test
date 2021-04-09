@@ -32,7 +32,6 @@ function RegistratedUsers(): JSX.Element {
             ...options,
             params: payload
         });
-        console.log(response.data);
         setRegisteredUsers({
             ...response.data,
             userStats: response.data.userStats.reverse().map((userStat) => ({

@@ -38,7 +38,6 @@ function UserTest(props: UserTestProps): JSX.Element {
             },
         }
         const response = await axios.get<TypeUserTestQuestion[]>('/api/questions', options);
-        console.log();
         const questions = response.data.map((question) => ({
             ...question,
             type: question.type === ('CHECKBOX' as QuestionType) && !question.options.find((option) => option.image) ? QuestionType.MULTIPLE :
@@ -72,10 +71,8 @@ function UserTest(props: UserTestProps): JSX.Element {
         }
         setQuestion(questions[questionNumber]);
         const formValue = formRef.current?.getFieldsValue();
-        console.log(formValue?.answer, curCheckboxValue);
         const answers = { ...props?.answers, [question?._id as string]: formValue?.answer ? formValue?.answer : curCheckboxValue };
         props.setStateAnswersToState(answers);
-        console.log(answers);
         if (+questionNumber === questionsNumber) {
             const trueAnswersNumber = questions.reduce((accum, current) => {
                 const selectedOptions = current.options.filter((option) => option._id === answers[current._id] || answers[current._id]?.includes(option._id));
@@ -93,7 +90,6 @@ function UserTest(props: UserTestProps): JSX.Element {
                 }
                 return accum;
             }, 0);
-            console.log(trueAnswersNumber);
             const payload = {
                 answers: JSON.stringify(JSON.stringify(answers)),
                 percentage: Math.round((trueAnswersNumber / questionsNumber) * 100),
@@ -120,12 +116,10 @@ function UserTest(props: UserTestProps): JSX.Element {
             answer: value,
         });
         setCurCheckboxValue(value as string[]);
-        console.log(value);
     }
 
     const onRadioGroupChange = (value) => {
         setCurCheckboxValue(value);
-        console.log(value);
     }
 
     const handleStopTest = () => {

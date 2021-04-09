@@ -50,7 +50,7 @@ function Navigation(props: Props): JSX.Element {
   }
 
   function getNavigationLinks(link: TypeLink): JSX.Element {
-    console.log(link.path);
+    console.log(link);
     return (link.path === 'https://yandex.ru' ?
       <a href={link.path} target="_blank" rel="noreferrer">{link.name}</a>
       : (

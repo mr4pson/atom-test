@@ -44,7 +44,6 @@ function UserTest(props: UserTestCompleteProps): JSX.Element {
         }
         const response = await axios.get<TypeAnswer[]>('/api/answers', options);
         const answers = JSON.parse(JSON.parse(response.data.reverse()[0].answers));
-        console.log(answers);
         setAnswers(answers);
     }
 

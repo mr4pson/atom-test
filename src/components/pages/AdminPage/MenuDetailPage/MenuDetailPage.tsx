@@ -35,7 +35,6 @@ function MenuDetailPage(): JSX.Element {
           } else {
             action.icon = <EditIcon />;
             Object.assign(config, formValues);
-            console.log('update');
               const payload = {
                 _id: config.id,
                 title: config.title,
@@ -147,7 +146,6 @@ function MenuDetailPage(): JSX.Element {
     newSubcategory.isEditing = false;
     Object.assign(newSubcategory, formValues);
     if (newSubcategory.id) {
-      console.log('update');
       const payload = {
         title: newSubcategory.title,
         url: newSubcategory.url,
@@ -158,7 +156,6 @@ function MenuDetailPage(): JSX.Element {
       const subCategory = curMenuElem?.subcategories?.find((subcategory) => subcategory.id === newSubcategory.id) as TypeSubCategory;
       subCategory.isEditing = false;
     } else {
-      console.log('create');
       const payload = {
         title: newSubcategory.title,
         url: newSubcategory.url,

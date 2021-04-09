@@ -52,7 +52,6 @@ function CreateNews(): JSX.Element {
       }, id)
       history.push(paths[AdminsPage.NEWS]);
     }
-    console.log(formRef.current?.getFieldsValue());
   }
 
   async function onSubmit(): Promise<void> {
@@ -72,7 +71,6 @@ function CreateNews(): JSX.Element {
       }
       setIsChoosenFileChecked(false);
       history.push(paths[AdminsPage.NEWS]);
-      console.log(formRef.current?.getFieldsValue());
     }
   }
 
@@ -199,7 +197,7 @@ function CreateNews(): JSX.Element {
             </Form.Item>
             <div className={styles["main-data-description"]}>
               <div className={styles["create-news-page__title"]}>
-                Описание новости
+                Описание страницы
               </div>
               <Form.Item className={styles["form-item"]} name="description">
                 <TextRedactor

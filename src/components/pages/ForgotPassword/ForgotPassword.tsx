@@ -46,9 +46,7 @@ function ForgotPassword(): JSX.Element {
     });
   };
 
-  function onSubmit(values: any): void {
-    // console.log('Success:', values);
-    console.log(formRef.current?.getFieldsValue());
+  function onSubmit(): void {
     openNotification();
     form.resetFields();
   }

@@ -41,7 +41,6 @@ function ChosenPage() {
     }
     const response = await axios.get<TypeNewsPageData[]>('/api/news/getRecommendedList/' + link, options);
     setRecommendedNews(response.data);
-    console.log(response.data);
   }
 
   useEffect(() => {

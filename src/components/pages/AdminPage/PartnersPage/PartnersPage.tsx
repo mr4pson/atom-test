@@ -52,7 +52,6 @@ function PartnersPage(props: Props): JSX.Element {
           />
         ),
         callback: async (action: TypeAction, config: any, formValues: Object) => {
-          console.log(config);
           action.icon = config.visible ? (
             <Icon
               className={styles["action-icon__watch"]}

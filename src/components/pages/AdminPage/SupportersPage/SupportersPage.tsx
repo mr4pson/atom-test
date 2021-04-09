@@ -97,8 +97,6 @@ function SupportersPage(props: Props): JSX.Element {
     getSupporters();
   }, [])
 
-  console.log(supporters);
-
   return (
     <div className={styles['supporters-page']}>
       <>

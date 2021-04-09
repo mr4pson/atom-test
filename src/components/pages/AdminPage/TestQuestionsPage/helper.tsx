@@ -67,7 +67,6 @@ export const getQuestionActions = (
           
           await axios.put<TypeTestQuestion>('/api/questions/' + config.id, payload, options);
         } else {
-          console.log('create');
           const payload = {
             options: config.options.map((option) => ({
               id: option._id,
@@ -172,9 +171,7 @@ export const getQuestionOptionActions = (
         Object.assign(config, formValues);
         // TODO request to backend
         if (config.id) {
-          console.log('update');
         } else {
-          console.log('create');
           // TODO remove and replace with requested ID
           config.id = Math.round(Math.random() * 10000);
         }

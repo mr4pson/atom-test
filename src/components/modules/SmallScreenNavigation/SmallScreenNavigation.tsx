@@ -61,21 +61,28 @@ function SmallScreenNavigation(props: Props): JSX.Element {
               <a href={link.path} target="_blank" rel="noreferrer">{link.name}</a>
               : (!link.children?.length ?
                 <Link
+                  className={styles['link']}
                   onClick={() => props.setIsSmallScreenNavigationVisible(prevState => !prevState)}
                   to={link.path}
                 >
                   <span>{link.name}</span>
                 </Link>
-                : link.children.map((childLink: TypeLink) => (
-                  <Link
-                    onClick={() => props.setIsSmallScreenNavigationVisible(prevState => !prevState)}
-                    style={{ marginLeft: 40 }}
-                    to={link.path + childLink.path}
-                  >
-                    {`${link.name} ${childLink.name}`}
-                  </Link>
-                ))
+                : <span className={styles['parent-link-name']}>{link.name}</span>
               )
+          }
+          {
+            link.children?.length
+              ? link.children.map((childLink: TypeLink) => (
+                <Link
+                  className={styles['link__child']}
+                  onClick={() => props.setIsSmallScreenNavigationVisible(prevState => !prevState)}
+                  style={{ marginLeft: 40 }}
+                  to={link.path + childLink.path}
+                >
+                  {childLink.name}
+                </Link>
+              ))
+              : null
           }
         </li>
       ))}
@@ -94,7 +101,7 @@ function SmallScreenNavigation(props: Props): JSX.Element {
         />}
       >
         {!currentJwtPair ? 'Войти в аккаунт' : 'Выйти из аккаунта'}
-        </ButtonElem>
+      </ButtonElem>
     }
   </div>
 }

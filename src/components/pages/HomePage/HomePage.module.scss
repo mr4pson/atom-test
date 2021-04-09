@@ -370,12 +370,12 @@
   &:nth-child(2) {
     width: 221px;
     height: 99px;
-    padding: 0px 20px 20px 33px;
+    padding: 0px 20px 20px 30px;
     .participant-step__number {
       line-height: 5px;
     }
     .participant-step__text {
-      margin-top: 35px;
+      margin-top: 25px;
     }
     .participant-step__ellipse {
       top: 45px;
@@ -391,6 +391,9 @@
       bottom: 45px;
       left: 230px;
     }
+    .participant-step__text {
+      margin-top: 25px;
+    }
   }
   &:nth-child(4) {
     width: 302px;
@@ -400,7 +403,7 @@
       line-height: 5px;
     }
     .participant-step__text {
-      margin-top: 35px;
+      margin-top: 25px;
     }
   }
 }
@@ -432,7 +435,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 65px;
-    padding-left: 30px;
+    padding-left: 5px;
 
     &:first-child {
       margin-right: 30px;

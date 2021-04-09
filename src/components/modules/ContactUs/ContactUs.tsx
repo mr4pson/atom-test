@@ -31,7 +31,6 @@ function ContactUs(): JSX.Element {
       }
     }
   }
-  console.log(error);
 
   useEffect(() => {
     if (error) {

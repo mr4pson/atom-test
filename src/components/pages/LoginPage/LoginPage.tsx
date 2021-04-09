@@ -1,6 +1,4 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import Navigation from 'components/modules/Navigation';
-import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from './LoginPage.module.scss';
 import { Form, Input, Button, FormInstance, notification } from 'antd';
 import { Page, paths } from 'routes/constants';
@@ -32,7 +30,6 @@ function LoginPage(props): JSX.Element {
 
     async function onSubmit (): Promise<any> {
         const formValues = formRef.current?.getFieldsValue();
-        console.log(formValues);
         login(formValues)
         setErrorNotification(true);
         // errorInfo && openNotification();

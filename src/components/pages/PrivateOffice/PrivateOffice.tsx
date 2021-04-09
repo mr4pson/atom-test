@@ -79,7 +79,6 @@ function PrivateOffice(props): JSX.Element {
     }
     const response = await axios.get<TypeAnswer[]>('/api/answers', options);
     const answer = response.data.reverse()[0];
-    console.log(answer);
     setAnswer(answer);
 }
 

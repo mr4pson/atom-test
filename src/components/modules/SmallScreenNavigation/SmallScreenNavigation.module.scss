@@ -24,12 +24,12 @@
     margin-bottom: 30px;
   }
 
-  &__item a {
+  &__item a, .parent-link-name {
     margin-left: 20px;
     margin-top: 15px;
     width: 75%;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     font-family: AGOpus;
     font-weight: bold;
     color: #4B4B4B;
@@ -37,6 +37,12 @@
     
     &:hover {
       color: #0085F8;
+    }
+  }
+
+  .parent-link-name {
+    &:hover {
+      color: unset;
     }
   }
 
@@ -53,5 +59,21 @@
     width: 18px;
     height: 19px;
     margin-right: 15px;
+  }
+}
+
+.link {
+  &__child {
+    &::before{
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      margin-right: 5px;
+      -moz-border-radius: 7.5px;
+      -webkit-border-radius: 7.5px;
+      border-radius: 7.5px;
+      background-color: #4B4B4B;
+    }
   }
 }

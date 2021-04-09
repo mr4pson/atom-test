@@ -67,7 +67,6 @@ function AddPartnerPage(): JSX.Element {
   }
 
   const handleOrganizationTypeChange = (organizationTypeId) => {
-    console.log(organizationTypeId);
     const selectedOrgType = organizationTypes.find((organizationType) => organizationType.id === organizationTypeId);
     if (selectedOrgType?.title === 'Без рубрики') {
       setIsOwnTypeShown(true);
@@ -86,7 +85,6 @@ function AddPartnerPage(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    console.log(currentPartner);
     if (currentPartner?.organizationTypeObject.title === 'Без рубрики') {
       setIsOwnTypeShown(true);
     } else {

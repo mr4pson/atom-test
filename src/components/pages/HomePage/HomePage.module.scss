@@ -338,6 +338,13 @@
     left: 0;
     top: 0;
     z-index: 1;
+    &-1 {
+      background-image: url(../../../assets/images/participate-block.png);
+      width: 317px;
+      height: 247px;
+      position: absolute;
+      top: 0;
+    }
   }
   &__body {
     position: relative;
@@ -358,7 +365,8 @@
     z-index: 0;
   }
   &:nth-child(1) {
-    width: 304px;
+    max-width: 304px;
+    min-width: 304px;
     height: 165px;
     padding: 12px 20px 20px 50px;
     margin-top: 90px;
@@ -368,7 +376,8 @@
     }
   }
   &:nth-child(2) {
-    width: 221px;
+    max-width: 221px;
+    min-width: 221px;
     height: 99px;
     padding: 0px 20px 20px 30px;
     .participant-step__number {
@@ -383,7 +392,8 @@
     }
   }
   &:nth-child(3) {
-    width: 306px;
+    max-width: 306px;
+    min-width: 306px;
     height: 155px;
     padding: 10px 20px 20px 45px;
     margin-top: 90px;
@@ -396,7 +406,8 @@
     }
   }
   &:nth-child(4) {
-    width: 302px;
+    max-width: 302px;
+    min-width: 302px;
     height: 122px;
     padding: 0px 20px 20px 33px;
     .participant-step__number {

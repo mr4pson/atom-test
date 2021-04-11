@@ -567,8 +567,12 @@
   .participant-step {
     margin-top: 10px !important;
 
+    &:nth-child(1) {
+      height: auto;
+    }
+
     &:nth-child(2) {
-      margin-top: 100px !important;
+      margin-top: 45px !important;
     }
 
     &:nth-child(3) {

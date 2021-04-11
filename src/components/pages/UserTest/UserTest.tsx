@@ -12,6 +12,8 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import { setStateAnswersToState, setStateIsTimerFinishedToState } from 'redux/reducers/UserTest.reducer';
 import { Page, paths } from 'routes/constants';
+import { counterParametersType } from '../AdminPage/SetCounterParameters/types';
+import { CounterParameter } from '../HomePage/types';
 import { getJwtPair } from '../LoginPage/helpers';
 import { ReactComponent as QuestionsInfoBg } from './../../../assets/images/user-test/questions-info-bg.svg';
 import { getNextQuestionLink } from './helper';
@@ -27,6 +29,7 @@ function UserTest(props: UserTestProps): JSX.Element {
     const history = useHistory();
     const [nextButtonDisabled, setNextButtonDisabled] = useState<boolean>(true);
     const [curCheckboxValue, setCurCheckboxValue] = useState<string[]>();
+    const [timerSeconds, setTimerSeconds] = useState<number>(); 
 
     const curJwtPair = getJwtPair();
 
@@ -60,6 +63,7 @@ function UserTest(props: UserTestProps): JSX.Element {
     useEffect(() => {
         props.setStateIsTimerFinishedToState(false);
         getQuestions();
+        getUserTestTimerTime();
     }, [])
 
     const onFinish = async () => {
@@ -126,6 +130,14 @@ function UserTest(props: UserTestProps): JSX.Element {
         history.push(paths[Page.USER_TEST_COMPLETE]);
     }
 
+    const getUserTestTimerTime = async () => {
+        const counterParameterResponse = await axios.get<CounterParameter>('/api/counter-parameters/' + counterParametersType.TEST);
+        const paramsObject = JSON.parse(counterParameterResponse.data.data);
+        console.log(paramsObject.testHours, paramsObject.testMinutes, paramsObject.testSeconds);
+        const timerSeconds = paramsObject.testHours * 3600 + paramsObject.testMinutes * 60 + paramsObject.testSeconds;
+        setTimerSeconds(timerSeconds);
+    }
+
     return (
         <div className={styles['user-test']}>
             {question && <div className="container">
@@ -155,7 +167,7 @@ function UserTest(props: UserTestProps): JSX.Element {
                         >{userTest.buttons.stopTest}</ButtonElem>
                     </div>
                     <div className={styles['user-test__right-col']}>
-                        <TestTimer/>
+                        <TestTimer timerSeconds={timerSeconds}/>
                         <div className={styles['questions-info']}>
                             <div className={styles['questions-info__bg']}>
                                 <QuestionsInfoBg/>

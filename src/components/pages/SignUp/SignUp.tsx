@@ -150,7 +150,7 @@ function SignUp(): JSX.Element {
                             Зарегистрироваться
                         </Button>
                     </Form.Item>
-                    <div className={styles['login-page__sign-up-btn-info']}>Нажимая кнопку “Зарегистрироваться” Вы соглашаетесь на обработку Ваших данных</div>
+                    <div className={styles['login-page__sign-up-btn-info']}>Нажимая кнопку «Зарегистрироваться», Вы соглашаетесь на обработку Ваших данных</div>
                     <Link
                         to={paths[Page.LOGIN]}
                         className={classNames(

@@ -189,7 +189,7 @@ function HomePage(): JSX.Element {
                   </div>
                 </Col>
               ))} />
-              <div className={styles['supporter__swipe-info']}>Свайпайте влево чтобы посмотреть отсальных спонсоров.</div>
+              <div className={styles['supporter__swipe-info']}>Свайпайте влево, чтобы посмотреть остальных спонсоров.</div>
             </div>
             : <Loader className={'default-loader'} />
         }

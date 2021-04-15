@@ -2,7 +2,7 @@ import { memo, useEffect, useRef, useState } from 'react';
 import Navigation from 'components/modules/Navigation';
 import { NavigationType } from 'components/modules/Navigation/constants';
 import styles from '../LoginPage/LoginPage.module.scss';
-import { Form, Input, Button, Select, FormInstance } from 'antd';
+import { Form, Input, Button, Select, FormInstance, Checkbox } from 'antd';
 import { useHistory } from 'react-router';
 import { Page, paths } from 'routes/constants';
 import { Link } from "react-router-dom";
@@ -151,6 +151,7 @@ function SignUp(): JSX.Element {
                         </Button>
                     </Form.Item>
                     <div className={styles['login-page__sign-up-btn-info']}>Нажимая кнопку “Зарегистрироваться” Вы соглашаетесь на обработку Ваших данных</div>
+                    <Checkbox className="">Согласен получать рассылку по email или по смс</Checkbox>
                     <Link
                         to={paths[Page.LOGIN]}
                         className={classNames(

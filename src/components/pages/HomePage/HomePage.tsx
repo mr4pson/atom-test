@@ -189,7 +189,7 @@ function HomePage(): JSX.Element {
                   </div>
                 </Col>
               ))} />
-              <div className={styles['supporter__swipe-info']}>Свайпайте влево чтобы посмотреть отсальных спонсоров.</div>
+              <div className={styles['supporter__swipe-info']}>Свайпайте влево, чтобы посмотреть остальных спонсоров.</div>
             </div>
             : <Loader className={'default-loader'} />
         }
@@ -200,7 +200,8 @@ function HomePage(): JSX.Element {
           <div className={styles['how-to-participate__body']}>
             <div className={styles['participant-step']}>
               <div className={styles['participant-step__bg']}>
-                <HowToParticipate1 />
+                <HowToParticipate1 style={{ visibility: 'hidden' }} />
+                <div className={styles['participant-step__bg-1']}></div>
               </div>
               <div className={styles['participant-step__body']}>
                 <div className={styles['participant-step__number']}>1</div>

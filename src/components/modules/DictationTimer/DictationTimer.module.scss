@@ -25,6 +25,13 @@
         justify-content: space-around;
         padding: 80px 45px 0;
     }
+    &__info {
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 23px;
+        color: #4B4B4B;
+    }
     &__days {
         margin-top: -20px;
     }
@@ -109,6 +116,11 @@
 
         &__body {
             padding: 50px 45px 0;
+        }
+
+        &__info {
+            font-size: 22px;
+            margin-top: 10px;
         }
 
         &__title {

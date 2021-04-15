@@ -6,16 +6,17 @@ import { setStateIsTimerFinishedToState } from 'redux/reducers/UserTest.reducer'
 import { Page, paths } from "routes/constants";
 import { ReactComponent as TimerBg } from './../../../assets/images/user-test/timer-bg.svg';
 import { getPadTime } from "./helper";
-import { initialMinutes } from "./mocks";
 import styles from './TestTimer.module.scss';
 import { TypeTime } from "./types";
 
 type TestTimerProps = {
+    timerSeconds: number;
     setStateIsTimerFinishedToState: (arg: boolean) => void
 }
 
 function TestTimer(props: TestTimerProps): JSX.Element {
-    const remainingMiliseconds = 60 * initialMinutes * 1000;
+    // const remainingMiliseconds = 60 * initialMinutes * 1000;
+    const remainingMiliseconds = +props.timerSeconds * 1000;
     const [countdown, setCountdown] = useState<number>(remainingMiliseconds);
     const [time, setTime] = useState<TypeTime>(getPadTime(countdown));
     const history = useHistory();

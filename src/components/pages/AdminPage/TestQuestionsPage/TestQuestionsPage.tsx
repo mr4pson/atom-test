@@ -289,11 +289,11 @@ function TestQuestionsPage(): JSX.Element {
 
     useEffect(() => {
         getNewQuestions();
-    })
+    }, []);
 
     return (
         <>
-            {testQuestions.length 
+            {testQuestions.length || !rerender
                 ? <div className={styles['test-questions-page']}>
                     <div className={styles['test-questions-page__create-wrap']}>
                         <ExpansionSelectButton
@@ -302,25 +302,28 @@ function TestQuestionsPage(): JSX.Element {
                         >Добавить</ExpansionSelectButton>
                     </div>
                     <div className={styles['test-questions-page__questions']}>
-                        {testQuestions.map((question, index) => (
-                                <AdminCollapseElem
-                                    key={index}
-                                    config={question}
-                                >
-                                    {question.options.map((option, index) => (
-                                        <TestQuestionsOption
-                                            key={index}
-                                            config={option}
-                                            type={question.type}
-                                        />
-                                    ))}
-                                    <ButtonElem
-                                        className={styles['test-questions-page__add-btn']}
-                                        onClick={() => onOptionCreate(question)}
-                                    >Добавить вариант ответа</ButtonElem>
-                                </AdminCollapseElem>
-                            )
-                        )}
+                        {testQuestions.length ? 
+                            testQuestions.map((question, index) => (
+                                    <AdminCollapseElem
+                                        key={index}
+                                        config={question}
+                                    >
+                                        {question.options.map((option, index) => (
+                                            <TestQuestionsOption
+                                                key={index}
+                                                config={option}
+                                                type={question.type}
+                                            />
+                                        ))}
+                                        <ButtonElem
+                                            className={styles['test-questions-page__add-btn']}
+                                            onClick={() => onOptionCreate(question)}
+                                        >Добавить вариант ответа</ButtonElem>
+                                    </AdminCollapseElem>
+                                )
+                            ) : 
+                            <div className={styles['test-questions-page__empty-list']}>Список вопросов пуст</div>
+                        }
                     </div>
                     {currentTest && <AdminModal
                         className={'attachment-modal'}

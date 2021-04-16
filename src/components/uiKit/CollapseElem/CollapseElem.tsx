@@ -10,6 +10,7 @@ type Props = {
 
 function CollapseElem(props: Props): JSX.Element {
     const [collapsed, setCollapsed] = useState<boolean>(false);
+
     const getCollapseElemClassNames = () => {
         const classes = [styles['collapse-elem']];
         if (collapsed) {
@@ -17,9 +18,11 @@ function CollapseElem(props: Props): JSX.Element {
         }
         return classNames(...classes);
     }
+
     const changeButtonCollapse = () => {
         setCollapsed(!collapsed);
     }
+
     return (
         <div className={getCollapseElemClassNames()}>
             <div className={styles['collapse-elem__body']}>

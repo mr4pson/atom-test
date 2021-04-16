@@ -28,6 +28,7 @@ import { getImageUrl } from 'components/common/commonHelper';
 import { TypeSupporter } from '../AdminPage/SupportersPage/types';
 import '@brainhubeu/react-carousel/lib/style.css';
 import CarouselWithDots from 'components/uiKit/CarouselWithDots';
+import { Fade, Zoom, Slide } from "react-awesome-reveal";
 
 // const { TextArea } = Input;
 
@@ -87,62 +88,71 @@ function HomePage(): JSX.Element {
           <a style={{ display: 'block', marginRight: 30 }} href="/#about"><ButtonElem className={styles['button-small']} type={buttonElemType.Primary}>О проекте</ButtonElem></a>
           <a style={{ display: 'block' }} href="/#organizators"><ButtonElem className={styles['button-small']} type={buttonElemType.Default}>Организаторы</ButtonElem></a>
         </div>
-        <div id="about" className={styles['about-project']}>
-          <div className={styles['about-project__title']}>
-            {ReactHtmlParser(homePage.aboutProject.title)}
-          </div>
-          <div className={styles['about-project__sub-title']}>
-            {ReactHtmlParser(homePage.aboutProject.subTitle)}
-          </div>
-          <div className={styles['dictant']}>
-            <div className={classNames(styles['dictant__example-image'], styles['expample-image'])}>
-              <div className={styles['expample-image__wing']}>
-                <div className={styles['expample-image__body']}>
-                  <div className={styles['expample-image__title']}>2021</div>
-                  <div className={styles['expample-image__description']}>Пример Диплома<br />об успешном прохождении Атомного диктанта</div>
+        <Zoom triggerOnce duration={1500}>
+          <Fade duration={2500}>
+            <div id="about" className={styles['about-project']}>
+              <div className={styles['about-project__title']}>
+                {ReactHtmlParser(homePage.aboutProject.title)}
+              </div>
+              <div className={styles['about-project__sub-title']}>
+                {ReactHtmlParser(homePage.aboutProject.subTitle)}
+              </div>
+              <div className={styles['dictant']}>
+                <div className={classNames(styles['dictant__example-image'], styles['expample-image'])}>
+                  <div className={styles['expample-image__wing']}>
+                    <div className={styles['expample-image__body']}>
+                      <div className={styles['expample-image__title']}>2021</div>
+                      <div className={styles['expample-image__description']}>Пример Диплома<br />об успешном прохождении Атомного диктанта</div>
+                    </div>
+                  </div>
+                </div>
+                <div className={styles['dictant__info']}>
+                  <div className={styles['dictant__paragraphs']}>
+                    <span>{ReactHtmlParser(homePage.aboutProject.body.firstParagraph)}</span>
+                    <ul className={styles['dictant__paragraphs-list']}>
+                      <li>{ReactHtmlParser(homePage.aboutProject.body.firstListItem)}</li>
+                      <li>{ReactHtmlParser(homePage.aboutProject.body.secondListItem)}</li>
+                    </ul>
+                    <span>{ReactHtmlParser(homePage.aboutProject.body.secondParagraph)}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={styles['dictant__info']}>
-              <div className={styles['dictant__paragraphs']}>
-                <span>{ReactHtmlParser(homePage.aboutProject.body.firstParagraph)}</span>
-                <ul className={styles['dictant__paragraphs-list']}>
-                  <li>{ReactHtmlParser(homePage.aboutProject.body.firstListItem)}</li>
-                  <li>{ReactHtmlParser(homePage.aboutProject.body.secondListItem)}</li>
-                </ul>
-                <span>{ReactHtmlParser(homePage.aboutProject.body.secondParagraph)}</span>
+              <div className={styles['about-project__footer']}>
+                <span>{ReactHtmlParser(homePage.aboutProject.footer)}</span>
               </div>
             </div>
-          </div>
-          <div className={styles['about-project__footer']}>
-            <span>{ReactHtmlParser(homePage.aboutProject.footer)}</span>
-          </div>
-        </div>
-        <div id="organizators" className={styles['organizators']}>
-          <div className={styles['organizators__title']}>
-            {ReactHtmlParser(homePage.organizators.title)}
-          </div>
-          <div className={styles['organizators__body']}>
-            <div className={classNames(styles['organizators__left-bar'], styles['organizator'])}>
-              <div className={styles['organizator__type']}>{ReactHtmlParser(homePage.organizators.type)}</div>
-              <div className={styles['organizator__name']}>{ReactHtmlParser(homePage.organizators.name)}</div>
-              <div className={styles['organizator__desc']}>{ReactHtmlParser(homePage.organizators.desc)}</div>
-              <a className={styles['organizator__button-normal']} href="https://atomgoroda.ru/" rel="noreferrer" target="_blank">
-                <ButtonElem type={buttonElemType.Primary}>
-                  {ReactHtmlParser(homePage.organizators.button.toOrganizationSiteBtn)}
-                </ButtonElem>
-              </a>
+          </Fade>
+        </Zoom>
+        <Zoom triggerOnce duration={1500}>
+          <Fade duration={2500}>
+            <div id="organizators" className={styles['organizators']}>
+              <div className={styles['organizators__title']}>
+                {ReactHtmlParser(homePage.organizators.title)}
+              </div>
+              <div className={styles['organizators__body']}>
+                <div className={classNames(styles['organizators__left-bar'], styles['organizator'])}>
+                  <div className={styles['organizator__type']}>{ReactHtmlParser(homePage.organizators.type)}</div>
+                  <div className={styles['organizator__name']}>{ReactHtmlParser(homePage.organizators.name)}</div>
+                  <div className={styles['organizator__desc']}>{ReactHtmlParser(homePage.organizators.desc)}</div>
+                  <a className={styles['organizator__button-normal']} href="https://atomgoroda.ru/" rel="noreferrer" target="_blank">
+                    <ButtonElem type={buttonElemType.Primary}>
+                      {ReactHtmlParser(homePage.organizators.button.toOrganizationSiteBtn)}
+                    </ButtonElem>
+                  </a>
+                </div>
+                <div className={styles['organizators__right-bar']}>
+                  <div className={styles['organizators__image']}></div>
+                </div>
+                <a className={styles['organizator__button-small']} href="https://atomgoroda.ru/" rel="noreferrer" target="_blank">
+                  <ButtonElem type={buttonElemType.Primary}>
+                    {ReactHtmlParser(homePage.organizators.button.toOrganizationSiteBtn)}
+                  </ButtonElem>
+                </a>
+              </div>
             </div>
-            <div className={styles['organizators__right-bar']}>
-              <div className={styles['organizators__image']}></div>
-            </div>
-            <a className={styles['organizator__button-small']} href="https://atomgoroda.ru/" rel="noreferrer" target="_blank">
-              <ButtonElem type={buttonElemType.Primary}>
-                {ReactHtmlParser(homePage.organizators.button.toOrganizationSiteBtn)}
-              </ButtonElem>
-            </a>
-          </div>
-        </div>
+          </Fade>
+        </Zoom>
+
         {
           !loading ?
             <div className={styles['supporters']}>
@@ -150,114 +160,126 @@ function HomePage(): JSX.Element {
                 {ReactHtmlParser(homePage.supporters.title)}
               </div>
               <div className={styles['supporters__body']}>
-                {supporterRows.map((supporterRow: TypeSupporter[], index) => (
-                  <Row key={index}>
-                    {supporterRow.map((supporter: TypeSupporter, i) => (
-                      <Col key={i} span={8} className={styles['gutter-row']}>
-                        <div className={getSupporterClasses(i)}>
-                          {/* <div className={styles['supporter__bg']}>
+                <Slide triggerOnce direction={'right'} duration={1500}>
+                  {supporterRows.map((supporterRow: TypeSupporter[], index) => (
+                    <Fade duration={2500}>
+                      <Row key={index}>
+                        {supporterRow.map((supporter: TypeSupporter, i) => (
+                          <Col key={i} span={8} className={styles['gutter-row']}>
+                            <div className={getSupporterClasses(i)}>
+                              {/* <div className={styles['supporter__bg']}>
                             {renderSwitch(i)}
                           </div> */}
-                          <div
-                            className={styles['supporter__avatar']}
-                            style={{ backgroundImage: `url(${getImageUrl(supporter.uploadFile)})` }}
-                          />
-                          <div className={styles['supporter__name']}>{ReactHtmlParser(supporter.fullName)}</div>
-                          <div className={styles['supporter__position']}>
-                            <span>{supporter.position}</span>&nbsp;
+                              <div
+                                className={styles['supporter__avatar']}
+                                style={{ backgroundImage: `url(${getImageUrl(supporter.uploadFile)})` }}
+                              />
+                              <div className={styles['supporter__name']}>{ReactHtmlParser(supporter.fullName)}</div>
+                              <div className={styles['supporter__position']}>
+                                <span>{supporter.position}</span>&nbsp;
                             <span>{getBoldName(supporter.organization)}</span>
-                          </div>
-                        </div>
-                      </Col>
-                    ))}
-                  </Row>
-                ))}
+                              </div>
+                            </div>
+                          </Col>
+                        ))}
+                      </Row>
+                    </Fade>
+                  ))}
+                </Slide>
               </div>
 
               <CarouselWithDots className={styles['supporter__carousel']} items={supporters?.map((supporter: TypeSupporter, index) => (
                 <Col key={index} span={8} className={styles['gutter-row']}>
-                  <div className={getSupporterClasses(index)}>
-                    <div
-                      className={styles['supporter__avatar']}
-                      style={{ backgroundImage: `url(${getImageUrl(supporter.uploadFile)})` }}
-                    />
-                    <div className={styles['supporter__name']}>{ReactHtmlParser(supporter.fullName)}</div>
-                    <div className={styles['supporter__position']}>
-                      <span>{supporter.position}</span>&nbsp;
+                  <Fade duration={1000}>
+                    <Slide triggerOnce duration={1500} direction={'right'} cascade>
+                      <div className={getSupporterClasses(index)}>
+                        <div
+                          className={styles['supporter__avatar']}
+                          style={{ backgroundImage: `url(${getImageUrl(supporter.uploadFile)})` }}
+                        />
+                        <div className={styles['supporter__name']}>{ReactHtmlParser(supporter.fullName)}</div>
+                        <div className={styles['supporter__position']}>
+                          <span>{supporter.position}</span>&nbsp;
                             <span>{getBoldName(supporter.organization)}</span>
-                    </div>
-                  </div>
+                        </div>
+                      </div>
+                    </Slide>
+                  </Fade>
                 </Col>
               ))} />
               <div className={styles['supporter__swipe-info']}>Свайпайте влево, чтобы посмотреть остальных спонсоров.</div>
             </div>
             : <Loader className={'default-loader'} />
         }
-        <div className={styles['how-to-participate']}>
-          <div className={styles['how-to-participate__title']}>
-            {ReactHtmlParser(homePage.howToParticipate.title)}
-          </div>
-          <div className={styles['how-to-participate__body']}>
-            <div className={styles['participant-step']}>
-              <div className={styles['participant-step__bg']}>
-                <HowToParticipate1 style={{ visibility: 'hidden' }} />
-                <div className={styles['participant-step__bg-1']}></div>
+        <Zoom triggerOnce duration={1500}>
+          <Fade duration={2500}>
+            <div className={styles['how-to-participate']}>
+              <div className={styles['how-to-participate__title']}>
+                {ReactHtmlParser(homePage.howToParticipate.title)}
               </div>
-              <div className={styles['participant-step__body']}>
-                <div className={styles['participant-step__number']}>1</div>
-                <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.first)}</div>
-              </div>
-              <div className={styles['participant-step__ellipse']}>
-                <Ellipse1 className={styles['elipse-small']} />
+              <div className={styles['how-to-participate__body']}>
+                <div className={styles['participant-step']}>
+                  <div className={styles['participant-step__bg']}>
+                    <HowToParticipate1 style={{ visibility: 'hidden' }} />
+                    <div className={styles['participant-step__bg-1']}></div>
+                  </div>
+                  <div className={styles['participant-step__body']}>
+                    <div className={styles['participant-step__number']}>1</div>
+                    <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.first)}</div>
+                  </div>
+                  <div className={styles['participant-step__ellipse']}>
+                    <Ellipse1 className={styles['elipse-small']} />
+                  </div>
+                </div>
+                <div className={styles['participant-step']}>
+                  <div className={styles['participant-step__bg']}>
+                    {
+                      screenWidth >= 768
+                        ? <HowToParticipate2 />
+                        : <HowToParticipate21 />
+                    }
+                  </div>
+                  <div className={styles['participant-step__body']}>
+                    <div className={styles['participant-step__number']}>2</div>
+                    <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.second)}</div>
+                  </div>
+                  <div className={styles['participant-step__ellipse']}>
+                    <Ellipse2 className={styles['elipse-small']} />
+                  </div>
+                </div>
+                <div className={styles['participant-step']}>
+                  <div className={styles['participant-step__bg']}>
+                    {
+                      screenWidth >= 768
+                        ? <HowToParticipate3 />
+                        : <HowToParticipate31 />
+                    }
+                  </div>
+                  <div className={styles['participant-step__body']}>
+                    <div className={styles['participant-step__number']}>3</div>
+                    <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.third)}</div>
+                  </div>
+                  <div className={styles['participant-step__ellipse']}>
+                    <Ellipse3 className={styles['elipse-small']} />
+                  </div>
+                </div>
+                <div className={styles['participant-step']}>
+                  <div className={styles['participant-step__bg']}>
+                    {
+                      screenWidth >= 768
+                        ? <HowToParticipate4 />
+                        : <HowToParticipate41 />
+                    }
+                  </div>
+                  <div className={styles['participant-step__body']}>
+                    <div className={styles['participant-step__number']}>4</div>
+                    <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.fourth)}</div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className={styles['participant-step']}>
-              <div className={styles['participant-step__bg']}>
-                {
-                  screenWidth >= 768
-                    ? <HowToParticipate2 />
-                    : <HowToParticipate21 />
-                }
-              </div>
-              <div className={styles['participant-step__body']}>
-                <div className={styles['participant-step__number']}>2</div>
-                <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.second)}</div>
-              </div>
-              <div className={styles['participant-step__ellipse']}>
-                <Ellipse2 className={styles['elipse-small']} />
-              </div>
-            </div>
-            <div className={styles['participant-step']}>
-              <div className={styles['participant-step__bg']}>
-                {
-                  screenWidth >= 768
-                    ? <HowToParticipate3 />
-                    : <HowToParticipate31 />
-                }
-              </div>
-              <div className={styles['participant-step__body']}>
-                <div className={styles['participant-step__number']}>3</div>
-                <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.third)}</div>
-              </div>
-              <div className={styles['participant-step__ellipse']}>
-                <Ellipse3 className={styles['elipse-small']} />
-              </div>
-            </div>
-            <div className={styles['participant-step']}>
-              <div className={styles['participant-step__bg']}>
-                {
-                  screenWidth >= 768
-                    ? <HowToParticipate4 />
-                    : <HowToParticipate41 />
-                }
-              </div>
-              <div className={styles['participant-step__body']}>
-                <div className={styles['participant-step__number']}>4</div>
-                <div className={styles['participant-step__text']}>{ReactHtmlParser(homePage.howToParticipate.steps.fourth)}</div>
-              </div>
-            </div>
-          </div>
-        </div>
+          </Fade>
+        </Zoom>
         <FrequentlyAskedQuestions questions={questions} />
         <ContactUs />
       </div>

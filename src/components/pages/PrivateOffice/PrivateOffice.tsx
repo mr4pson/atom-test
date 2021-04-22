@@ -24,6 +24,7 @@ import styles from './PrivateOffice.module.scss';
 import { useGetParticipant } from './useGetParticipant';
 import { buttonElemType } from 'components/uiKit/ButtomElem/types';
 import ButtonElem from "components/uiKit/ButtomElem";
+import { useHomePage } from '../HomePage/useHomePage';
 
 // import { loginPage } from 'i18n'
 
@@ -59,6 +60,9 @@ function PrivateOffice(props): JSX.Element {
   const [isSaveDiplomaVisible, setIsSaveDiplomaVisible] = useState<any>(null);
 
   const { uploadMediaFile } = useUploadFile(formRef, undefined, 'avatar');
+  const { counterParameters, getCounterParameters } = useHomePage();
+  const currentDate = new Date();
+  const [dictationDate, setDictationDate] = useState<Date>();
 
   const userInfo = getUserInfo();
   const history = useHistory();
@@ -162,6 +166,7 @@ function PrivateOffice(props): JSX.Element {
       await getCurrentParticipant(userInfo?.id!);
     })();
     getAnswers();
+    getCounterParameters();
   }, []);
 
   useEffect(() => {
@@ -183,6 +188,10 @@ function PrivateOffice(props): JSX.Element {
     if (avatar && currentParticipant?.avatar !== avatar)
     handleUpdateUser();
   }, [avatar])
+
+  useEffect(() => {
+    setDictationDate(new Date(counterParameters ? counterParameters?.data : ''));
+  }, [counterParameters])
 
   return (
     <>
@@ -422,7 +431,7 @@ function PrivateOffice(props): JSX.Element {
                           </Col>
                       }
                     </Row>
-                    {!answer && <ButtonElem
+                    {!answer && (dictationDate && dictationDate < currentDate) && <ButtonElem
                       type={buttonElemType.Primary}
                       htmlType="button"
                       className={styles["user-info__redirect-btn"]}
@@ -440,7 +449,7 @@ function PrivateOffice(props): JSX.Element {
                     ? <div className={styles['diploma-info__image']}>
                     <div className={styles['diploma-info__full-name']}>{fullName}</div>
                     <div className={styles['diploma-info__percentage']}>{+answer?.percentage!}%</div>
-                    <img width={707} src="diploma.png"/>
+                    <img width={707} alt="Диплом" src="diploma.png"/>
                   </div>
                     : <div className={styles['diploma-info__image']}>
                     <span className={styles['diploma-info__name']}>Диплом</span>
@@ -456,7 +465,7 @@ function PrivateOffice(props): JSX.Element {
                           className={styles['share-in__icon']}
                           rel="noreferrer"
                           target="_blank"
-                        />
+                        > </a>
                       ))
                     }
                     </div>
@@ -480,7 +489,7 @@ function PrivateOffice(props): JSX.Element {
       {isSaveDiplomaVisible && <div id="diploma" className={styles['bottom-diploma']}>
         <div className={styles['bottom-diploma__name']}>{fullName}</div>
         <div className={styles['bottom-diploma__percentage']}>{+answer?.percentage!}%</div>
-        <img src="diploma.png"/>
+        <img alt="Диплом" src="diploma.png"/>
       </div>}
     </>
   );

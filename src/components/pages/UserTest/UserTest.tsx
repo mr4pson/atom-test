@@ -158,14 +158,14 @@ function UserTest(props: UserTestProps): JSX.Element {
                             />
                         </Form>
                     </div>
-                    <div className={classNames(styles['user-test__stop-test'], styles['stop-test-small'])}>
+                    {/* <div className={classNames(styles['user-test__stop-test'], styles['stop-test-small'])}>
                         <ButtonElem
                             onClick={handleStopTest}
                             className={classNames(styles['user-test__stop-test'], styles['stop-test-small__btn'])}
                             type={buttonElemType.Primary}
                             htmlType={htmlType.SUBMIT}
                         >{userTest.buttons.stopTest}</ButtonElem>
-                    </div>
+                    </div> */}
                     <div className={styles['user-test__right-col']}>
                         <TestTimer timerSeconds={timerSeconds}/>
                         <div className={styles['questions-info']}>
@@ -176,14 +176,14 @@ function UserTest(props: UserTestProps): JSX.Element {
                         </div>
                     </div>
                 </div>
-                <div className={classNames(styles['user-test__stop-test'], styles['stop-test'])}>
+                {/* <div className={classNames(styles['user-test__stop-test'], styles['stop-test'])}>
                     <ButtonElem
                         onClick={handleStopTest}
                         className={classNames(styles['user-test__stop-test'], styles['stop-test__btn'])}
                         type={buttonElemType.Primary}
                         htmlType={htmlType.SUBMIT}
                     >{userTest.buttons.stopTest}</ButtonElem>
-                </div>
+                </div> */}
             </div>}
         </div>
     );
